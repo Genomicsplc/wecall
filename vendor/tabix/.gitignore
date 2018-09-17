@@ -1,0 +1,5 @@
+bgzip
+tabix
+libtabix.so
+*.o
+*.a

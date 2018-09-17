@@ -1,0 +1,13 @@
+[
+    ["bgzip", "bin"],
+    ["tabix", "bin"],
+    ["libtabix.so", "lib"],
+    ["ksort.h", "include"],
+    ["tabix.h", "include"],
+    ["bgzf.h", "include"],
+    ["kseq.h", "include"],
+    ["khash.h", "include"],
+    ["knetfile.h", "include"],
+    ["kstring.h", "include"],
+    ["bam_endian.h", "include"]
+]

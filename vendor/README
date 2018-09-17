@@ -1,0 +1,5 @@
+upstream dependencies that we use directly. This should be done out of tree. Currently we have:
+
+bedtools-2.17.0
+samtools-0.1.19
+tabix-0.2.6

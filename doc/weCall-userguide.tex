@@ -1,0 +1,310 @@
+\documentclass{article}
+
+\usepackage{amsmath,amsfonts}
+\usepackage{graphicx}
+\usepackage[colorlinks]{hyperref}
+\hypersetup{urlcolor=blue}
+\hypersetup{citecolor=black}
+\usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usepackage{float}
+\floatstyle{plaintop}
+\restylefloat{table}
+\usepackage{mdwlist}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={210mm,297mm},
+ left=22mm,
+ right=22mm,
+ top=22mm,
+ bottom=22mm,
+ }
+\usepackage{listings} \usepackage{color}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{lastpage}
+
+
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{0.5\baselineskip}
+\setcounter{tocdepth}{1}
+\definecolor{mygreen}{rgb}{0,0.6,0} \definecolor{mygray}{rgb}{0.5,0.5,0.5} \definecolor{mymauve}{rgb}{0.58,0,0.82} \definecolor{light-gray}{gray}{0.95}
+
+\lstset{ %
+aboveskip=-10pt,belowskip=0pt,
+ basicstyle=\footnotesize\ttfamily,breaklines=true,
+ backgroundcolor=\color{light-gray},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+ breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+ breaklines=true,                 % sets automatic line breaking
+ commentstyle=\color{mygreen},    % comment style
+ escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+ extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+ %frame=centerline,	          % adds a frame around the code
+ keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+ %keywordstyle=\color{blue},      % keyword style
+ language=Python,                 % the language of the code
+ otherkeywords={*,...},           % if you want to add more keywords to the set
+ numbers=none,                    % where to put the line-numbers; possible values are (none, left, right)
+ numbersep=5pt,                   % how far the line-numbers are from the code
+ numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+ %rulecolor=\color{mygray},       % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+ showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+ showstringspaces=false,          % underline spaces within strings only
+ showtabs=false,                  % show tabs within strings adding particular underscores
+ stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+ stringstyle=normal,              % string literal style
+ tabsize=2,	                  % sets default tabsize to 2 spaces
+ title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead{}                          % clear all header fields
+\renewcommand{\headrulewidth}{0pt}    % no line in header area
+\fancyfoot{}                          % clear all footer fields
+\fancyfoot[LE,RO]{Page {\thepage} of \pageref{LastPage}}                % page number in "outer" position of footer line
+\fancyfoot[RE,LO]{\copyright 2018 {\companyname}} % other info in "inner" position of footer line
+
+\newcommand{\companyname}{\textbf{GENOMICS plc}}
+\newcommand{\wecallproduct}{\textbf{weCall}}
+\newcommand{\wecallappname}{weCall}
+\newcommand{\wecallversion}{\textbf{2.0.0}}
+\newcommand{\wecalltarball}{weCall-{\wecallversion}-Linux-x86\_64}
+\newcommand{\wecallbranding}{{\wecallproduct} {\wecallversion}}
+\lstset{%
+  escapeinside={(*}{*)},%
+}
+
+\title{User Documentation for {\wecallbranding}}
+\author{
+    {\companyname}\\\\
+    \texttt{\url{www.genomicsplc.com}}
+}
+\date{Release date: \today\\\vspace{5mm}\textit\\\vspace{5mm}
+  \small{\textbf{
+      \vspace{5mm}\copyright 2018 {\companyname}}}}
+\begin{document}
+\maketitle
+\hypersetup{linkcolor=black}
+\tableofcontents
+\newpage
+
+
+\section{General description}
+{\wecallbranding} is a fast, accurate and simple to use command line tool for variant detection in Next Generation Sequencing (NGS) data.
+        
+\section{Capabilities}
+\textbf{{\wecallproduct}} identifies genomic sites where genetic variants exist relative to the reference genome,
+and infers genotypes at these sites.  It reads data from one or more BAM files simultaneously, each containing reads from one or more samples,
+and calls variants in these samples jointly.  The output consists of a single VCF or gVCF file, and summarises the evidence for a variant site
+as a genotype call, a genotype quality, and genotype likelihoods for each sample.
+
+\textbf{{\wecallproduct}} has been extensively tested on human whole-genome sequencing and whole-exome sequencing data. It has high sensitivity and specificity
+for detection of SNPs, MNPs and short indels.
+
+{\wecallproduct} is fast to run.  It runs all the stages of variant calling, including read de-multiplexing,
+marking of duplicate reads, local read re-alignment, candidate variant identification, calling, genotyping and filtering in a single pass.  The program is easy to run,
+and requires a set of BAM files and a reference genome file as input, and produces a VCF or gVCF in a single processing step, without using intermediate files.
+
+ \textbf{{\wecallproduct}} supports human genome build GRCh37 and GRCh38.
+
+ \section{Limitations}
+ 
+\textbf{{\wecallproduct}} is recommended for use on single samples, small pedigrees or cohorts of up to size 20.  Running {\wecallproduct}
+on very large cohorts is not recommended, and using hundreds or thousands of BAM files simultaneously will be very slow.
+The recommended approach for calling variants across large cohorts is to use single-sample gVCF calling (see below for instructions on producing gVCFs),
+followed by combining the gVCFs into a single VCF or gVCF file using a 3rd-party tool.
+
+When multithreading is used, the job is parallelised over calling regions.  When calling variants across
+the whole genome, the regions are the chromosomes, and it is possible that towards the end of execution {\wecallproduct} does not use all threads
+when completing calling on the final regions.
+
+\textbf{{\wecallproduct}} is reasonably memory-efficient, and uses approximately 1 Gb of memory per thread.  When processing genomic regions that
+have anomalously high coverage the memory usage can grow further.  For 4 threads a minimum of 8 Gb total system memory is recommended.
+% The amount of memory that {\wecallproduct} uses can be controlled via the option
+% \begin{lstlisting}
+% --memLimit
+% \end{lstlisting}
+% By reducing the default of 1 Gb the program will use less memory, although it can still exceed the limit in anomalous regions.
+% Note that this option is ``hidden'' and can only be used in the config file.
+
+% \textbf{{\wecallproduct}} has a number of experimental features and command-line options beyond those that are described in this document.
+% These are in various stages of development, and use of them is not recommended nor supported.
+
+{\wecallproduct} was developed and tested using data generated by Illumina (HiSeq  2000, 2500, or 4000 and HiSeq X Ten) and mapped with either \href{http://bio-bwa.sourceforge.net/}{BWA},  \href{https://github.com/sequencing/isaac_aligner}{Isaac} or \href{http://www.well.ox.ac.uk/stampy}{Stampy}.
+Although it will run on any other input BAM, we do not provide support for non-targeted platform data such as e.g.\ IonTorrent(ThermoFisher),
+(SMRT)PacBio, etc., or provide support for BAM files generated using other mapping tools.
+
+{\wecallproduct} does not support CRAM files as a read container format.
+
+{\wecallproduct} expects that all input BAM files contain reads generated by the same platform (e.g. HiSeq2000, or HiSeq X Ten), as it assumes a
+uniform error profile across input data.
+
+\section{Supported systems}
+
+\textbf{{\wecallproduct}} can be built for different Linux platforms.
+The building and installation process was tested for Ubuntu 14.04 and 16.04 but should work also for other platforms.
+
+\section{Installation instructions}
+
+To install {\wecallproduct}, you will need to build the {\wecallproduct} code and test utilities. Please follow these steps:
+\begin{enumerate}
+    \item Ensure you have cmake, ncurses, boost and zlib installed.
+    \item Clone the \wecallproduct repository. Withing the repository type \verb|make install|. This will add {\wecallproduct} and the unit test tools (unittest, iotest) to \verb|/usr/bin/local|. The installation directory can be set by modifying the \verb|PREFIX| variable in the Makefile.
+    \item The user documentation can be created with \verb|make doc|. The user documentation will be generated in the folder \verb|build/doc/weCall-userguide.pdf| of the repository.
+\end{enumerate}
+
+To test if the installation has succeeded, invoke the application help facility:
+\begin{lstlisting}
+    weCall -h
+\end{lstlisting}
+For detailed information on how to use \wecallproduct, please refer to the user guide (build/doc/weCall-userguide.pdf).
+
+Further, you can run the unit and acceptance test suite:
+\begin{itemize}
+    \item To run the C++ unit tests type \verb|make test-unit|.
+    \item To run the full acceptance test suite you will need python 3.x and a virtual environment. This will be automatically installed when you run the tests with \verb|make test-acceptance|.
+\end{itemize}
+
+\section{Input data}
+{\wecallproduct} requires a reference FASTA file and one or more BAM files. The reference FASTA file used during mapping to produce the BAM file must match the
+FASTA file that is provided to \wecallproduct.
+
+
+\subsection{BAM files}
+
+The BAM file(s) must be indexed. You can use  `\href{http://www.htslib.org/}{samtools} index' or an equivalent program.
+Data from different BAMs will combine matching sample names, and the output VCF will contain a genotype column for each unique sample name in the input data.
+
+\subsection{Reference files}
+The reference FASTA file must be indexed using `\href{http://www.htslib.org/}{samtools} faidx' or an equivalent program. The output VCF's chromosomes will be ordered according to the chromosomal ordering in the reference file. Note that  \textbf{{\wecallproduct}} will run by default only on autosomes, sex chromosomes and mitochondrial sequences. Other sequences can be specified in the config file or in the region option (see \ref{subsection:data parameters}).
+ \textbf{{\wecallproduct}} has been tested on human genome builds GRCh37 and GRCh38, but should also work on older builds (see \url{https://www.ncbi.nlm.nih.gov/projects/genome/assembly/grc/human/}).
+
+\section{Output data}
+\subsection{Output format}
+\textbf{{\wecallproduct}} will output a single, uncompressed \href{https://samtools.github.io/hts-specs/VCFv4.1.pdf}{VCF 4.1}, \href{https://samtools.github.io/hts-specs/VCFv4.2.pdf}{VCF 4.2} or gVCF file, depending on the command line options provided, as well as a log file.
+
+The VCF file produced by {\wecallproduct} contains the following tags:
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{p{0.1\linewidth}p{0.65\linewidth}}
+  Tag & Description \\ \hline 
+   PP & Phred-scaled call quality; The estimated posterior probability that this variant does not segregate. \\
+   DP & Total depth of read coverage at this locus. The DP field is not reported for refCalls (but see GT:DP). \\
+   DPF & Total probabilistic depth of reverse read coverage at this locus (sum of probabilities of each read supporting the variant). \\
+   DPR & Total probabilistic depth of forward read coverage at this locus (sum of probabilities of each read supporting the variant). \\
+   VC & Total probabilistic number of reads supporting each alternative allele (sum of probabilities of each read supporting the allele).\\
+   VFC & Total probabilistic number of foward reads supporting each alternative allele. \\
+   VCR & Total probabilistic number of reverse reads supporting each alternative allele. \\
+   MQ & The root mean squared mapping quality across all the reads that support the variant. \\
+   ABPV & Allele bias P-value; probability that fraction of reads supporting alt allele (VC) amongst read depth (DP) is more extreme than expected assuming a beta-binomial distribution. \\
+   SBPV & Strand bias P-value; probability that the fraction of forward reads (VCF) amongst reads supporting alt allele (VC) is more extreme than expected assuming a beta-binomial distribution. \\
+   QD & Ratio of phred-scaled posterior probability (PP) to number of supporting reads for each allele (VC). \\
+   BR & The median of the per-read min base quality (within a interval of the locus) taken over reads supporting each allele. This is a measure for the number of reads that have unreliable bases around a call's locus. \\ 
+   BEG & Start position of reference call block.\\
+   END & End position of reference call block (inclusive).\\
+   LEN & Length of reference call block.\\ \hline
+\end{tabular}
+\end{center}
+
+The genotype columns contain in addition these data:
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{p{0.1\linewidth}p{0.65\linewidth}}
+  Tag & Description \\ \hline
+  GT & Genotypes of reference and alternative alleles in order listed. ``.'' is used for uncertain or undefined genotypes. \\
+  AD & Probabilistic allelic depths for the ref and alt alleles in the order listed (i.e. INFO::VC split out by sample). \\
+  DP & Number of reads overlapping the variant site (i.e. INFO::DP split out by sample). For reference calls the average depth (rounded to the nearest integer) over the region is reported. \\
+  GQ & Phred-scaled genotype quality (i.e. posterior probability that the genotype call is incorrect). \\
+  PL & Normalised, Phred-scaled likelihoods for genotypes as defined in the VCF specification. \\
+  VAF & Probabilistic variant allelic frequencies for each alt allele (AD/DP). \\
+  PS & Phase set identifier. \\
+  PQ & Phred-scaled phase quality (i.e. posterior probability that the phasing is incorrect). \\ 
+  MIN\_DP & Minimum read coverage observed within a reference block. \\ \hline
+\end{tabular}
+\end{center}
+
+
+Note that the genotype field can be ``.'' in cases where alternative, overlapping alleles exist that are not
+reported in a single VCF file. In such cases the called genotype for the site is listed in a separate VCF record.
+  
+\subsection{Variant representation}
+\textbf{{\wecallproduct}} may optionally represent SNPs combined into MNPs or output phase information.
+
+\paragraph{Phase information:}
+
+\textbf{{\wecallproduct}} calls variants within regions simultaneously, and in the process of calling can phase the variants within the region with respect to each other. \textbf{{\wecallproduct}} also attempts to allign the phase information of variants in neighbouring regions. The phasing is aligned using single reads, not read pairs. The region for which we provide consistent phasing is reported as a phase set (PS). The certainty with which \textbf{{\wecallproduct}} infers a phasing within a phase set is expressed as a Phase Quality, reported through the PQ tag as a Phred score.
+
+\section{Running {\wecallproduct}}
+\textbf{{\wecallproduct}} can be found in the {\it bin} folder of the installation directory. It is an executable that can be run from the command line followed by any configuration parameters.  An example of an invocation is:
+\begin{lstlisting}
+(*\wecallappname*) -c config.cfg --inputs input.bam --output output.vcf --refFile GRCh37.fa
+\end{lstlisting}
+Configuration options may be specified on the command line, in a configuration file, or a mixture of both. You can get the full list of configuration options using:
+\begin{lstlisting}
+(*\wecallappname*) [-h|--help]
+\end{lstlisting}
+You may specify a configuration file containing further configuration options, by adding the option
+\begin{lstlisting}
+[-c|--config] yourconfig.cfg
+\end{lstlisting}
+The options in the configuration file have the format {\it optionName=value}), each appearing on a single line; for instance
+\begin{lstlisting}
+minSNPQOverDepth=10
+badReadsWindowSize=12
+\end{lstlisting}
+A list of supported command line options is provided towards the end of this section.
+
+\subsection{Best Practice suggestions}
+\paragraph{Simple run on one bam file.}  This process will run in a single thread, and use about 1 Gb of memory.
+\begin{lstlisting}
+(*\wecallappname*) --inputs input.bam --output output.vcf --refFile GRCh37.fa
+\end{lstlisting}
+\paragraph{Trio calling on multiple bams.}  The calls are made jointly, so any variant called in any of the three members of the
+trio is fully assessed in the other members.  The family members are all treated the same; to call de-novo mutations
+in the child under the appropriate prior, a subsequent genotype refinement step is required (not provided).
+\begin{lstlisting}
+(*\wecallappname*) --inputs inputfather.bam,inputmother.bam,inputchild.bam --output output.vcf --refFile GRCh37.fa
+\end{lstlisting}
+\paragraph{Calling on specific regions.}  Multiple regions can be provided as comma-separated region specifiers.
+\begin{lstlisting}
+(*\wecallappname*) --inputs input.bam --output output.vcf --refFile GRCh37.fa --regions 20:100000-200000
+\end{lstlisting}
+\paragraph{Use of multithreading.}  The required memory scales linearly with the number of threads.
+\begin{lstlisting}
+(*\wecallappname*) --inputs input.bam --output output.vcf --refFile GRCh37.fa --numberOfJobs=8
+\end{lstlisting}
+%Genotype a set of alleles, specified in an input (compressed and tabix-indexed) VCF file:
+%\begin{lstlisting}
+%(*\wecallappname*) --inputs input.bam --output output.vcf --refFile GRCh37.fa --genotypeAllelesFile inputAlleles.vcf.gz
+%\end{lstlisting}
+%Genotype a set of alleles in a specific region
+%\begin{lstlisting}
+%(*\wecallappname*) --inputs input.bam --output output.vcf --refFile GRCh37.fa --genotypeAllelesFile inputAlleles.vcf.gz --regions 20:1000000-2000000
+%\end{lstlisting}
+
+\subsection{Recommendations}
+
+The error profile of data generated by Illumina sequencing machines varies slightly across the various sequencing platforms.
+In particular data generated by the X Ten platform sometimes exhibit
+higher error rates, as well as less accurately calibrated base quality scores.  These data features may lead to excessive numbers of candidate
+variants being generated, causing longer run-times, and cause increased false positive calls.  When this happens, it is recommended to use the
+option
+\begin{lstlisting}
+--minReadsPerVar=3
+\end{lstlisting}
+to reduce the number of spurious candidate variants.  The default setting is 2.  Increasing this number beyond 3 will further speed up processing
+of noisy data, at the cost of slightly reducing sensitivity.  In addition, for noisy data it is recommended to use the option
+\begin{lstlisting}
+--recalibrateBaseQs=1
+\end{lstlisting}
+to recalibrate base quality scores, reducing the false positive rate, at the cost of increased run-time.
+
+\input{./wecall-params.tex}
+
+\section{Legal}
+
+weCall is Open Source software. Redistribution and use in source and binary forms, with or without modification, are permitted provided that the conditions are met which are specified in the LICENSE file.
+
+\end{document}

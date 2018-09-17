@@ -1,0 +1,40 @@
+##fileformat=VCFv4.2
+##fileDate=2018-08-14
+##source=weCall v2.0.0
+##disclaimer=This software is in beta-testing. Results generated using the software are confidential and should only be used for research purposes in accordance with the legal agreement with Genomics plc.
+##commit=a_hash
+##buildTime=2018-05-09T16:04:28
+##reference=hs37d5
+##options={ }
+##INFO=<ID=PP,Number=A,Type=Integer,Description="Posterior probability (phred scaled) that this variant does not segregate.",Source="weCall",Version="16.0.0">
+##INFO=<ID=DP,Number=1,Type=Integer,Description="Total depth of read coverage at this locus.",Source="weCall",Version="16.0.0">
+##INFO=<ID=DPR,Number=1,Type=Integer,Description="Total probabilistic depth of reverse read coverage at this locus (sum of probabilities of each read supporting the variant).",Source="weCall",Version="16.0.0">
+##INFO=<ID=DPF,Number=1,Type=Integer,Description="Total probabilistic depth of forward read coverage at this locus (sum of probabilities of each read supporting the variant).",Source="weCall",Version="16.0.0">
+##INFO=<ID=VC,Number=A,Type=Integer,Description="Total probabilistic number of reads supporting each alternative allele (sum of probabilities of each read supporting the allele).",Source="weCall",Version="16.0.0">
+##INFO=<ID=VCR,Number=A,Type=Integer,Description="Total probabilistic number of reverse reads supporting each alternative allele (sum of probabilities of each read supporting the allele).",Source="weCall",Version="16.0.0">
+##INFO=<ID=VCF,Number=A,Type=Integer,Description="Total probabilistic number of forward reads supporting each alternative allele (sum of probabilities of each read supporting the allele).",Source="weCall",Version="16.0.0">
+##INFO=<ID=MQ,Number=A,Type=Float,Description="Root mean square of mapping quality of reads supporting each alternative allele.",Source="weCall",Version="16.0.0">
+##INFO=<ID=ABPV,Number=A,Type=Float,Description="Allele bias P-value; probability that fraction of reads supporting alt allele (VC) amongst read depth (DP) is more extreme than expected assuming a beta-binomial distribution.",Source="weCall",Version="16.0.0">
+##INFO=<ID=SBPV,Number=A,Type=Float,Description="Strand bias P-value; probability that the fraction of forward reads (VCF) amongst reads supporting alt allele (VC) is more extreme than expected assuming a beta-binomial distribution.",Source="weCall",Version="16.0.0">
+##INFO=<ID=QD,Number=A,Type=Float,Description="Ratio of phred-scaled posterior probability (PP) to number of supporting reads for each allele (VC).",Source="weCall",Version="16.0.0">
+##INFO=<ID=BR,Number=A,Type=Float,Description="The median of the per-read min base quality (within a interval of the locus) taken over reads supporting each allele.",Source="weCall",Version="16.0.0">
+##FILTER=<ID=AB,Description="Allele Bias: Indicates lower number of reads supporting variant than expected (any of INFO::ABPV < 0.009).">
+##FILTER=<ID=AB+SB,Description="Allele + Strand Bias: Indicates that both the AB and SB filters are close to being triggered (any of INFO::ABPV + INFO::SBPV < 0.07).">
+##FILTER=<ID=BR,Description="Bad Reads: Indicates low quality base pairs on reads in the vicinity of variant locus (any of INFO::BR < 0).">
+##FILTER=<ID=LQ,Description="Low Quality: Indicates a low variant quality (any of INFO::PP < 10).">
+##FILTER=<ID=MQ,Description="low Mapping Quality: Indicates presence of low mapping quality (any of INFO::MQ < 25).">
+##FILTER=<ID=QD,Description="Quality over Depth: Indicates low quality relative to number of supporting reads (any of INFO::QD < 3.5 for Indels or INFO::QD < 8 otherwise).">
+##FILTER=<ID=SB,Description="Strand Bias: Indicates imbalance between number of forward and reverse reads supporting variant (any of INFO::SBPV < 0.01).">
+##FILTER=<ID=NC,Description="Not called: Indicates a variant that was not positively genotyped in any sample.">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotypes of reference and alternative alleles in order listed.",Source="weCall",Version="16.0.0">
+##FORMAT=<ID=AD,Number=.,Type=Integer,Description="Probabilistic allelic depths for the ref and alt alleles in the order listed (i.e. INFO::VC split out by sample).",Source="weCall",Version="16.0.0">
+##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Number of reads overlapping the variant site (i.e. INFO::DP split out by sample). For reference calls the average depth (rounded to the nearest integer) over the region is reported.",Source="weCall",Version="16.0.0">
+##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Phred-scaled genotype quality (i.e. posterior probability that the genotype call is incorrect).",Source="weCall",Version="16.0.0">
+##FORMAT=<ID=PL,Number=G,Type=Integer,Description="Normalized, Phred-scaled likelihoods for genotypes as defined in the VCF specification.",Source="weCall",Version="16.0.0">
+##FORMAT=<ID=VAF,Number=A,Type=Float,Description="Probabilistic variant allelic frequencies for each alt allele (FORMAT::AD / FORMAT::DP).",Source="weCall",Version="16.0.0">
+##FORMAT=<ID=PS,Number=1,Type=String,Description="Phase set id.",Source="weCall",Version="16.0.0">
+##FORMAT=<ID=PQ,Number=1,Type=Integer,Description="Phred-scaled phase quality (i.e. posterior probability that the phasing is incorrect).",Source="weCall",Version="16.0.0">
+##contig=<ID=20,length=63025520>
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	sample1	sample2
+20	10	.	CT	C	3000	PASS	PP=3000;DP=250;DPR=140;DPF=110;VC=100;VCR=49;VCF=51;ABPV=0.2;SBPV=0.3;MQ=70;BR=31;QD=.	GT:PL:GQ:PQ:PS:AD:DP:VAF	1|0:3000,0,3000:1000:2000:60000:140,110:250:0.4	1|1:114,0,0:.:1500:50000:130,120:250:0.3
+20	11	.	T	G	3000	PASS	PP=3000;DP=250;DPR=140;DPF=110;VC=100;VCR=49;VCF=51;ABPV=0.2;SBPV=0.3;MQ=70;BR=31;QD=.	GT:PL:GQ:PQ:PS:AD:DP:VAF	1|0:3000,0,3000:1000:2000:60000:140,110:250:0.4	1|1:114,0,0:3:1500:50000:130,120:250:0.3

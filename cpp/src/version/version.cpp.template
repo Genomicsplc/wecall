@@ -1,0 +1,14 @@
+// Define the implementation of the compiled-in version number
+// See: 'http://stackoverflow.com/a/4318642'
+
+#include "version/version.hpp"
+
+#ifdef COMMIT
+    #define GIT_SHA1 COMMIT
+#else
+    #define GIT_SHA1 "@GIT_SHA1@"
+#endif
+
+const char g_GIT_SHA1[] = GIT_SHA1;
+const char g_PRODUCT_VERSION[] = "@PRODUCT_VERSION@";
+const char g_BUILD_DATE[] = "@BUILD_DATE@";

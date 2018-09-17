@@ -1,0 +1,83 @@
+scripts/version.pyc
+.coverage
+/build/dist/
+/projects/*/dist/
+
+
+
+# binary/compiled files
+/bin/
+/lib/
+*.o
+performance_testing/vcs
+tags
+/source-package/
+/dependencies/
+/build/
+/env-wecall
+
+# logging
+*.log
+
+# valgrind
+callgrind.out.*
+
+# editor temp files
+*~
+*.kate-swp
+*#
+*.swp
+
+# user project configs
+.idea
+cpp/.idea
+
+# packaging
+/deployable
+/python/dist
+/python/build
+/test-drivers/dist
+/test-drivers/build
+/properties.json
+.pytest_cache/
+
+# report folder
+/report
+/results
+
+# Third party tools
+/third-party-tools
+
+cpp/cmake-build-*e*
+cpp/src/version/version.cpp
+README.txt
+./Licences.txt
+wecall-*.tar.gz
+conda-bld
+weCall-userguide.pdf
+/Licences.txt
+
+*.deb
+*.rpm
+*.egg-info
+weCall-Linux-x86_64.tar.gz
+environment_production.yaml
+environment_test.yaml
+/doc/wecall-params.tex
+__pycache__
+test-results
+xunit-status.xml
+.cache
+*.py.bak
+.pyest.cache
+wecall-env
+
+#vendor noise
+vendor/samtools/bcftools/bcftools
+vendor/samtools/misc/ace2sam
+vendor/samtools/misc/bamcheck
+vendor/samtools/misc/maq2sam-long
+vendor/samtools/misc/maq2sam-short
+vendor/samtools/misc/md5fa
+vendor/samtools/misc/md5sum-lite
+vendor/samtools/misc/wgsim

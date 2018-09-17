@@ -1,0 +1,6 @@
+libbam.so*
+samtools
+*.o
+.*.swp
+*.a
+*.dSYM

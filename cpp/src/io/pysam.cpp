@@ -57,11 +57,11 @@ struct __bam_index_t
 // deletes all variable length data
 void pysam_bam_destroy1( bam1_t * b )
 {
-    if ( b == NULL )
+    if ( b == nullptr )
     {
         return;
     }
-    if ( b->data != NULL )
+    if ( b->data != nullptr )
     {
         free( b->data );
     }

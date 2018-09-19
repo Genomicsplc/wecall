@@ -10,7 +10,7 @@ int main( const int argc, char * argv[] )
         char ** newArgv = new char * [argc - 1];
         newArgv[0] = argv[0];
 
-        for ( size_t i = 1; i < argc - 1; ++i )
+        for ( std::size_t i = 1; i < static_cast< std::size_t >(argc - 1); ++i )
         {
             newArgv[i] = argv[i + 1];
         }

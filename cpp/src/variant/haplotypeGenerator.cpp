@@ -103,7 +103,7 @@ namespace variant
                 }
                 haplotypes.push_back( newCombo );
             }
-            if ( haplotypes.size() >= m_maxHaplotypesPerRanker - 1 )
+            if ( haplotypes.size() >= static_cast<std::size_t >(m_maxHaplotypesPerRanker - 1) )
             {
                 const AlignmentHaplotypeRanker alignmentHaplotypeRanker( m_readsPerSample );
                 const auto bestIndicies =

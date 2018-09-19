@@ -46,7 +46,7 @@ namespace variant
             altString = sequence.substr( frontPadding, sequence.size() - frontPadding - backPadding );
         }
 
-        const auto matrixSize = ( region.size() + 1 ) * ( altString.size() + 1 );
+        const std::size_t matrixSize = ( region.size() + 1 ) * ( altString.size() + 1 );
         if ( matrixSize > m_maxMatrixSize )
         {
             ECHIDNA_LOG( DEBUG, "Skipping normalization because the matrix has size "

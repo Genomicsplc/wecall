@@ -109,7 +109,7 @@ BOOST_FIXTURE_TEST_CASE( testUpdatingHistogramWithRead, echidna::test::FastaFile
 
     kmerDistribution.updateKmerHistogram( readPtr );
 
-    for ( int i = readStart; i < readEnd - echidna::corrector::kmerSize + 1; ++i )
+    for ( std::size_t i = readStart; i < readEnd - echidna::corrector::kmerSize + 1; ++i )
     {
         BOOST_CHECK_EQUAL( kmerDistribution.getSiteKmerDistribution( i ).size(), 1 );
         for ( auto kmerCountPair : kmerDistribution.getSiteKmerDistribution( i ).kmerCount() )

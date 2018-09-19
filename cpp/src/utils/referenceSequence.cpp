@@ -10,7 +10,7 @@ namespace utils
     ReferenceSequence::ReferenceSequence( caller::Region region, echidna::utils::BasePairSequence sequence )
         : m_region( region ), m_sequence( sequence )
     {
-        ECHIDNA_ASSERT( ( m_region.size() == m_sequence.size() ),
+        ECHIDNA_ASSERT( (static_cast<std::size_t >(m_region.size()) == m_sequence.size() ),
                         "ReferenceSequence requires region size to match sequence size: " +
                             std::to_string( m_region.size() ) + " != " + std::to_string( m_sequence.size() ) );
     }

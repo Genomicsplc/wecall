@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_CASE( test_maps_substring_back_to_correct_start_position_in_non_
 
     HashMapper hasher( sequence, kmerSize, 0 );
 
-    for ( auto start = 0; start < sequence.size() - kmerSize; ++start )
+    for ( std::size_t start = 0; start < sequence.size() - kmerSize; ++start )
     {
         const echidna::utils::BasePairSequence read = sequence.substr( start, kmerSize );
         auto mappingPositions = hasher.mapSequence( read, boost::none );

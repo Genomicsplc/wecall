@@ -23,8 +23,8 @@ namespace alignment
     {
     public:
         GAlign( const utils::BasePairSequence & haplotypeSequence,
-                const short gapExtend,
-                const short nucleotidePrior,
+                const unsigned short gapExtend,
+                const unsigned short nucleotidePrior,
                 const localGapOpenPenalties_t & localGapOpen );
 
         int computeAlignmentPhredScore( const utils::BasePairSequence & readSeq,
@@ -35,8 +35,8 @@ namespace alignment
 
     private:
         const utils::BasePairSequence m_haplotypeSequence;
-        const short m_gapExtend;
-        const short m_nucPrior;
+        const unsigned short m_gapExtend;
+        const unsigned short m_nucPrior;
         const localGapOpenPenalties_t m_localGapOpen;
     };
 }

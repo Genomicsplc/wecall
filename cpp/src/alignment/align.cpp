@@ -22,10 +22,10 @@ namespace alignment
     int needlemanWunschAlignment( std::string::const_iterator haplotype,
                                   std::string::const_iterator readSeq,
                                   const char * readQual,
-                                  const int haplotypeLength,
-                                  const int readLength,
-                                  const int gapextend,
-                                  const int nucprior,
+                                  const unsigned int haplotypeLength,
+                                  const unsigned int readLength,
+                                  const unsigned short gapextend,
+                                  const unsigned short nucprior,
                                   const localGapOpenPenalties_t & localgapopen,
                                   char * aln1,
                                   char * aln2,
@@ -157,7 +157,7 @@ namespace alignment
         assert( gapextend > 0 );
         assert( nucprior >= 0 );
 
-        const int backtrace = ( aln1 != NULL );
+        const int backtrace = ( aln1 != nullptr );
         constexpr int init_offset = 2048;
         const short infty = 0x7fff - 4 * gapextend - 4;
 
@@ -439,7 +439,7 @@ namespace alignment
         }
         aln1[i] = aln2[i] = 0;
 
-        if ( firstpos != NULL )
+        if ( firstpos != nullptr )
         {
             *firstpos = x;
         }

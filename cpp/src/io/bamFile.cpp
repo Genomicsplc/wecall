@@ -42,7 +42,7 @@ namespace io
             throw utils::echidna_exception( "Cannot load BAM index" );
         }
 
-        m_samFile = samopen( fileName.c_str(), "rb", NULL );
+        m_samFile = samopen( fileName.c_str(), "rb", nullptr );
         m_samplesByID = this->getSamplesByID();
     }
 

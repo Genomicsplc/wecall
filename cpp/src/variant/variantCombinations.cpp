@@ -171,7 +171,7 @@ namespace variant
         auto firstInterval = first->getStartEndRegions().getSpan();
         auto secondInterval = second->getStartEndRegions().getSpan();
         firstInterval.combine( secondInterval );
-        if ( firstInterval.size() >= m_maxClusterDistance )
+        if (static_cast<std::size_t >(firstInterval.size()) >= m_maxClusterDistance )
         {
             return VariantPairCombinationState::UNCERTAIN;
         }
@@ -237,6 +237,6 @@ namespace variant
 
         firstReads.erase( remove_if( firstReads.begin(), firstReads.end(), filterFunc ), firstReads.end() );
         secondReads.erase( remove_if( secondReads.begin(), secondReads.end(), filterFunc ), secondReads.end() );
-    };
+    }
 }
 }

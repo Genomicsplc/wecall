@@ -65,7 +65,7 @@ namespace alignment
             return {};
         }
 
-        if ( offsets->read <= 0 or ( offsets->read + m_length ) >= varGenData->readSeq.size() )
+        if ( offsets->read <= 0 or static_cast<std::size_t >( offsets->read + m_length ) >= varGenData->readSeq.size() )
         {
             return {};
         }
@@ -96,7 +96,7 @@ namespace alignment
             return {};
         }
 
-        if ( offsets->read <= 0 or offsets->read >= varGenData->readSeq.size() )
+        if ( offsets->read <= 0 or static_cast<std::size_t >(offsets->read) >= varGenData->readSeq.size() )
         {
             return {};
         }

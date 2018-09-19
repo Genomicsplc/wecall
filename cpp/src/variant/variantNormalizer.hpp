@@ -33,7 +33,7 @@ namespace variant
 
     private:
         const utils::referenceSequencePtr_t m_referenceSequence;
-        const int64_t m_maxMatrixSize = 50000;
+        const uint64_t m_maxMatrixSize = 50000;
     };
 }
 }

@@ -58,8 +58,8 @@ namespace alignment
     //-----------------------------------------------------------------------------------------
 
     GAlign::GAlign( const utils::BasePairSequence & haplotypeSequence,
-                    const short gapExtend,
-                    const short nucleotidePrior,
+                    const unsigned short gapExtend,
+                    const unsigned short nucleotidePrior,
                     const localGapOpenPenalties_t & localGapOpen )
         : m_haplotypeSequence( haplotypeSequence ),
           m_gapExtend( gapExtend ),
@@ -82,7 +82,7 @@ namespace alignment
                         "Aligner was called with qual string of the wrong length:" + std::to_string( qual.size() ) +
                             " when it should be " + std::to_string( readSeq.size() ) + " to match the read length" );
 
-        const int readLength = static_cast< int >( readSeq.size() );
+        const unsigned int readLength = static_cast< int >( readSeq.size() );
         {
             const int haplotypeLength = static_cast< int >( m_haplotypeSequence.size() );
             const auto goodStartPositions =
@@ -97,9 +97,9 @@ namespace alignment
         // included at the extreme ends of the diagonal, which measures
         // n=8 entries diagonally across.  This fixes the length of the
         // longer (horizontal) sequence to 15 (2*8-1) more than the shorter
-        const int doublePadding = 2 * constants::needlemanWunschPadding - 1;
+        const unsigned int doublePadding = 2 * constants::needlemanWunschPadding - 1;
 
-        const int haplotypeSegmentLength = readLength + doublePadding;
+        const unsigned int haplotypeSegmentLength = readLength + doublePadding;
         const int offset = pos - constants::needlemanWunschPadding;
         auto haplotypeSegmentForAlignment = m_haplotypeSequence.cbegin() + offset;
 

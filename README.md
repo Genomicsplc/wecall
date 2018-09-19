@@ -1,4 +1,4 @@
-# GENOMICS weCall
+# GENOMICS plc - weCall
 
 weCall is a **fast, accurate and simple** to use command line tool for **variant detection in Next Generation
 Sequencing (NGS) data**.

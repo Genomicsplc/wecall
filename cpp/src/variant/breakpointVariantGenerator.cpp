@@ -265,7 +265,8 @@ namespace variant
                 bool tooManyReads = false;
                 for ( const auto & readRange : generatorReads )
                 {
-                    const unsigned int nReadsThisSample = std::distance( readRange.second.begin(), readRange.second.end() );
+                    const unsigned int nReadsThisSample =
+                        std::distance( readRange.second.begin(), readRange.second.end() );
                     if ( nReadsThisSample >= maxReadsPerSample )
                     {
                         tooManyReads = true;

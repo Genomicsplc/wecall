@@ -296,7 +296,7 @@ namespace variant
         {
             std::vector< varPtr_t > splitMNP;
             const auto referenceSequence = this->refSequence().sequence();
-            for ( std::size_t i = 0; i < static_cast< size_t >(sequenceLengthInRef()); ++i )
+            for ( std::size_t i = 0; i < static_cast< size_t >( sequenceLengthInRef() ); ++i )
             {
                 if ( m_altSequence[i] != referenceSequence[i] )
                 {
@@ -365,7 +365,7 @@ namespace variant
                     // Gerton Lunter's setPrior for MNPs and length-preserving replacements.
                     auto nDiffs = 0;
 
-                    for ( std::size_t i = 0; i < static_cast< size_t >(var->sequenceLengthInRef()); ++i )
+                    for ( std::size_t i = 0; i < static_cast< size_t >( var->sequenceLengthInRef() ); ++i )
                     {
                         if ( var->sequence()[i] != var->refSequence().sequence()[i] )
                         {

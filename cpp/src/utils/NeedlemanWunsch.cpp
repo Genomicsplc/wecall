@@ -298,7 +298,7 @@ namespace utils
         }
 
         // Now go through the rest of the matrix, row by row, calculating the correct values
-        for ( int32_t rowIndex = 1; rowIndex < static_cast<int32_t >(refDim); ++rowIndex )
+        for ( int32_t rowIndex = 1; rowIndex < static_cast< int32_t >( refDim ); ++rowIndex )
         {
             //            // When we add m_nWPenalties.gapLinear to rowScore we want to get the score for having a
             //            // deletion of size rowIndex followed by an insertion of size 1
@@ -306,7 +306,7 @@ namespace utils
                             m_nWPenalties.extendInsertion();
             //            auto rowScore = 2 * m_nWPenalties.gapConstant + rowIndex * m_nWPenalties.extendDeletion();
 
-            for ( int32_t colIndex = 1; colIndex < static_cast<int32_t >(altDim); ++colIndex )
+            for ( int32_t colIndex = 1; colIndex < static_cast< int32_t >( altDim ); ++colIndex )
             {
                 // Calculate score for not having a gap, i.e. sequences match or there is a SNP
                 const auto refBase = m_referenceString.at( rowIndex - 1 );

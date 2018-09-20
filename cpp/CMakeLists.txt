@@ -321,7 +321,6 @@ set(IOTEST_SOURCES
         test/ioTest/io/testReadIntervalTree.cpp
         test/ioTest/io/testReadUtils.cpp
         test/ioTest/io/testReadSummaries.cpp
-        test/ioTest/io/testTabixFile.cpp
         test/ioTest/io/testVCFWriter.cpp
         test/ioTest/utils/environment.cpp
         test/ioTest/utils/environment.hpp

@@ -278,8 +278,7 @@ set(UNITTEST_SOURCES
     test/unittest/variant/testMnp.cpp
     test/unittest/variant/testSnp.cpp
     test/unittest/variant/testHaplotypeGeneration.cpp
-    test/unittest/variant/testHaplotypeRanker.cpp
-    test/unittest/variant/testVariantCombinations.cpp
+        test/unittest/variant/testVariantCombinations.cpp
     test/unittest/variant/testVariantContainer.cpp
     test/unittest/variant/testVariantGenerator.cpp
     test/unittest/variant/testSnpFinder.cpp

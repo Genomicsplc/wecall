@@ -16,9 +16,7 @@ namespace test
 {
     namespace fs = boost::filesystem;
 
-    const std::string BUILD_PIPELINE_TEST_DATA = "/data/test/build/test/data";
-
-    inline void writeFile( std::string filename, std::string content )
+    inline void writeFile( const std::string & filename, const std::string & content )
     {
         std::ofstream myfile( filename );
         if ( myfile.is_open() )
@@ -28,10 +26,10 @@ namespace test
         }
     }
 
-    struct TestBedFileFixture
+    struct BedFileFixture
     {
 
-        TestBedFileFixture()
+        BedFileFixture()
         {
             tempDir = fs::temp_directory_path();
 
@@ -58,15 +56,15 @@ namespace test
                        "gi|734691289|gb|KN707645.1|\t30\t50\tPos3\t0\t+\t127473530\t127474697\t255,0,0\n" );
             std::sort( bedNames.begin(), bedNames.end() );
 
-            for ( const auto filename : bedNames )
+            for ( const auto & filename : bedNames )
             {
                 bedFiles.emplace_back( new echidna::io::BedFile( filename ) );
             }
         }
 
-        ~TestBedFileFixture()
+        ~BedFileFixture()
         {
-            for ( const auto filename : bedNames )
+            for ( const auto & filename : bedNames )
             {
                 fs::remove( filename.c_str() );
             }

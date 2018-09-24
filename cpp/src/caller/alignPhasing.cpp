@@ -44,7 +44,12 @@ namespace caller
                 auto variants = variant::variantSet_t( variants1 );
                 variants.insert( variantsCluster2[j].cbegin(), variantsCluster2[j].cend() );
                 const auto haplotypeId = i * ploidy + j;
-                combinedHaplotypes.push_back( variants, haplotypeId );
+
+                // ignore invalid haplotypes (this can happen if there are large indels spanning more than one cluster)
+                if ( isValidVariantCombination( variants.begin(), variants.end(), referenceSequence ) )
+                {
+                    combinedHaplotypes.push_back( variants, haplotypeId );
+                }
             }
         }
 

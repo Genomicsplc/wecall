@@ -186,6 +186,29 @@ BOOST_AUTO_TEST_CASE( shouldGenerateHaplotypesForClustersWithHetVariants )
     BOOST_CHECK_EQUAL( haplotypes[3].getId(), 2 );
 }
 
+BOOST_AUTO_TEST_CASE( shouldGenerateIgnoreInvalidHaplotypes )
+{
+    auto refSequence =
+        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
+    echidna::variant::varPtr_t large_deletion = std::make_shared< Variant >( refSequence, Region( "1", 2, 10 ), "" );
+    echidna::variant::varPtr_t snp = std::make_shared< Variant >( refSequence, Region( "1", 3, 4 ), "T" );
+
+    // hom large deletion (VAR, VAR)
+    std::vector< echidna::variant::variantSet_t > variantsCluster1;
+    variantsCluster1.push_back( {large_deletion} );
+    variantsCluster1.push_back( {large_deletion} );
+
+    // hom snp (VAR, REF)
+    std::vector< echidna::variant::variantSet_t > variantsCluster2;
+    variantsCluster2.push_back( {snp} );
+    variantsCluster2.push_back( {snp} );
+
+    auto haplotypes = echidna::caller::generateHaplotypesFromPhasedClusters( variantsCluster1, variantsCluster2, 2,
+                                                                             refSequence, refSequence->region() );
+
+    BOOST_REQUIRE_EQUAL( haplotypes.size(), 0 );
+}
+
 BOOST_AUTO_TEST_CASE( shouldGenerateHaplotypesForClustersWithMixedVariants )
 {
     auto refSequence =

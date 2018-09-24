@@ -253,6 +253,7 @@ set(UNITTEST_SOURCES
         test/unittest/assembly/testNode.cpp
         test/unittest/assembly/testSequenceGraph.cpp
         test/unittest/caller/testAlignPhasing.cpp
+        test/unittest/caller/testCallSet.cpp
         test/unittest/caller/testCandidateVariantBank.cpp
         test/unittest/caller/testParams.cpp
         test/unittest/caller/testRegion.cpp

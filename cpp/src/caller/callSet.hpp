@@ -65,7 +65,28 @@ namespace caller
 
     struct CallComp
     {
-        bool operator()( const Call & x, const Call & y ) const { return variant::varPtrComp()( x.var, y.var ); }
+        bool operator()( const Call & x, const Call & y ) const
+        {
+            // ECHIDNA_LOG(INFO, "comparing " + x.interval.toString() + " " + y.interval.toString());
+            // use variant comparison for variants
+            if ( !x.isRefCall() and !y.isRefCall() )
+            {
+                return variant::varPtrComp()( x.var, y.var );
+            }
+
+            // otherwise use positions to compare ref calls and variants
+            if ( x.interval.start() != y.interval.start() )
+            {
+                return x.interval.start() < y.interval.start();
+            }
+
+            if ( x.interval.end() != y.interval.end() )
+            {
+                return x.interval.end() < y.interval.end();
+            }
+            ECHIDNA_ASSERT( true, "This should not happen." );
+            return false;
+        }
     };
 
     using callVector_t = std::vector< Call >;

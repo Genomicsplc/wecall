@@ -104,10 +104,10 @@ class TestNormalizeVariantCallsOption(BaseTest):
         vcf_expect.record_count(4)
 
         vcf_expect.has_record(chrom, 15, "A", "T").with_sample(
-            sample_name).has_genotype("1|0")
+            sample_name).has_genotype("0|1")
         vcf_expect.has_record(chrom, 25, "T", "A").with_sample(
             sample_name).has_genotype("1|1")
         vcf_expect.has_record(chrom, 41, "C", "G").with_sample(
-            sample_name).has_genotype("1|0")
-        vcf_expect.has_record(chrom, 52, "T", "A").with_sample(
             sample_name).has_genotype("0|1")
+        vcf_expect.has_record(chrom, 52, "T", "A").with_sample(
+            sample_name).has_genotype("1|0")

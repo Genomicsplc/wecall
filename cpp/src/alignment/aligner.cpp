@@ -45,7 +45,7 @@ namespace alignment
             const auto mapq = theRead.getMappingQuality();
             const double probMappingWrong = stats::fromPhredQ( mapq );
             const double bestAlignmentLikelihood = stats::fromPhredQ( bestScore );
-            return bestAlignmentLikelihood * ( 1.0 - probMappingWrong ) + probMappingWrong * 10.0e-20;
+            return bestAlignmentLikelihood * ( 1.0 - probMappingWrong ) + probMappingWrong;
         }
     }
 }

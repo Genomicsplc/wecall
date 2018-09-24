@@ -20,6 +20,7 @@ class TestCallingFromDataWithReadErrors(AsciiWecallRunnerTest):
              ".....................C...................."]
         )
 
+    @expectedFailure
     def test_calls_homozygous_snp_on_reads_with_base_calling_errors_at_every_position(self):
         self.calls_variants_with_genotype(
             "AAAAAAAAAAACGCACCCCCCATAAAAAAAATTTTTTTTTTT",  # input

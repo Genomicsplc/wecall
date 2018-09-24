@@ -249,7 +249,7 @@ set(UNITTEST_SOURCES
         test/unittest/alignment/testCigar.cpp
         test/unittest/alignment/testCigarItems.cpp
         test/unittest/alignment/testGAlign.cpp
-        # test/unittest/alignment/testMMHelpers.cpp
+        test/unittest/alignment/testMMHelpers.cpp
         test/unittest/assembly/testNode.cpp
         test/unittest/assembly/testSequenceGraph.cpp
         test/unittest/caller/testAlignPhasing.cpp

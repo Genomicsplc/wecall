@@ -1,7 +1,4 @@
 // All content Copyright (C) 2018 Genomics plc
-//
-// Created by adorr on 01/09/17.
-//
 
 #ifndef WECALL_MM_HELPERS_H
 #define WECALL_MM_HELPERS_H
@@ -56,48 +53,52 @@ public:
     __m128i m_value;
 };
 
-short_array8 min( const short_array8 & v1, const short_array8 & v2 )
+inline short_array8 min( const short_array8 & v1, const short_array8 & v2 )
 {
     return short_array8( _mm_min_epi16( v1.m_value, v2.m_value ) );
 }
 
-short_array8 andnot( const short_array8 & v1, const short_array8 & v2 )
+inline short_array8 andnot( const short_array8 & v1, const short_array8 & v2 )
 {
     return short_array8( _mm_andnot_si128( v1.m_value, v2.m_value ) );
 }
 
-short_array8 cmpeq( const short_array8 & v1, const short_array8 & v2 )
+inline short_array8 cmpeq( const short_array8 & v1, const short_array8 & v2 )
 {
     return short_array8( _mm_cmpeq_epi16( v1.m_value, v2.m_value ) );
 }
 
-short_array8 operator+( const short_array8 & v1, const short_array8 & v2 )
+inline short_array8 operator+( const short_array8 & v1, const short_array8 & v2 )
 {
     return short_array8( _mm_add_epi16( v1.m_value, v2.m_value ) );
 }
 
-short_array8 operator&( const short_array8 & v1, const short_array8 & v2 )
+inline short_array8 operator&( const short_array8 & v1, const short_array8 & v2 )
 {
     return short_array8( _mm_and_si128( v1.m_value, v2.m_value ) );
 }
 
-short_array8 operator|( const short_array8 & v1, const short_array8 & v2 )
+inline short_array8 operator|( const short_array8 & v1, const short_array8 & v2 )
 {
     return short_array8( _mm_or_si128( v1.m_value, v2.m_value ) );
 }
 
-short_array8 operator<<( const short_array8 & v1, int numbits )
+inline short_array8 operator<<( const short_array8 & v1, int numbits )
 {
     return short_array8( _mm_slli_epi16( v1.m_value, numbits ) );
 }
 
-short_array8 operator>>( const short_array8 & v1, int numbits )
+inline short_array8 operator>>( const short_array8 & v1, int numbits )
 {
     return short_array8( _mm_srli_epi16( v1.m_value, numbits ) );
 }
 
-short_array8 shift_right( const short_array8 & v ) { return short_array8( _mm_srli_si128( v.m_value, 2 ) ); }
+inline short_array8 shift_right( const short_array8 & v ) {
+    return short_array8( _mm_srli_si128( v.m_value, 2 ) );
+}
 
-short_array8 shift_left( const short_array8 & v ) { return short_array8( _mm_slli_si128( v.m_value, 2 ) ); }
+inline short_array8 shift_left( const short_array8 & v ) {
+    return short_array8( _mm_slli_si128( v.m_value, 2 ) );
+}
 
 #endif  // WECALL_MM_HELPERS_H

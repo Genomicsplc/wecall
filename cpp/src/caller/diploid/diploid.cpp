@@ -18,6 +18,7 @@
 #include "utils/logging.hpp"
 #include "utils/exceptions.hpp"
 #include "utils/bestScoreSelector.hpp"
+#include "utils/indexedProduct.hpp"
 #include "utils/median.hpp"
 #include "io/readUtils.hpp"
 #include "caller/haplotypeLikelihoods.hpp"
@@ -151,6 +152,8 @@ namespace caller
             return calls;
         }
 
+        //-----------------------------------------------------------------------------------------
+
         Model::Model( const int badReadsWindowSize,
                       const std::size_t maxHaplotypesPerCluster,
                       const std::vector< std::string > & samples )
@@ -160,6 +163,8 @@ namespace caller
         {
         }
 
+        //-----------------------------------------------------------------------------------------
+
         void Model::computeResultsPerSample( const std::string & sample,
                                              const std::size_t ploidy,
                                              const io::RegionsReads & readRange,
@@ -168,13 +173,13 @@ namespace caller
                                              std::map< std::string, variant::GenotypeVector > & perSampleGenotypes,
                                              variant::genotypePtr_t & calledGenotype,
                                              GenotypeMetadata & genotypeMetadata,
-                                             std::vector< double > & genotypeLikelihoods,
-                                             std::vector< double > & totalHaplotypeFrequencies,
-                                             std::vector< VariantMetadata > & variantAnnotation ) const
+                                             std::vector< VariantMetadata > & variantAnnotation,
+                                             double & variantQualitiesTotal,
+                                             std::vector< double > & reweightedVariantQualities ) const
         {
             const auto haplotypeLikelihoods = computeHaplotypeLikelihoods( mergedHaplotypes, readRange );
             const bool hasReadData = haplotypeLikelihoods.size1() > 0;
-            const auto haplotypeFrequencies = caller::computeHaplotypeFrequencies( haplotypeLikelihoods );
+            const auto haplotypeFrequencies = caller::computeHaplotypeFrequencies( haplotypeLikelihoods, {} );
 
             if ( false )
             {
@@ -187,11 +192,7 @@ namespace caller
                 }
             }
 
-            for ( std::size_t haplotypeIndex = 0; haplotypeIndex != mergedHaplotypes.size(); ++haplotypeIndex )
-            {
-                totalHaplotypeFrequencies[haplotypeIndex] += haplotypeFrequencies[haplotypeIndex];
-            }
-
+            // sum up haplotype frequencies over all samples
             variantAnnotation = annotate::computeVariantAnnotation( haplotypeLikelihoods, readRange,
                                                                     m_badReadsWindowSize, variants, mergedHaplotypes );
 
@@ -203,14 +204,14 @@ namespace caller
 
             const auto & genotypes = perSampleGenotypes.at( sample );
 
+            std::vector< double > genotypeLikelihoods;
+
             if ( hasReadData and genotypes.size() > 0 )
             {
                 genotypeLikelihoods = computeGenotypeLikelihoods( genotypes, haplotypeLikelihoods, mergedHaplotypes );
 
                 const auto indexOfMax = utils::indexOfHighestValue( genotypeLikelihoods );
-
                 calledGenotype = genotypes[indexOfMax];
-
                 genotypeMetadata = annotate::computeGenotypeMetaData( indexOfMax, genotypes, genotypeLikelihoods );
 
                 ECHIDNA_LOG( SUPER_DEBUG, "Called genotype for " << sample << ":- "
@@ -221,6 +222,10 @@ namespace caller
                 genotypeLikelihoods = std::vector< double >( genotypes.size(), constants::unknownValue );
             }
 
+            // compute variant likelihood and quality for each variant
+            variantQualitiesTotal =
+                annotate::computeTotalVariantQuality( genotypes, genotypeLikelihoods, haplotypeFrequencies );
+
             for ( std::size_t variantIndex = 0; variantIndex < variants.size(); ++variantIndex )
             {
                 if ( hasReadData and genotypes.size() > 0 )
@@ -228,10 +233,14 @@ namespace caller
                     variantAnnotation[variantIndex].genotypeLikelihoods =
                         annotate::get_RR_RA_AA_Likelihoods_as_phred_scores( variants[variantIndex], mergedHaplotypes,
                                                                             genotypes, genotypeLikelihoods );
+                    reweightedVariantQualities.push_back( annotate::computeReweightedVariantQuality(
+                        variants[variantIndex], genotypes, genotypeLikelihoods, mergedHaplotypes,
+                        haplotypeLikelihoods ) );
                 }
                 else
                 {
                     variantAnnotation[variantIndex].genotypeLikelihoods = {constants::unknownValue};
+                    reweightedVariantQualities.push_back( constants::unknownValue );
                 }
             }
         }
@@ -243,12 +252,11 @@ namespace caller
                                         const std::vector< variant::varPtr_t > & variants,
                                         const std::vector< std::size_t > & perSamplePloidy ) const
         {
-            std::vector< std::vector< double > > genotypeLikelihoodsAllSamples( m_samples.size() );
             std::vector< variant::genotypePtr_t > calledGenotypes( m_samples.size(), nullptr );
             std::vector< std::vector< VariantMetadata > > variantAnnotationPerSample( m_samples.size() );
             std::vector< GenotypeMetadata > genotypeMetadataPerSample( m_samples.size(), GenotypeMetadata() );
-            std::vector< double > totalHaplotypeFrequencies( mergedHaplotypes.size(), 0 );
-
+            std::vector< std::vector< double > > reweightedVariantQualities( m_samples.size() );
+            std::vector< double > variantQualitiesTotal( m_samples.size(), 0.0 );
             std::map< std::string, variant::GenotypeVector > perSampleGenotypes;
 
             for ( std::size_t sampleIndex = 0; sampleIndex < m_samples.size(); ++sampleIndex )
@@ -256,25 +264,18 @@ namespace caller
                 const auto & sample = m_samples[sampleIndex];
                 const auto & readRange = readRangesPerSample.at( sample );
                 const auto ploidy = perSamplePloidy[sampleIndex];
-                this->computeResultsPerSample( sample, ploidy, readRange, variants, mergedHaplotypes,
-                                               perSampleGenotypes, calledGenotypes[sampleIndex],
-                                               genotypeMetadataPerSample[sampleIndex],
-                                               genotypeLikelihoodsAllSamples[sampleIndex], totalHaplotypeFrequencies,
-                                               variantAnnotationPerSample[sampleIndex] );
+                this->computeResultsPerSample(
+                    sample, ploidy, readRange, variants, mergedHaplotypes, perSampleGenotypes,
+                    calledGenotypes[sampleIndex], genotypeMetadataPerSample[sampleIndex],
+                    variantAnnotationPerSample[sampleIndex], variantQualitiesTotal[sampleIndex],
+                    reweightedVariantQualities[sampleIndex] );
             }
 
-            const double haplotypeFrequencySum =
-                std::accumulate( totalHaplotypeFrequencies.cbegin(), totalHaplotypeFrequencies.cend(), 0.0 );
+            // compute and annotate variant qualities accumulated over all samples
+            const auto variantQualities = VariantQualityCalculator( m_samples, variants, reweightedVariantQualities,
+                                                                    variantQualitiesTotal ).getQualities();
 
-            for ( auto && frequency : totalHaplotypeFrequencies )
-            {
-                frequency /= haplotypeFrequencySum;
-            }
-
-            const auto variantQualities =
-                VariantQualityCalculator( totalHaplotypeFrequencies, genotypeLikelihoodsAllSamples, readRangesPerSample,
-                                          m_samples, variants, mergedHaplotypes, perSampleGenotypes ).getQualities();
-
+            // compute and annotate variant qualities
             return ModelResults( calledGenotypes, genotypeMetadataPerSample, variantQualities,
                                  variantAnnotationPerSample );
         }

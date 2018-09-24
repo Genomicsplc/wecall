@@ -27,7 +27,7 @@ namespace variant
         for ( const auto & readRangePair : m_reads )
         {
             const auto haplotypeLikelihoods = caller::computeHaplotypeLikelihoods( haplotypes, readRangePair.second );
-            const auto haplotypeFrequencies = caller::computeHaplotypeFrequencies( haplotypeLikelihoods );
+            const auto haplotypeFrequencies = caller::computeHaplotypeFrequencies( haplotypeLikelihoods, {} );
 
             for ( std::size_t haplotypeIndex = 0; haplotypeIndex != haplotypes.size(); ++haplotypeIndex )
             {

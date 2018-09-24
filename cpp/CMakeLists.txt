@@ -255,6 +255,7 @@ set(UNITTEST_SOURCES
         test/unittest/caller/testAlignPhasing.cpp
         test/unittest/caller/testCallSet.cpp
         test/unittest/caller/testCandidateVariantBank.cpp
+        test/unittest/caller/testHaplotypeLikelihoods.cpp
         test/unittest/caller/testParams.cpp
         test/unittest/caller/testRegion.cpp
         test/unittest/caller/testRegionUtils.cpp

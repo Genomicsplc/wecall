@@ -34,6 +34,12 @@ namespace utils
         return theSum;
     }
 
+    template < typename MatrixRow, typename IndexSet >
+    double sumMatrixRowExcludingIndexSubset( const MatrixRow & matrixRow, const IndexSet & excludedIndices )
+    {
+        return sumMatrixRowOverAllIndices( matrixRow ) - sumMatrixRowOverIndexSubset( matrixRow, excludedIndices );
+    }
+
     void smoothLowOutliers( utils::matrix_t & matrix_t, const double maxDifference );
 
 }  // namespace utils

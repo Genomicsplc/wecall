@@ -41,6 +41,16 @@ namespace caller
             const variant::GenotypeVector & genotypes,
             const std::vector< double > & genotypeLikelihoods );
 
+        double computeReweightedVariantQuality( const variant::varPtr_t variant,
+                                                const variant::GenotypeVector & genotypes,
+                                                const std::vector< double > genotypeLikelihoods,
+                                                const variant::HaplotypeVector & mergedHaplotypes,
+                                                const utils::matrix_t haplotypeLikelihoods );
+
+        double computeTotalVariantQuality( const variant::GenotypeVector & genotypes,
+                                           const std::vector< double > genotypeLikelihoods,
+                                           std::vector< double > haplotypeFrequencies );
+
         void annotate( Call & call,
                        const std::size_t varIndex,
                        const std::vector< std::vector< caller::model::VariantMetadata > > & variantAnnotationPerSample,

@@ -84,6 +84,12 @@ namespace caller
             const std::vector< std::vector< VariantMetadata > > m_variantMetadata;
         };
 
+        struct VariantQualities
+        {
+            double sumLogProbTotal = constants::unknownValue;
+            double sumLogProbNoVariant = constants::unknownValue;
+        };
+
         class Model
         {
         public:
@@ -105,9 +111,9 @@ namespace caller
                                           std::map< std::string, variant::GenotypeVector > & perSampleGenotypes,
                                           variant::genotypePtr_t & calledGenotype,
                                           GenotypeMetadata & genotypeMetadata,
-                                          std::vector< double > & genotypeLikelihoods,
-                                          std::vector< double > & totalHaplotypeFrequencies,
-                                          std::vector< VariantMetadata > & variantAnnotation ) const;
+                                          std::vector< VariantMetadata > & variantAnnotation,
+                                          double & variantQualitiesTotal,
+                                          std::vector< double > & reweightedVariantQualities ) const;
 
             const int m_badReadsWindowSize;
             const std::size_t m_maxHaplotypesPerCluster;

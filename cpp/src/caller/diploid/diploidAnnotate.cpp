@@ -1,5 +1,7 @@
 // All content Copyright (C) 2018 Genomics plc
 #include <algorithm>
+#include <utils/indexedProduct.hpp>
+#include <caller/haplotypeLikelihoods.hpp>
 #include "caller/metadata.hpp"
 
 #include "caller/diploid/diploidAnnotate.hpp"
@@ -21,7 +23,7 @@ namespace caller
         {
             const std::size_t nReads = probReadsGivenHaplotypes.size1();
 
-            // compute denominator
+            // compute denominator, i.e. sum_h p(r|h)
             std::vector< double > sumOfReadLikelihoodsOverAllHaplotypes( nReads );
             for ( std::size_t readIndex = 0; readIndex < nReads; ++readIndex )
             {
@@ -242,6 +244,60 @@ namespace caller
             std::transform( totalLikelihood.begin(), totalLikelihood.end(), retVals.begin(), toPhred );
 
             return retVals;
+        }
+
+        double computeReweightedVariantQuality( const variant::varPtr_t variant,
+                                                const variant::GenotypeVector & genotypes,
+                                                const std::vector< double > genotypeLikelihoods,
+                                                const variant::HaplotypeVector & mergedHaplotypes,
+                                                const utils::matrix_t haplotypeLikelihoods )
+        {
+            const auto hapIndexesThisVariant = mergedHaplotypes.getHaplotypeIndicesForVariant( variant );
+            const auto reweightedFrequenciesWithoutVariant =
+                computeHaplotypeFrequencies( haplotypeLikelihoods, hapIndexesThisVariant );
+
+            const auto nGenotypes = genotypes.size();
+
+            auto sumProbNoVariantThisIndividual = 0.0;
+
+            for ( std::size_t genotypeIndex = 0; genotypeIndex < nGenotypes; ++genotypeIndex )
+            {
+                const auto hapIndicies = genotypes.getHaplotypeIndices( genotypeIndex );
+
+                const auto adjustedGenotypeLikelihood =
+                    genotypeLikelihoods[genotypeIndex] * genotypes[genotypeIndex]->nCombinationsThisGenotype();
+
+                sumProbNoVariantThisIndividual +=
+                    utils::indexedProduct( reweightedFrequenciesWithoutVariant, hapIndicies.cbegin(),
+                                           hapIndicies.cend(), adjustedGenotypeLikelihood );
+            }
+
+            const auto logOfMinDouble = log( std::numeric_limits< double >::min() );
+
+            return ( sumProbNoVariantThisIndividual > 0 ) ? log( sumProbNoVariantThisIndividual ) : logOfMinDouble;
+        }
+
+        double computeTotalVariantQuality( const variant::GenotypeVector & genotypes,
+                                           const std::vector< double > genotypeLikelihoods,
+                                           std::vector< double > haplotypeFrequencies )
+        {
+            const auto nGenotypes = genotypes.size();
+
+            auto sumProbTotalThisIndividual = 0.0;
+
+            for ( std::size_t genotypeIndex = 0; genotypeIndex < nGenotypes; ++genotypeIndex )
+            {
+                const auto hapIndicies = genotypes.getHaplotypeIndices( genotypeIndex );
+
+                const auto adjustedGenotypeLikelihood =
+                    genotypeLikelihoods[genotypeIndex] * genotypes[genotypeIndex]->nCombinationsThisGenotype();
+
+                sumProbTotalThisIndividual += utils::indexedProduct( haplotypeFrequencies, hapIndicies.cbegin(),
+                                                                     hapIndicies.cend(), adjustedGenotypeLikelihood );
+            }
+
+            const auto logOfMinDouble = log( std::numeric_limits< double >::min() );
+            return ( sumProbTotalThisIndividual > 0 ) ? log( sumProbTotalThisIndividual ) : logOfMinDouble;
         }
 
         template < typename T >

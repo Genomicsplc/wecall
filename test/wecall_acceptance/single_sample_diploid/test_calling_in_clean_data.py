@@ -164,18 +164,27 @@ class TestCallingCombinationsOfVariants(AsciiWecallRunnerTest):
         )
 
     def test_calls_snps_on_both_edges_when_gap_at_least5_low_coverage(self):
-        self.calls_variants_with_genotype(
-            "ACGCCCCCTGCAAAAAAAAAAAAAAAAAAA",
-            ["G.......................      ",
-             "G.......................      ",
-             "G.............................",
-             ".............................C",
-             ".............................C",
-             ".............................C"],
+        svc_driver = SVCDriver(self)
+        svc_driver\
+            .with_ref_sequence(
+                "ACGCCCCCTGCAAAAAAAAAAAAAAAAAAA", chrom="1")\
+            .with_read(
+                "G.......................      ", n_fwd=1, n_rev=1, chrom="1", sample_name="sample")\
+            .with_read(
+                "G.............................", n_fwd=1, n_rev=0, chrom="1", sample_name="sample")\
+            .with_read(
+                ".............................C", n_fwd=2, n_rev=2, chrom="1", sample_name="sample")
 
-            ["G.............................",
-             ".............................C"]  # Expected genotype
-        )
+        expect = svc_driver.call()
+        vcf_expect = expect.with_output_vcf()
+        vcf_expect\
+            .has_record("1", 0, "A", "G")\
+            .with_sample("sample")\
+            .has_genotype("1|0")
+        vcf_expect\
+            .has_record("1", 29, "A", "C")\
+            .with_sample("sample")\
+            .has_genotype("0|1")
 
     def test_calls_two_heterozygous_snps_at_same_pos(self):
         svc_driver = SVCDriver(self)

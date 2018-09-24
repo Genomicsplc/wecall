@@ -27,12 +27,12 @@ class TestAlignPhasingOfClusters(BaseTest):
 
         vcf_expect.has_record_for_variants(Variant(chrom, 7, "C", "A"))\
             .with_sample(sample_name)\
-            .has_exact_phased_genotypes("0|1")\
+            .has_exact_phased_genotypes("1|0")\
             .has_phase_set_id("7")
 
         vcf_expect.has_record_for_variants(Variant(chrom, 29, "G", "A"))\
             .with_sample(sample_name)\
-            .has_exact_phased_genotypes("1|0")\
+            .has_exact_phased_genotypes("0|1")\
             .has_phase_set_id("7")
 
     def test_phase_alignment_for_two_snps_in_different_clusters_on_different_strands_for_reference_calling(self):
@@ -57,12 +57,12 @@ class TestAlignPhasingOfClusters(BaseTest):
 
         vcf_expect.has_record_for_variants(Variant(chrom, 7, "C", "A"))\
             .with_sample(sample_name)\
-            .has_exact_phased_genotypes("0|1")\
+            .has_exact_phased_genotypes("1|0")\
             .has_phase_set_id("7")
 
         vcf_expect.has_record_for_variants(Variant(chrom, 29, "G", "A"))\
             .with_sample(sample_name)\
-            .has_exact_phased_genotypes("1|0")\
+            .has_exact_phased_genotypes("0|1")\
             .has_phase_set_id("7")
 
     def test_phase_alignment_for_two_snps_in_different_clusters_on_same_strands(self):
@@ -86,12 +86,12 @@ class TestAlignPhasingOfClusters(BaseTest):
 
         vcf_expect.has_record_for_variants(Variant(chrom, 7, "C", "A"))\
             .with_sample(sample_name)\
-            .has_exact_phased_genotypes("0|1")\
+            .has_exact_phased_genotypes("1|0")\
             .has_phase_set_id("7")
 
         vcf_expect.has_record_for_variants(Variant(chrom, 29, "G", "A"))\
             .with_sample(sample_name)\
-            .has_exact_phased_genotypes("0|1")\
+            .has_exact_phased_genotypes("1|0")\
             .has_phase_set_id("7")
 
     def test_phase_not_aligns_for_hom_snp_in_first_cluster(self):
@@ -120,7 +120,7 @@ class TestAlignPhasingOfClusters(BaseTest):
 
         vcf_expect.has_record_for_variants(Variant(chrom, 29, "G", "A"))\
             .with_sample(sample_name)\
-            .has_exact_phased_genotypes("0|1")\
+            .has_exact_phased_genotypes("1|0")\
             .has_phase_set_id("28")
 
     def test_phase_aligns_for_hom_snp_in_second_cluster(self):
@@ -144,7 +144,7 @@ class TestAlignPhasingOfClusters(BaseTest):
 
         vcf_expect.has_record_for_variants(Variant(chrom, 7, "C", "A"))\
             .with_sample(sample_name)\
-            .has_exact_phased_genotypes("0|1")\
+            .has_exact_phased_genotypes("1|0")\
             .has_phase_set_id("7")
 
         vcf_expect.has_record_for_variants(Variant(chrom, 29, "G", "A"))\
@@ -250,22 +250,22 @@ class TestAlignPhasingOfClusters(BaseTest):
         # phase set id is start of cluster
         vcf_expect.has_record_for_variants(Variant(chrom, 11, "G", "A"))\
             .with_sample(sample_name_1)\
-            .has_exact_phased_genotypes("0|1")\
+            .has_exact_phased_genotypes("1|0")\
             .has_phase_set_id("6")
 
         vcf_expect.has_record_for_variants(Variant(chrom, 27, "G", "A"))\
             .with_sample(sample_name_1)\
-            .has_exact_phased_genotypes("1|0")\
+            .has_exact_phased_genotypes("0|1")\
             .has_phase_set_id("6")
 
         vcf_expect.has_record_for_variants(Variant(chrom, 11, "G", "A"))\
             .with_sample(sample_name_2)\
-            .has_exact_phased_genotypes("0|1")\
+            .has_exact_phased_genotypes("1|0")\
             .has_phase_set_id("6")
 
         vcf_expect.has_record_for_variants(Variant(chrom, 27, "G", "A"))\
             .with_sample(sample_name_2)\
-            .has_exact_phased_genotypes("1|0")\
+            .has_exact_phased_genotypes("0|1")\
             .has_phase_set_id("6")
 
     def test_phase_alignment_for_het_variants_for_three_clusters(self):
@@ -290,17 +290,17 @@ class TestAlignPhasingOfClusters(BaseTest):
 
         vcf_expect.has_record_for_variants(Variant(chrom, 4, "C", "A"))\
             .with_sample(sample_name)\
-            .has_exact_phased_genotypes("0|1")\
+            .has_exact_phased_genotypes("1|0")\
             .has_phase_set_id("4")
 
         vcf_expect.has_record_for_variants(Variant(chrom, 18, "T", "C"))\
             .with_sample(sample_name)\
-            .has_exact_phased_genotypes("0|1")\
+            .has_exact_phased_genotypes("1|0")\
             .has_phase_set_id("4")
 
         vcf_expect.has_record_for_variants(Variant(chrom, 34, "A", "T"))\
             .with_sample(sample_name)\
-            .has_exact_phased_genotypes("1|0")\
+            .has_exact_phased_genotypes("0|1")\
             .has_phase_set_id("4")
 
     def test_phase_alignment_for_het_variants_for_three_clusters_when_middle_cluster_is_homozygous(self):
@@ -325,7 +325,7 @@ class TestAlignPhasingOfClusters(BaseTest):
 
         vcf_expect.has_record_for_variants(Variant(chrom, 4, "C", "A"))\
             .with_sample(sample_name)\
-            .has_exact_phased_genotypes("0|1")\
+            .has_exact_phased_genotypes("1|0")\
             .has_phase_set_id("4")
 
         vcf_expect.has_record_for_variants(Variant(chrom, 18, "T", "C"))\
@@ -365,12 +365,12 @@ class TestAlignPhasingOfClusters(BaseTest):
 
         vcf_expect.has_record_for_variants(Variant(chrom, 18, "T", "C"))\
             .with_sample(sample_name)\
-            .has_exact_phased_genotypes("0|1")\
+            .has_exact_phased_genotypes("1|0")\
             .has_phase_set_id("13")
 
         vcf_expect.has_record_for_variants(Variant(chrom, 34, "A", "T"))\
             .with_sample(sample_name)\
-            .has_exact_phased_genotypes("0|1")\
+            .has_exact_phased_genotypes("1|0")\
             .has_phase_set_id("13")
 
     def test_phase_alignment_for_het_variants_for_two_samples_with_missing_read_support(self):
@@ -400,17 +400,17 @@ class TestAlignPhasingOfClusters(BaseTest):
 
         vcf_expect.has_record_for_variants(Variant(chrom, 11, "G", "A"))\
             .with_sample(sample_name_1)\
-            .has_exact_phased_genotypes("0|1")\
+            .has_exact_phased_genotypes("1|0")\
             .has_phase_set_id("6")
 
         vcf_expect.has_record_for_variants(Variant(chrom, 27, "G", "A"))\
             .with_sample(sample_name_1)\
-            .has_exact_phased_genotypes("1|0")\
+            .has_exact_phased_genotypes("0|1")\
             .has_phase_set_id("6")
 
         vcf_expect.has_record_for_variants(Variant(chrom, 11, "G", "A"))\
             .with_sample(sample_name_2)\
-            .has_exact_phased_genotypes("0|1")\
+            .has_exact_phased_genotypes("1|0")\
             .has_phase_set_id("6")
 
         vcf_expect.has_record_for_variants(Variant(chrom, 27, "G", "A"))\

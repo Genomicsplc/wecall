@@ -21,7 +21,11 @@ namespace caller
     utils::matrix_t computeHaplotypeLikelihoods( const variant::HaplotypeVector & haplotypes,
                                                  const io::RegionsReads & readRange );
 
-    std::vector< double > computeHaplotypeFrequencies( const utils::matrix_t & haplotypeLikelihoods );
+    // Function will compute the haplotype frequency f(h) = sum_r ( p(r|h)/sum_h p(r|h) ).
+    // There is a possibility to specify haplotype indices h which will be excluded from this calculation
+    // (this is used to calculate reweighted haplotype frequencies without the selected variant).
+    std::vector< double > computeHaplotypeFrequencies( const utils::matrix_t & haplotypeLikelihoods,
+                                                       const std::set< std::size_t > & excludedHaplotypeIndices );
 }
 }
 

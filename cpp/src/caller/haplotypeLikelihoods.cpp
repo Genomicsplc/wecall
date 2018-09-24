@@ -8,14 +8,29 @@ namespace echidna
 {
 namespace caller
 {
-    std::vector< double > computeHaplotypeFrequencies( const utils::matrix_t & haplotypeLikelihoods )
+    std::vector< double > computeHaplotypeFrequencies( const utils::matrix_t & haplotypeLikelihoods,
+                                                       const std::set< std::size_t > & excludedHaplotypeIndices )
     {
-        std::vector< double > haplotypeFrequencies( haplotypeLikelihoods.size2(), 0.0 );
-        for ( std::size_t haplotypeIndex = 0; haplotypeIndex != haplotypeLikelihoods.size2(); ++haplotypeIndex )
+        std::vector< double > haplotypeSumForReads( haplotypeLikelihoods.size1(), 0.0 );
+        for ( std::size_t readIndex = 0; readIndex < haplotypeLikelihoods.size1(); ++readIndex )
         {
-            const auto column = utils::matrixColumn_t( haplotypeLikelihoods, haplotypeIndex );
-            const auto hapFreq = std::accumulate( column.begin(), column.end(), 0.0 );
-            haplotypeFrequencies[haplotypeIndex] = hapFreq;
+            const auto row = utils::matrixRow_t( haplotypeLikelihoods, readIndex );
+            haplotypeSumForReads[readIndex] = utils::sumMatrixRowExcludingIndexSubset( row, excludedHaplotypeIndices );
+        }
+
+        std::vector< double > haplotypeFrequencies( haplotypeLikelihoods.size2(), 0.0 );
+        for ( std::size_t haplotypeIndex = 0; haplotypeIndex < haplotypeLikelihoods.size2(); ++haplotypeIndex )
+        {
+            double frequency = 0;
+            // result is non-zero only for haplotypeIndices not in the excluded list
+            if ( excludedHaplotypeIndices.find( haplotypeIndex ) == excludedHaplotypeIndices.end() )
+            {
+                for ( std::size_t readIndex = 0; readIndex < haplotypeLikelihoods.size1(); ++readIndex )
+                {
+                    frequency += haplotypeLikelihoods( readIndex, haplotypeIndex ) / haplotypeSumForReads[readIndex];
+                }
+            }
+            haplotypeFrequencies[haplotypeIndex] = frequency;
         }
         return haplotypeFrequencies;
     }

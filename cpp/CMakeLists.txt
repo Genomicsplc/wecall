@@ -88,6 +88,8 @@ set(WECALL_SOURCES
         src/caller/job.hpp
         src/caller/jobReduce.cpp
         src/caller/jobReduce.hpp
+        src/caller/mergeLargeVariantCalls.cpp
+        src/caller/mergeLargeVariantCalls.hpp
         src/caller/metadata.hpp
         src/caller/params.cpp
         src/caller/params.hpp
@@ -256,6 +258,7 @@ set(UNITTEST_SOURCES
         test/unittest/caller/testCallSet.cpp
         test/unittest/caller/testCandidateVariantBank.cpp
         test/unittest/caller/testHaplotypeLikelihoods.cpp
+        test/unittest/caller/testMergeLargeVariantCalls.cpp
         test/unittest/caller/testParams.cpp
         test/unittest/caller/testRegion.cpp
         test/unittest/caller/testRegionUtils.cpp

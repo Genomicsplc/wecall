@@ -150,9 +150,9 @@ namespace caller
         // (2) run model and determine preferred genotype
         // (3) re-annotate the phasing depending on preferred genotype
 
+        // do not try to align if first cluster is hom and second het
         const bool cluster1Hom = isHomozygousCluster( callsPrevCluster, sampleIndex, ploidy );
         const bool cluster2Hom = isHomozygousCluster( callsCurrentCluster, sampleIndex, ploidy );
-        // do not try to align if first cluster is hom and second het
         if ( cluster1Hom and not cluster2Hom )
         {
             return;
@@ -234,6 +234,15 @@ namespace caller
     {
         // do not try to align if one of the clusters does not contain variants
         if ( callsCurrentCluster.empty() or callsPrevCluster.empty() )
+        {
+            return;
+        }
+
+        // weCall cannot align phasing if region is too big
+        const auto maxSeqLen = 0x1u << 2 * constants::needlemanWunschPadding;  // maximum sequence length in hash mapper
+        const auto length =
+            callsCurrentCluster[callsCurrentCluster.size() - 1].interval.end() - callsPrevCluster[0].interval.start();
+        if ( length > maxSeqLen )
         {
             return;
         }

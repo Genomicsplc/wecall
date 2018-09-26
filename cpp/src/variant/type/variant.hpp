@@ -93,6 +93,10 @@ namespace variant
         {
             return this->sequenceLength() == this->sequenceLengthInRef() and this->sequenceLength() > 1;
         }
+        bool isLargeVariant( const int largeVariantThreshold ) const
+        {
+            return this->sequenceLengthInRef() >= largeVariantThreshold;
+        }
 
         const BasePairSequence & sequence() const { return m_altSequence; }
         ReferenceSequence refSequence() const { return m_refSequence->subseq( m_region ); }

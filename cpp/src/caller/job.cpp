@@ -221,7 +221,7 @@ namespace caller
 
         auto variants = varFilter.getSortedFilteredVariants( blockRegion, varContainer );
 
-        if ( m_privateCallingParams.m_turnOnLargeVariantCalls )
+        if ( m_callingParams.m_turnOnLargeVariantCalls )
         {
             const auto breakpoints = varContainer.getBreakpoints();
 
@@ -425,7 +425,7 @@ namespace caller
             auto & currentPloidy = reducedPloidies[sampleIndex];
             for ( const auto & call : calls )
             {
-                if ( call.var->region().contains( thisRegion ) )
+                if ( not call.isRefCall() and call.var->region().contains( thisRegion ) )
                 {
                     const auto & genotypes = call.samples[sampleIndex].genotypeCalls;
                     for ( const auto & genotype : genotypes )
@@ -449,20 +449,20 @@ namespace caller
     {
         variant::setDefaultPriors( cluster.variants() );
 
-        bool hasLargeVariant = false;
-        if ( m_privateCallingParams.m_turnOnLargeVariantCalls )
-        {
-            const auto largeVariantThreshold = m_privateCallingParams.m_maxClusterDist * 2;
-            const auto isLargeVar = [largeVariantThreshold]( const varPtr_t & var )
-            {
-                return var->sequenceLengthInRef() >= largeVariantThreshold;
-            };
-            hasLargeVariant = std::any_of( cluster.variants().cbegin(), cluster.variants().cend(), isLargeVar );
-        }
-
         const auto bigClusterReads =
             readDataset->getRegionsReads( cluster.region(), m_filterParams.m_readMappingFilterQ );
         const auto allReads = readDataset->getAllReads( m_filterParams.m_readMappingFilterQ );
+
+        bool hasLargeVariant = false;
+        const auto largeVariantThreshold = m_privateCallingParams.m_largeVariantClusterThreshold;
+        if ( m_callingParams.m_turnOnLargeVariantCalls )
+        {
+            hasLargeVariant = std::any_of( cluster.variants().cbegin(), cluster.variants().cend(),
+                                           [largeVariantThreshold]( const varPtr_t & var )
+                                           {
+                                               return var->isLargeVariant( largeVariantThreshold );
+                                           } );
+        }
 
         if ( not hasLargeVariant )
         {
@@ -470,7 +470,6 @@ namespace caller
         }
         else
         {
-            // TODO fix ref calling for large variant caller: see Regeneron ticket 11
             const auto data = cluster.buildSubClusters( m_privateCallingParams.m_maxClusterDist );
             auto lvcCluster = std::get< 0 >( data );
             auto smallVariantClustersNotTouchingLargeVariants = std::get< 1 >( data );
@@ -486,17 +485,22 @@ namespace caller
             }
 
             const auto lvcReads = io::reduceRegionSet( bigClusterReads, lvcCluster.readRegions() );
-            const auto lvcCalls =
-                processCluster( lvcCluster, lvcReads, allReads, blockReferenceSequence, ploidyPerSample );
+            auto lvcCalls = processCluster( lvcCluster, lvcReads, allReads, blockReferenceSequence, ploidyPerSample );
 
             callVector_t allCalls = lvcCalls;
             for ( const auto & leftOverCluster : smallVariantClustersNotTouchingLargeVariants )
             {
                 const auto clusterReads = io::reduceRegionSet( bigClusterReads, leftOverCluster.readRegions() );
                 const auto thisAreasPloidy = getReducedPloidies( lvcCalls, ploidyPerSample, leftOverCluster.region() );
-                const auto leftOverCalls =
+                auto leftOverCalls =
                     processCluster( leftOverCluster, clusterReads, allReads, blockReferenceSequence, thisAreasPloidy );
-                allCalls.insert( allCalls.end(), leftOverCalls.begin(), leftOverCalls.end() );
+                const auto callMerger = lvcMerger();
+                auto leftOverCallsWithoutReference =
+                    callMerger.removeReferenceCalls( leftOverCalls, thisAreasPloidy, ploidyPerSample );
+                callMerger.mergeAndCorrectGenotypes( leftOverCallsWithoutReference, lvcCalls, thisAreasPloidy,
+                                                     ploidyPerSample );
+                allCalls.insert( allCalls.end(), leftOverCallsWithoutReference.begin(),
+                                 leftOverCallsWithoutReference.end() );
             }
 
             std::sort( allCalls.begin(), allCalls.end(), caller::CallComp() );

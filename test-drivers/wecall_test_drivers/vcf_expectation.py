@@ -74,6 +74,7 @@ class VCFExpectation(object):
             # is true!
             current_position = current_end
         self.__test_case.assertEqual(chrom_interval.end, current_position)
+        return self
 
     def has_record(self, chrom, pos, ref, alt):
         return self.has_record_for_variant(Variant(chrom, pos, ref, alt))

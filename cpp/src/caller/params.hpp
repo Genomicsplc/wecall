@@ -41,7 +41,7 @@ namespace caller
             const bool allowMNPCalls = false;
             const bool normalizeVariantCalls = false;
             const int minReadsToMakeCombinationClaim = 3;
-            const bool turnOnLargeVariantCalls = false;
+            const bool turnOnLargeVariantCalls = true;
 
             // -----------------------------------------------------------------------
             // Private Data Params
@@ -61,6 +61,7 @@ namespace caller
             const int maxBreakpointKmerSize = 70;
             const int maxClusterSize = 250;
             const int largeVariantSizeDefinition = 10;
+            const int largeVariantClusterThreshold = 2 * maxClusterDist;  // threshold for large variant cluster
             const int maxClusterVariantCombinations = 1024;
             const int maxClusterVariants = 30;
             const int regionPadding = maxClusterSize;  // Default to 2 * cluster distance.
@@ -466,6 +467,7 @@ namespace caller
                   m_maxClusterDist( getParam< int >( "maxClusterDist", optValues ) ),
                   m_maxClusterSize( getParam< int >( "maxClusterSize", optValues ) ),
                   m_largeVariantSizeDefinition( getParam< int >( "largeVariantSizeDefinition", optValues ) ),
+                  m_largeVariantClusterThreshold( getParam< int >( "largeVariantClusterThreshold", optValues ) ),
                   m_maxClusterVariantCombinations( getParam< int >( "maxClusterVariantCombinations", optValues ) ),
                   m_maxClusterVariants( getParam< int >( "maxClusterVariants", optValues ) ),
                   m_regionPadding( getParam< int >( "regionPadding", optValues ) ),
@@ -475,8 +477,7 @@ namespace caller
                   m_referenceCallQualityDeltaThreshold(
                       getParam< double >( "referenceCallQualityDeltaThreshold", optValues ) ),
                   m_normalizeVariantCalls( getParam< bool >( "normalizeVariantCalls", optValues ) ),
-                  m_minReadsToMakeCombinationClaim( getParam< int >( "minReadsToMakeCombinationClaim", optValues ) ),
-                  m_turnOnLargeVariantCalls( getParam< bool >( "turnOnLargeVariantCalls", optValues ) )
+                  m_minReadsToMakeCombinationClaim( getParam< int >( "minReadsToMakeCombinationClaim", optValues ) )
             {
                 std::vector< std::string > unrecognisedFilterIDs = {};
                 for ( const auto & varFilterID : m_varFilterIDs )
@@ -501,6 +502,7 @@ namespace caller
             int m_maxClusterDist;
             int m_maxClusterSize;
             int m_largeVariantSizeDefinition;
+            int m_largeVariantClusterThreshold;
             int m_maxClusterVariantCombinations;
             int m_maxClusterVariants;
             int m_regionPadding;
@@ -510,7 +512,6 @@ namespace caller
             double m_referenceCallQualityDeltaThreshold;
             bool m_normalizeVariantCalls;
             int m_minReadsToMakeCombinationClaim;
-            bool m_turnOnLargeVariantCalls;
         };
 
         struct Calling
@@ -527,7 +528,8 @@ namespace caller
                   m_minIndelQOverDepth( getParam< double >( "minIndelQOverDepth", optValues ) ),
                   m_minCallQual( getParam< phred_t >( "minCallQual", optValues ) ),
                   m_badReadsWindowSize( getParam< int >( "badReadsWindowSize", optValues, 0, 100 ) ),
-                  m_minBadReadsScore( getParam< phred_t >( "minBadReadsScore", optValues, 0. ) )
+                  m_minBadReadsScore( getParam< phred_t >( "minBadReadsScore", optValues, 0 ) ),
+                  m_turnOnLargeVariantCalls( getParam< bool >( "turnOnLargeVariantCalls", optValues ) )
             {
             }
 
@@ -545,6 +547,7 @@ namespace caller
             phred_t m_minCallQual;
             int m_badReadsWindowSize;
             phred_t m_minBadReadsScore;
+            bool m_turnOnLargeVariantCalls;
         };
     }
 }

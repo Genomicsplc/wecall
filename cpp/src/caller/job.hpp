@@ -7,6 +7,7 @@
 #include "caller/region.hpp"
 #include "caller/params.hpp"
 #include "caller/candidateVariantBank.hpp"
+#include "caller/mergeLargeVariantCalls.hpp"
 #include "io/readDataReader.hpp"
 #include "io/readRange.hpp"
 #include "io/fastaFile.hpp"

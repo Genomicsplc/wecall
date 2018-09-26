@@ -98,7 +98,7 @@ namespace variant
         variantSet_t m_localVariants;
 
         const std::size_t m_minStartSize = 3;
-        const std::size_t m_minSupport = 2;
+        const std::size_t m_minSupport = 5;
     };
 
     typedef std::shared_ptr< BreakpointLocus > breakpointLocusPtr_t;

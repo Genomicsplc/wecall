@@ -430,6 +430,7 @@ BOOST_AUTO_TEST_CASE( testBobbleWithEndBreakpointBeforeStartBreakpointAt6645839 
 
 BOOST_AUTO_TEST_CASE( testFindsDeletionAt9696769 )
 {
+    // 1000G known structural variant: DEL_pindel_49611
     const auto contig = "20";
     const auto referenceSequence = std::make_shared< ReferenceSequence >(
         Region( contig, 9696620, 9696960 ),
@@ -544,6 +545,7 @@ BOOST_AUTO_TEST_CASE( testShouldNotFindVariantsAsBelievedToBeGenuineBreakpoints 
 
 BOOST_AUTO_TEST_CASE( testShouldFind1000GTrueDeletionAt6150945 )
 {
+    // 1000G known structural variant: DEL_pindel_49512
     const auto referenceSequence = std::make_shared< ReferenceSequence >(
         Region( "20", 6150790, 6151350 ),
         "ATCTTTCTGAGCTGCTGGGATAGTACATCTCATTCATTGTTGGAGTTTCCTGTCTGCCCCCATCCCAAGTCAGGTATAAGCCTCAGAGCAGACATTTGCAGAGAATCCCA"
@@ -584,6 +586,7 @@ BOOST_AUTO_TEST_CASE( testShouldFind1000GTrueDeletionAt6150945 )
 
 BOOST_AUTO_TEST_CASE( testShouldFind1000GTrueDeletionAt19170061 )
 {
+    // 1000G known structural variant: DEL_pindel_49995
     const auto referenceSequence = std::make_shared< ReferenceSequence >(
         Region( "20", 19170000, 19170450 ),
         "AACAAGAAATATATCTCCATTTATTTATACTTCTTTGACCTTTTCAGAGTTTTGTAGTTTTCCTCATAAATTTCTTTTTTTTTTTTTTTTTTTTTTGAGACGGAGTCTCG"
@@ -623,6 +626,7 @@ BOOST_AUTO_TEST_CASE( testShouldFind1000GTrueDeletionAt19170061 )
 
 BOOST_AUTO_TEST_CASE( testShouldFindDeletionAt38337632 )
 {
+    // 1000G known structural variant: DEL_pindel_50373
     const auto contig = "20";
     const auto referenceSequence = std::make_shared< ReferenceSequence >(
         Region( contig, 38337490, 38337930 ),
@@ -665,6 +669,7 @@ BOOST_AUTO_TEST_CASE( testShouldFindDeletionAt38337632 )
 
 BOOST_AUTO_TEST_CASE( testShouldFindDeletionAt48543735 )
 {
+    // 1000G known structural variant: DEL_pindel_50691
     const auto contig = "20";
     const auto referenceSequence = std::make_shared< ReferenceSequence >(
         Region( contig, 48543590, 48543900 ),
@@ -715,6 +720,7 @@ BOOST_AUTO_TEST_CASE( testShouldFindDeletionAt48543735 )
 
 BOOST_AUTO_TEST_CASE( testShouldFindDeletionAtChr22_50664005 )
 {
+    // 1000G known structural variant: DEL_pindel_52851
     const auto contig = "22";
     const auto referenceSequence = std::make_shared< ReferenceSequence >(
         Region( contig, 50663900, 50664150 ),
@@ -771,6 +777,7 @@ BOOST_AUTO_TEST_CASE( testShouldFindDeletionAtChr22_50664005 )
 
 BOOST_AUTO_TEST_CASE( testShouldFindDeletionAtChr1_165731209 )
 {
+    // 1000G known structural variant: DEL_pindel_1530
     const auto contig = "1";
     const auto referenceSequence = std::make_shared< ReferenceSequence >(
         Region( contig, 165730859, 165731849 ),

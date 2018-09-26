@@ -12,20 +12,45 @@ class TestCallingUsingSkippedSequenceBasic(BaseTest):
         self.scv.with_verbosity(6)
 
     def test_should_call_variants_minimal_example(self):
-        self.scv.with_verbosity(6)
         self.scv.with_ref_sequence(
             "ATAAAAAATATGTACATAAAAATCAAAATCAAAGAAAGAACATGCAGTAGCTGAAAAAAAATATCTTCTCACCCTAAAACTGCTCTATGTTTTAAACTATTATTGCTAGGATCACTAGGACTTAGTAAAAAGCAATGCCTTACACAGGCAAC",  # noqa
             pos_from=10
         ).with_read(
             "                                                        ..............***********........                                                               ",  # noqa
-            cigar_string="14M8S", read_mate_start=91, n_rev=2, n_fwd=2, read_start=66
+            cigar_string="14M8S", read_mate_start=91, n_rev=10, n_fwd=10, read_start=66
         ).with_read(
             "                                                               .......***********..............                                                         ",  # noqa
-            cigar_string="7S14M", read_start=91, n_rev=2, n_fwd=2, read_mate_start=66
+            cigar_string="7S14M", read_start=91, n_rev=10, n_fwd=10, read_mate_start=66
         )
         expect = self.scv.call()
         expect.with_output_vcf() \
             .has_record_for_variant(Variant("1", 79, 'CACCCTAAAACT', 'C'))
+
+    def test_should_call_large_variant_for_two_samples(self):
+        self.scv.with_ref_sequence(
+            "ATAAAAAATATGTACATAAAAATCAAAATCAAAGAAAGAACATGCAGTAGCTGAAAAAAAATATCTTCTCACCCTAAAACTGCTCTATGTTTTAAACTATTATTGCTAGGATCACTAGGACTTAGTAAAAAGCAATGCCTTACACAGGCAAC",  # noqa
+            pos_from=10
+        ).with_read(
+            "                                                        ..............***********........                                                               ",  # noqa
+            cigar_string="14M8S", read_mate_start=91, n_rev=10, n_fwd=10, read_start=66, sample_name='sample1'
+        ).with_read(
+            "                                                               .......***********..............                                                         ",  # noqa
+            cigar_string="7S14M", read_start=91, n_rev=10, n_fwd=10, read_mate_start=66, sample_name='sample2'
+        ).with_read(
+            "                                                        ...............................                                                                 ",  # noqa
+            cigar_string="31M", n_rev=10, n_fwd=10, read_start=66, sample_name='sample1'
+        ).with_read(
+            "                                                               ......................G.......                                                           ",  # noqa
+            cigar_string="30M", read_start=73, n_rev=20, n_fwd=20, sample_name='sample1'
+        )
+
+        expect = self.scv.call().with_output_vcf()
+
+        expect.has_record_for_variant(Variant("1", 79, 'CACCCTAAAACT', 'C')).with_sample('sample1').has_genotype('1|0')
+        expect.has_record_for_variant(Variant("1", 95, 'T', 'G')).with_sample('sample1').has_genotype('0|1')
+
+        expect.has_record_for_variant(Variant("1", 79, 'CACCCTAAAACT', 'C')).with_sample('sample2').has_genotype('1|1')
+        expect.has_record_for_variant(Variant("1", 95, 'T', 'G')).with_sample('sample2').has_genotype('0|0')
 
     def test_should_call_variants_simple_example(self):
         l_ref_padding = "CTTAAAGTGTAATAAAAAATATGTACATAAAAATCAAAATCAAAGAAAGAACATGCAGTAGCTGAAAAAAAATATCTTCTC"
@@ -72,16 +97,16 @@ class TestCallingUsingSkippedSequenceBasic(BaseTest):
         self.scv.with_ref_sequence(
             reference_sequence, chrom=chrom, pos_from=ref_start
         ).with_read(
-            alt_read_1, n_fwd=2, n_rev=2, chrom=chrom, sample_name=sample_name, read_start=ref_start,
+            alt_read_1, n_fwd=10, n_rev=10, chrom=chrom, sample_name=sample_name, read_start=ref_start,
             cigar_string='{}M{}S'.format(len(l_ref_padding) + len(overlap), seq_buffer), read_mate_start=event_end
         ).with_read(
-            alt_read_2, n_fwd=2, n_rev=2, chrom=chrom, sample_name=sample_name, read_start=event_end,
+            alt_read_2, n_fwd=10, n_rev=10, chrom=chrom, sample_name=sample_name, read_start=event_end,
             cigar_string='{}S{}M'.format(seq_buffer, len(overlap) + len(r_ref_padding)), read_mate_start=ref_start
         ).with_read(
-            ref_read_1, n_fwd=2, n_rev=2, chrom=chrom, sample_name=sample_name, read_start=ref_start,
+            ref_read_1, n_fwd=10, n_rev=10, chrom=chrom, sample_name=sample_name, read_start=ref_start,
             cigar_string='{}M'.format(len(l_ref_padding) + len(overlap) + seq_buffer), read_mate_start=event_end
         ).with_read(
-            ref_read_2, n_fwd=2, n_rev=2, chrom=chrom, sample_name=sample_name, read_start=event_end - seq_buffer,
+            ref_read_2, n_fwd=10, n_rev=10, chrom=chrom, sample_name=sample_name, read_start=event_end - seq_buffer,
             cigar_string='{}M'.format(seq_buffer + len(overlap) + len(r_ref_padding)), read_mate_start=ref_start)
 
         expect = self.scv.call()

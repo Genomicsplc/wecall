@@ -343,6 +343,7 @@ namespace caller
                 ("maxClusterDist", value<int>()->default_value(defaults::maxClusterDist), "Variants closer together than this must belong to the same cluster only if cluster size is small or cluster variants small.")
                 ("maxClusterSize", value<int>()->default_value(defaults::maxClusterSize), "Upper limit on the size (in the reference) of a cluster")
                 ("largeVariantSizeDefinition", value<int>()->default_value(defaults::largeVariantSizeDefinition), "Variants with ref/alt longer than this are considered to be large.")
+                ("largeVariantClusterThreshold", value<int>()->default_value(defaults::largeVariantClusterThreshold), "A variant cluster is considered as a large variant cluster when it contains a variant which is longer than this threshold.")
                 ("maxClusterVariantCombinations", value<int>()->default_value(defaults::maxClusterVariantCombinations), "Upper limit on the number of variants combinations merged into same cluster.")
                 ("maxClusterVariants", value<int>()->default_value(defaults::maxClusterVariants), "Upper limit on the number of variants merged into same cluster.")
                 ("regionPadding", value<int>()->default_value(defaults::regionPadding), "Internally pad regions by this amount whilst modelling.")
@@ -352,7 +353,6 @@ namespace caller
                 ("referenceCallQualityDeltaThreshold", value<double>()->default_value(defaults::referenceCallQualityDeltaThreshold), "Threshold of phred-scaled quality change to start new reference call block.")
                 ("normalizeVariantCalls", value<bool>()->default_value(defaults::normalizeVariantCalls), "Enable/Disable Variant representation normalization")
                 ("minReadsToMakeCombinationClaim", value<int>()->default_value(defaults::minReadsToMakeCombinationClaim), "Minimum number of reads to make combination claim")
-                ("turnOnLargeVariantCalls", value<bool>()->default_value(defaults::turnOnLargeVariantCalls), "Set to turn on Large variant calling")
                 ;
 
             return options;
@@ -386,6 +386,7 @@ namespace caller
                 ("minCallQual", value<phred_t>()->default_value(defaults::minCallQual), ("minimum phred-scaled quality for (INFO::" + vcf::info::PP_key + "), below which variants will be filtered").c_str())
                 ("minBadReadsScore", value<phred_t >()->default_value(defaults::minBadReadsScore), ("minimum median of the min base qualities in bad reads window (INFO::" + vcf::info::BR_key + "), below which variants will be filtered").c_str())
                 ("badReadsWindowSize", value<int>()->default_value(defaults::badReadsWindowSize), "window size around variant in which poor base quality is considered")
+                ("turnOnLargeVariantCalls", value<bool>()->default_value(defaults::turnOnLargeVariantCalls), "Set to turn on Large variant calling")
                 ;
 
             return options;

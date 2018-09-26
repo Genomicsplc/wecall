@@ -103,9 +103,9 @@ BOOST_AUTO_TEST_CASE( testMmMin )
 
 BOOST_AUTO_TEST_CASE( testMmAndNot )
 {
-    const short_array8 a1( short(0xffff), 0x0000, short(0xff00), 1, 1, 0, 0, 0 );
-    const short_array8 a2( short(0xffff), short(0xffff), 0x00ff, 1, 0, 1, 0, 0 );
-    const short_array8 ex( 0x0000, short(0xffff), 0x00ff, 0, 0, 1, 0, 0 );
+    const short_array8 a1( short( 0xffff ), 0x0000, short( 0xff00 ), 1, 1, 0, 0, 0 );
+    const short_array8 a2( short( 0xffff ), short( 0xffff ), 0x00ff, 1, 0, 1, 0, 0 );
+    const short_array8 ex( 0x0000, short( 0xffff ), 0x00ff, 0, 0, 1, 0, 0 );
     const short_array8 an = andnot( a1, a2 );
     for ( auto i = 0; i < 8; i++ )
         BOOST_CHECK_EQUAL( an[i], ex[i] );
@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE( testMmAndNot )
 
 BOOST_AUTO_TEST_CASE( testMmCmpEq )
 {
-    const short f = short(0xffff);
+    const short f = short( 0xffff );
     const short_array8 a1( 01, 00, 01, f, 0x0000, 0, 0, 0 );
     const short_array8 a2( 01, 01, 00, f, 0x0000, 1, 0, 0 );
     const short_array8 ex( -1, 00, 00, f, f, 0, f, f );
@@ -126,9 +126,9 @@ BOOST_AUTO_TEST_CASE( testMmCmpEq )
 
 BOOST_AUTO_TEST_CASE( testMmPlusOperator )
 {
-    const short_array8 a1( 1, short(0xffff), short(0xff00), 0x0001, 0x0000, 0, -5, 3 );
-    const short_array8 a2( 2, short(0xffff), 0x00ff, 0x0001, 0x0000, 1, 5, -99 );
-    const short_array8 ex( 3, short( 0xffff + 0xffff ), short(0xffff), 0x2, 0x0, 0x0001, 0, -96 );
+    const short_array8 a1( 1, short( 0xffff ), short( 0xff00 ), 0x0001, 0x0000, 0, -5, 3 );
+    const short_array8 a2( 2, short( 0xffff ), 0x00ff, 0x0001, 0x0000, 1, 5, -99 );
+    const short_array8 ex( 3, short( 0xffff + 0xffff ), short( 0xffff ), 0x2, 0x0, 0x0001, 0, -96 );
     const short_array8 ac = a1 + a2;
     for ( auto i = 0; i < 8; i++ )
         BOOST_CHECK_EQUAL( ac[i], ex[i] );
@@ -136,9 +136,9 @@ BOOST_AUTO_TEST_CASE( testMmPlusOperator )
 
 BOOST_AUTO_TEST_CASE( testMmBitwiseAnd )
 {
-    const short_array8 a1( short(0xffff), 0x0000, short(0xff00), 0x0001, 0x0000, 0, 0, 3 );
-    const short_array8 a2( short(0xffff), short(0xffff), 0x00ff, 0x0001, 0x0000, 1, 0, 6 );
-    const short_array8 ex( short(0xffff), 0x0000, 0x0000, 0x0001, 0x0000, 0, 0, 2 );
+    const short_array8 a1( short( 0xffff ), 0x0000, short( 0xff00 ), 0x0001, 0x0000, 0, 0, 3 );
+    const short_array8 a2( short( 0xffff ), short( 0xffff ), 0x00ff, 0x0001, 0x0000, 1, 0, 6 );
+    const short_array8 ex( short( 0xffff ), 0x0000, 0x0000, 0x0001, 0x0000, 0, 0, 2 );
     const short_array8 ac = a1 & a2;
     for ( auto i = 0; i < 8; i++ )
         BOOST_CHECK_EQUAL( ac[i], ex[i] );
@@ -146,9 +146,9 @@ BOOST_AUTO_TEST_CASE( testMmBitwiseAnd )
 
 BOOST_AUTO_TEST_CASE( testMmBitwiseOr )
 {
-    const short_array8 a1( short(0xffff), 0x0000, short(0xff00), 0x0001, 0x0000, 0, 0, 3 );
-    const short_array8 a2( short(0xffff), short(0xffff), 0x00ff, 0x0001, 0x0000, 1, 0, 6 );
-    const short_array8 ex( short(0xffff), short(0xffff), short(0xffff), 0x0001, 0x0000, 1, 0, 7 );
+    const short_array8 a1( short( 0xffff ), 0x0000, short( 0xff00 ), 0x0001, 0x0000, 0, 0, 3 );
+    const short_array8 a2( short( 0xffff ), short( 0xffff ), 0x00ff, 0x0001, 0x0000, 1, 0, 6 );
+    const short_array8 ex( short( 0xffff ), short( 0xffff ), short( 0xffff ), 0x0001, 0x0000, 1, 0, 7 );
     const short_array8 ac = a1 | a2;
     for ( auto i = 0; i < 8; i++ )
         BOOST_CHECK_EQUAL( ac[i], ex[i] );
@@ -156,8 +156,8 @@ BOOST_AUTO_TEST_CASE( testMmBitwiseOr )
 
 BOOST_AUTO_TEST_CASE( testMmBitwiseShiftLeft )
 {
-    const short_array8 a1( short(0xffff), 0x0000, short(0xff00), 0x0001, 0x0000, 0, 0, 3 );
-    const short_array8 ex( short(0xfffc), 0x0000, short(0xfc00), 0x0004, 0x0000, 0, 0, 0xc );
+    const short_array8 a1( short( 0xffff ), 0x0000, short( 0xff00 ), 0x0001, 0x0000, 0, 0, 3 );
+    const short_array8 ex( short( 0xfffc ), 0x0000, short( 0xfc00 ), 0x0004, 0x0000, 0, 0, 0xc );
 
     const short_array8 ac = a1 << 2;
     for ( auto i = 0; i < 8; i++ )
@@ -166,7 +166,7 @@ BOOST_AUTO_TEST_CASE( testMmBitwiseShiftLeft )
 
 BOOST_AUTO_TEST_CASE( testMmBitwiseShiftRight )
 {
-    const short_array8 a1( short(0xffff), 0x0000, short(0xff00), 0x0001, 0x0000, 0, 0, 0x8 );
+    const short_array8 a1( short( 0xffff ), 0x0000, short( 0xff00 ), 0x0001, 0x0000, 0, 0, 0x8 );
     const short_array8 ex( 0x3fff, 0x0000, 0x3fc0, 0x0000, 0x0000, 0, 0, 0x2 );
 
     const short_array8 ac = a1 >> 2;

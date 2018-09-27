@@ -1,3 +1,4 @@
+// All content Copyright (C) 2018 Genomics plc
 #include "unittest/vcf/VCFTestUtils.hpp"
 
 #include "variant/type/variant.hpp"

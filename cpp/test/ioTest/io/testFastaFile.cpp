@@ -1,3 +1,4 @@
+// All content Copyright (C) 2018 Genomics plc
 #include "io/fastaFile.hpp"
 #include "caller/region.hpp"
 #include "ioFixture.hpp"

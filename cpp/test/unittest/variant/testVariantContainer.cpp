@@ -1,3 +1,4 @@
+// All content Copyright (C) 2018 Genomics plc
 #include "variant/variantContainer.hpp"
 #include "variant/type/variant.hpp"
 #include "alignment/cigar.hpp"

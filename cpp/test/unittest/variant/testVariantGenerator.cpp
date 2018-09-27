@@ -1,3 +1,4 @@
+// All content Copyright (C) 2018 Genomics plc
 #include "variant/variantGenerator.hpp"
 #include "variant/type/variant.hpp"
 #include "io/read.hpp"

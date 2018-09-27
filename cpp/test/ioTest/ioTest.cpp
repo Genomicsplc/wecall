@@ -1,3 +1,4 @@
+// All content Copyright (C) 2018 Genomics plc
 // test_main.cpp
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE SmallVariantCaller

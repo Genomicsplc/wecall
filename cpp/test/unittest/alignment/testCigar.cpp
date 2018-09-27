@@ -1,3 +1,4 @@
+// All content Copyright (C) 2018 Genomics plc
 #include "alignment/cigar.hpp"
 #include "samtools/bam.h"
 #include "alignment/cigarItems.hpp"

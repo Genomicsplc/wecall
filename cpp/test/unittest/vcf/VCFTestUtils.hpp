@@ -1,3 +1,4 @@
+// All content Copyright (C) 2018 Genomics plc
 #ifndef VCF_VCFTESTUTILS_HPP
 #define VCF_VCFTESTUTILS_HPP
 

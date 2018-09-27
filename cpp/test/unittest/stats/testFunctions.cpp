@@ -1,3 +1,4 @@
+// All content Copyright (C) 2018 Genomics plc
 #include "stats/functions.hpp"
 
 #define BOOST_TEST_DYN_LINK

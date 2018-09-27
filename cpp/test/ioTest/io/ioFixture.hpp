@@ -1,3 +1,4 @@
+// All content Copyright (C) 2018 Genomics plc
 #ifndef IO_FIXTURE_HPP
 #define IO_FIXTURE_HPP
 

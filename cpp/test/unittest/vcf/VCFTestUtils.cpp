@@ -1,3 +1,4 @@
+// All content Copyright (C) 2018 Genomics plc
 #include "VCFTestUtils.hpp"
 #include <boost/test/unit_test.hpp>
 #include <typeinfo>

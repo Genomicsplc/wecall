@@ -1,3 +1,4 @@
+// All content Copyright (C) 2018 Genomics plc
 #include "caller/region.hpp"
 #include "variant/variantContainer.hpp"
 #include "variant/variantFilter.hpp"

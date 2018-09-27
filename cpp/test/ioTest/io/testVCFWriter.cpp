@@ -1,3 +1,4 @@
+// All content Copyright (C) 2018 Genomics plc
 #include "io/vcfWriter.hpp"
 
 #define BOOST_TEST_DYN_LINK

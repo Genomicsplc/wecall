@@ -131,8 +131,8 @@ BOOST_FIXTURE_TEST_CASE( idFieldShouldBeWrittenCorrectlyForSNPs, echidna::test::
     echidna::caller::callVector_t calls = {call};
 
     writer.contig( "1" );
-    echidna::io::FastaFile file = echidna::io::FastaFile( refFilename );
-    writer.writeCallSet( file, calls );
+    refFiles.emplace_back( new echidna::io::FastaFile( refFilename ) );
+    writer.writeCallSet( *(refFiles.back()), calls );
 
     std::string s = readEntireFileIntoStdString( tempFilename );
     BOOST_CHECK( s.find( "1\t61\t.\tC\tA\t101\tPASS\tVC=22\tGT\t0/1" ) != s.size() );

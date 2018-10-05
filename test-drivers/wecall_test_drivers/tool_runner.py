@@ -81,13 +81,13 @@ def log_output(title, output):
 
 
 def log_bam_file(reference_filename, bam_filename, chrom=None):
-    command = ['samtools', 'tview', '-dT', bam_filename, reference_filename]
+    command = [os.path.join(os.environ['ECHIDNA_BIN'], "samtools"), 'tview', '-dT', bam_filename, reference_filename]
     if chrom is not None:
         print("Contig: {}".format(chrom))
         command.extend(["-p", chrom])
     log_output(bam_filename, subprocess.check_output(command))
 
-    command_2 = ['samtools', 'view', bam_filename]
+    command_2 = [os.path.join(os.environ['ECHIDNA_BIN'], "samtools"), 'view', bam_filename]
     if chrom is not None:
         print("Contig: {}".format(chrom))
     log_output(bam_filename, subprocess.check_output(command_2))

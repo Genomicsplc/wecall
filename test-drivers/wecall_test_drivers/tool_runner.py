@@ -1,7 +1,7 @@
 # All content Copyright (C) 2018 Genomics plc
 import logging
 import subprocess
-
+import os
 
 class ToolRunner(object):
 

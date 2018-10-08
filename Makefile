@@ -18,9 +18,6 @@ wecall: vendor
 	cp vendor/tabix/tabix $(BUILD)
 	cp vendor/tabix/bgzip $(BUILD)
 
-doc: wecall
-	scripts/make-docs.sh
-
 test-unit: vendor wecall
 	build/unittest
 	build/iotest
@@ -34,7 +31,7 @@ test-acceptance: wecall env-wecall
 	bash -c " source env-wecall/bin/activate && scripts/run-tests.sh test"
 
 
-install: vendor wecall doc
+install: vendor wecall
 	$(MAKE) -C build install
 
 clean:

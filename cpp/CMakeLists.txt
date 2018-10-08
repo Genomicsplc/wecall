@@ -436,7 +436,9 @@ add_custom_target(
 add_dependencies(weCall doc)
  
 install(TARGETS weCall RUNTIME DESTINATION "bin" LIBRARY DESTINATION "lib")
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/weCall-userguide.pdf DESTINATION "share/doc/wecall")
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/weCall-userguide.pdf 
+    DESTINATION "share/doc/wecall"
+    OPTIONAL)
 
 SET(CPACK_GENERATOR "DEB;RPM;TGZ")
 SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Genomics plc") 

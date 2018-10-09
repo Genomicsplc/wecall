@@ -34,6 +34,9 @@ test-acceptance: wecall env-wecall
 install: vendor wecall
 	$(MAKE) -C build install
 
+package: vendor wecall
+	$(MAKE) -C build package
+
 clean:
 	$(MAKE) -C vendor clean
 	-rm -rf build

@@ -1,5 +1,5 @@
 # GENOMICS plc - weCall
-[!(Build status)(https://travis-ci.org/Genomicsplc/wecall.svg?branch=master)](https://travis-ci.org/Genomicsplc/wecall)
+[![Build Status](https://travis-ci.org/Genomicsplc/wecall.svg?branch=master)](https://travis-ci.org/Genomicsplc/wecall)
 
 weCall is a **fast, accurate and simple** to use command line tool for **variant detection in Next Generation
 Sequencing (NGS) data**.

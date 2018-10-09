@@ -20,4 +20,4 @@ struct LoggingGlobalFixture
     }
 };
 
-BOOST_GLOBAL_FIXTURE( LoggingGlobalFixture )
+BOOST_GLOBAL_FIXTURE( LoggingGlobalFixture );

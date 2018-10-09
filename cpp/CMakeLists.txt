@@ -423,12 +423,12 @@ target_link_libraries(iotest ${BOOST_LIBRARIES} ${LIBS})
 add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/weCall-userguide.pdf" 
    COMMAND "scripts/make-docs.sh"
    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/.."
+   DEPENDS weCall
 )
 add_custom_target(
-  doc 
+  doc ALL
   DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/weCall-userguide.pdf
 )
-add_dependencies(weCall doc)
  
 install(TARGETS weCall RUNTIME DESTINATION "bin" LIBRARY DESTINATION "lib")
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/weCall-userguide.pdf 

@@ -10,7 +10,7 @@ weCall is fast to run and very easy to use in a single processing step.
 
 ## Building
 
-1. Ensure you have cmake, ncurses, boost and zlib installed.
+1. Ensure you have cmake, ncurses, boost (>=1.54) and zlib installed.
 2. Clone weCall repository. Withing the repository type ```make install```. This will add ```weCall``` and the unit test tools (```unittest```, ```iotest```)
 to ```/usr/bin/local```. The installation directory can be set by modifying the ```PREFIX``` variable in the Makefile.
 3. The user documentation can be created with ```make doc```. The user documentation will be generated in the folder ```build/doc/weCall-userguide.pdf``` of the repository.

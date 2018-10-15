@@ -60,6 +60,12 @@ execute_process(
         OUTPUT_VARIABLE DISTRIBUTOR_ID
 )
 
+execute_process(
+        COMMAND lsb_release -rs
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        OUTPUT_VARIABLE DISTRIBUTOR_RELEASE
+)
+
 configure_file("${CMAKE_SOURCE_DIR}/src/version/version.cpp.template" "${CMAKE_BINARY_DIR}/src/version/version.cpp" @ONLY)
 
 set(WECALL_SOURCES
@@ -448,7 +454,9 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/weCall-userguide.pdf
 
 if(${DISTRIBUTOR_ID} MATCHES "Ubuntu" OR ${DISTRIBUTOR_ID} MATCHES "Debian")
       SET(CPACK_GENERATOR "DEB")
-ELSEIF(${DISTRIBUTOR_ID} MATCHES "RedHat")
+ELSEIF(${DISTRIBUTOR_ID} MATCHES "RedHat" OR ${DISTRIBUTOR_ID} MATCHES "CentOS")
+      string(REGEX MATCH "[0-9]*" RH_VERSION ${DISTRIBUTOR_RELEASE})
+      SET(DISTRIBUTION_CODENAME "el${RH_VERSION}")
       SET(CPACK_GENERATOR "RPM")
 ELSE()
       SET(CPACK_GENERATOR "TGZ")

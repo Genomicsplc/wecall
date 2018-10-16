@@ -64,7 +64,7 @@ def tokenise_boost_cpp_help(message):
         ('empty', re.compile('^$')),
         ('section', re.compile('^(?P<name>.*):$')),
         ('option', re.compile(
-            '^  (?P<name>\S+) (?P<argspec>\S+( \S+)*)(?:   *(?P<desc>.*))?$')),
+            '^  (?P<name>\S+) (?P<argspec>( ?arg| ?\[.*?\]| ?\(.*?\))*)(?: +(?P<desc>.*))?$')),
         # intented text will be at least 3 spaces, exact number is
         # data-dependent
         ('indented', re.compile('^ {3,}(?P<text>.*)$')),

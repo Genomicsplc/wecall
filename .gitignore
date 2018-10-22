@@ -1,4 +1,6 @@
 target
+build
+
 scripts/version.pyc
 .coverage
 /build/dist/

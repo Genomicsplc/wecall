@@ -15,7 +15,7 @@ def wecall_schema(
         schema.file_metadata['reference'] = reference
 
     app_name = 'weCall'
-    version_number = '2.0.0'
+    version_number = '2.0.1'
     app = {'4.1': None, '4.2': app_name}[format]
     version = {'4.1': None, '4.2': version_number}[format]
 

@@ -6,7 +6,7 @@
 #include "vcf/filterDescription.hpp"
 #include "caller/region.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

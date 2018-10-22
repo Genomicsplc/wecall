@@ -6,7 +6,7 @@
 #include <set>
 #include <climits>
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {

@@ -4,7 +4,7 @@
 
 #include <stdexcept>
 
-namespace echidna
+namespace wecall
 {
 namespace vcf
 {
@@ -145,7 +145,7 @@ namespace vcf
         }
         else
         {
-            throw utils::echidna_exception( "Invalid field ID: " + ID );
+            throw utils::wecall_exception( "Invalid field ID: " + ID );
         }
     }
 
@@ -211,7 +211,7 @@ namespace vcf
         }
         else
         {
-            throw utils::echidna_exception( "Invalid field ID: " + ID );
+            throw utils::wecall_exception( "Invalid field ID: " + ID );
         }
     }
 

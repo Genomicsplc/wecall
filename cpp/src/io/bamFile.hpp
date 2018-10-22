@@ -28,11 +28,11 @@ extern "C" {
 #include "bamFileIterator.hpp"
 #include "io/pysam.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {
-    using readVector_t = std::vector< echidna::io::readPtr_t >;
+    using readVector_t = std::vector< wecall::io::readPtr_t >;
     using readMap_t = std::map< std::string, readVector_t >;
 
     /// Concrete data source class to represent a BAM file. BAM is a compressed (using bgzip)

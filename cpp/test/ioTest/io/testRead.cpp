@@ -8,22 +8,22 @@
 #include "alignment/cigarItems.hpp"
 #include "common.hpp"
 
-using echidna::io::Read;
-using echidna::alignment::Cigar;
-using echidna::utils::ReferenceSequence;
-using echidna::utils::BasePairSequence;
-using echidna::utils::QualitySequence;
-using echidna::caller::Region;
-using echidna::variant::Variant;
-using echidna::variant::Breakpoint;
-using echidna::io::ReadDataset;
+using wecall::io::Read;
+using wecall::alignment::Cigar;
+using wecall::utils::ReferenceSequence;
+using wecall::utils::BasePairSequence;
+using wecall::utils::QualitySequence;
+using wecall::caller::Region;
+using wecall::variant::Variant;
+using wecall::variant::Breakpoint;
+using wecall::io::ReadDataset;
 
 std::shared_ptr< Read > constructHighQualMatchReadWithLength( size_t seqLength, int64_t startPos )
 {
     std::string seq( seqLength, 'T' );
     std::string qual( seqLength, 60 );
 
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >(
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >(
         Region( "1", startPos - 1, startPos + seqLength + 1 ), std::string( seqLength + 2, 'A' ) );
     return std::make_shared< Read >( seq, qual, "testId", Cigar( std::to_string( seqLength ) + "M" ), 0, startPos, 0, 0,
                                      0, 0, 0, refSequence );
@@ -33,9 +33,9 @@ BOOST_AUTO_TEST_CASE( testReadsStartEndComputationForEmptyList )
 {
     ReadDataset readDataset( {""}, Region( "1", 0, 10 ) );
 
-    const auto startEnd = echidna::io::readsAlignedStartEnd( readDataset.getAllReads( 0 ).at( "" ) );
-    BOOST_CHECK_EQUAL( startEnd.first, echidna::alignment::noPos );
-    BOOST_CHECK_EQUAL( startEnd.second, echidna::alignment::noPos );
+    const auto startEnd = wecall::io::readsAlignedStartEnd( readDataset.getAllReads( 0 ).at( "" ) );
+    BOOST_CHECK_EQUAL( startEnd.first, wecall::alignment::noPos );
+    BOOST_CHECK_EQUAL( startEnd.second, wecall::alignment::noPos );
 }
 
 BOOST_AUTO_TEST_CASE( testReadsStartEndComputation )
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE( testReadsStartEndComputation )
     readDataset.insertRead( "", std::make_shared< Read >( std::string( 6, 'A' ), std::string( 6, 'Q' ), "3",
                                                           Cigar( "6M" ), 0, 4, 0, 0, 0, 0, 0, refSequence ) );
 
-    const auto startEnd = echidna::io::readsAlignedStartEnd( readDataset.getAllReads( 0 ).at( "" ) );
+    const auto startEnd = wecall::io::readsAlignedStartEnd( readDataset.getAllReads( 0 ).at( "" ) );
     BOOST_CHECK_EQUAL( startEnd.first, 0 );
     BOOST_CHECK_EQUAL( startEnd.second, 11 );
 }
@@ -61,8 +61,8 @@ BOOST_AUTO_TEST_CASE( testMaxAlignedReadsLengthComputationEmptyTrees )
     ReadDataset readDataset( {"A", "B", "C", "D"}, Region( "1", 0, 10 ) );
     const auto reads = readDataset.getAllReads( 0 );
 
-    BOOST_CHECK_EQUAL( echidna::io::perSampleMaxAlignedReadLength( reads ), 0 );
-    BOOST_CHECK_EQUAL( echidna::io::perSampleMaxReadCigarLength( reads ), 0 );
+    BOOST_CHECK_EQUAL( wecall::io::perSampleMaxAlignedReadLength( reads ), 0 );
+    BOOST_CHECK_EQUAL( wecall::io::perSampleMaxReadCigarLength( reads ), 0 );
 }
 
 BOOST_AUTO_TEST_CASE( testMaxAlignedReadsLengthComputation )
@@ -76,8 +76,8 @@ BOOST_AUTO_TEST_CASE( testMaxAlignedReadsLengthComputation )
 
     const auto reads = readDataset.getAllReads( 0 );
 
-    BOOST_CHECK_EQUAL( echidna::io::perSampleMaxAlignedReadLength( reads ), 99 - 17 );
-    BOOST_CHECK_EQUAL( echidna::io::perSampleMaxReadCigarLength( reads ), 99 - 17 );
+    BOOST_CHECK_EQUAL( wecall::io::perSampleMaxAlignedReadLength( reads ), 99 - 17 );
+    BOOST_CHECK_EQUAL( wecall::io::perSampleMaxReadCigarLength( reads ), 99 - 17 );
 }
 
 BOOST_AUTO_TEST_CASE( testMaxReadsLengthComputationEmptyTrees )
@@ -85,8 +85,8 @@ BOOST_AUTO_TEST_CASE( testMaxReadsLengthComputationEmptyTrees )
     ReadDataset readDataset( {"A", "B", "C", "D"}, Region( "1", 0, 10 ) );
     const auto reads = readDataset.getAllReads( 0 );
 
-    BOOST_CHECK_EQUAL( echidna::io::perSampleMaxReadLength( reads ), 0 );
-    BOOST_CHECK_EQUAL( echidna::io::perSampleMaxReadCigarLength( reads ), 0 );
+    BOOST_CHECK_EQUAL( wecall::io::perSampleMaxReadLength( reads ), 0 );
+    BOOST_CHECK_EQUAL( wecall::io::perSampleMaxReadCigarLength( reads ), 0 );
 }
 
 BOOST_AUTO_TEST_CASE( testMaxReadsLengthComputation )
@@ -100,14 +100,14 @@ BOOST_AUTO_TEST_CASE( testMaxReadsLengthComputation )
 
     const auto reads = readDataset.getAllReads( 0 );
 
-    BOOST_CHECK_EQUAL( echidna::io::perSampleMaxReadLength( reads ), 99 - 17 );
-    BOOST_CHECK_EQUAL( echidna::io::perSampleMaxReadCigarLength( reads ), 99 - 17 );
+    BOOST_CHECK_EQUAL( wecall::io::perSampleMaxReadLength( reads ), 99 - 17 );
+    BOOST_CHECK_EQUAL( wecall::io::perSampleMaxReadCigarLength( reads ), 99 - 17 );
 }
 
 BOOST_AUTO_TEST_CASE( testGetReferencePositionsSimpleCase )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
     Read read( "WHY", "NOT", "test", Cigar( "3M" ), 0, 0, BAM_FPROPER_PAIR, 100, 200, 0, 200, refSequence );
 
     auto positions = read.getReferencePositions();
@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE( testGetReferencePositionsSimpleCase )
 BOOST_AUTO_TEST_CASE( testGetReferencePositionsFromRead )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
     Read read( "WHY", "NOT", "test", Cigar( "1M10D1I1M" ), 0, 0, BAM_FPROPER_PAIR, 100, 200, 0, 200, refSequence );
 
     auto positions = read.getReferencePositions();
@@ -140,7 +140,7 @@ BOOST_AUTO_TEST_CASE( shouldtrimReadOfShortFragmentAtEnd )
     int64_t insertSize = 9;
 
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", -10, 10 ), std::string( 20, 'A' ) );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", -10, 10 ), std::string( 20, 'A' ) );
 
     Read read( seq, qual, "Fwd", Cigar( strCig ), 0, startPos, flag, 100, insertSize, 0, 200, refSequence );
     read.trimReadOfShortFragment();
@@ -165,7 +165,7 @@ BOOST_AUTO_TEST_CASE( shouldNotTrimReadIfInsertSizeIsGreaterThanReadLength )
     int64_t mateStartPos = startPos + insertSize - length;
 
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
     Read read( seq, qual, "Rev", Cigar( strCig ), 0, startPos, flag, mappingQuality, insertSize, 0, mateStartPos,
                refSequence );
     read.trimReadOfShortFragment();
@@ -187,7 +187,7 @@ BOOST_AUTO_TEST_CASE( shouldtrimReadOfShortFragmentReverseReadAtStart )
     int64_t flag = BAM_FPROPER_PAIR + BAM_FREVERSE;
 
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
     Read read( seq, qual, "Rev", Cigar( strCig ), 0, startPos, flag, mappingQuality, insertSize, 0, mateStartPos,
                refSequence );
     read.trimReadOfShortFragment();
@@ -211,7 +211,7 @@ BOOST_AUTO_TEST_CASE( shouldTrimOverlapOfForwardRead2 )
     int64_t insertSize = 2 * static_cast< int64_t >( length ) - static_cast< int64_t >( overlapLength );
 
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
     Read read( seq, qual, "Fwd", Cigar( strCig ), 0, startPos, flag, 100, insertSize, 0, 200, refSequence );
     read.trimOverlap();
 
@@ -234,7 +234,7 @@ BOOST_AUTO_TEST_CASE( shouldNotTrimOverlapOfForwardRead1 )
     int64_t insertSize = 2 * static_cast< int64_t >( length ) - static_cast< int64_t >( overlapLength );
 
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
     Read read( seq, qual, "Fwd", Cigar( strCig ), 0, startPos, flag, 100, insertSize, 0, 200, refSequence );
     read.trimOverlap();
 
@@ -256,7 +256,7 @@ BOOST_AUTO_TEST_CASE( shouldTrimOverlapOfReverseRead2 )
     int64_t insertSize = 2 * static_cast< int64_t >( length ) - static_cast< int64_t >( overlapLength );
 
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
     Read read( seq, qual, "Rev", Cigar( strCig ), 0, startPos, flag, 100, insertSize, 0, 200, refSequence );
     read.trimOverlap();
 
@@ -272,14 +272,14 @@ BOOST_AUTO_TEST_CASE( shouldGetWholeReadSpanIfIntervalMatchesReadSpanInRef )
     const auto startPos = 100L;
     const std::string seq( 8, 'A' );
     const std::string qual( 8, 'Q' );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
                                                                               std::string( 10, 'A' ) );
     const Read testRead( seq, qual, "", cigar, 0, startPos, 0, 0, 0, 0, 0, refSequence );
 
     BOOST_CHECK_EQUAL( testRead.getAlignedEndPos(), 108L );
 
-    echidna::utils::Interval inputRefInterval( startPos, 108L );
-    echidna::utils::Interval expectedResult( 0L, testRead.getLength() );
+    wecall::utils::Interval inputRefInterval( startPos, 108L );
+    wecall::utils::Interval expectedResult( 0L, testRead.getLength() );
 
     BOOST_CHECK_EQUAL( expectedResult, testRead.getIntervalInRead( inputRefInterval ) );
 }
@@ -290,12 +290,12 @@ BOOST_AUTO_TEST_CASE( shouldGetWholeReadSpanIfIntervalContainsReadSpanInRef )
     const auto startPos = 100L;
     const std::string seq( 8, 'A' );
     const std::string qual( 8, 'Q' );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
                                                                               std::string( 10, 'A' ) );
     const Read testRead( seq, qual, "", cigar, 0, startPos, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::utils::Interval inputRefInterval( startPos - 10, testRead.getAlignedEndPos() + 10 );
-    echidna::utils::Interval expectedResult( 0L, testRead.getLength() );
+    wecall::utils::Interval inputRefInterval( startPos - 10, testRead.getAlignedEndPos() + 10 );
+    wecall::utils::Interval expectedResult( 0L, testRead.getLength() );
 
     BOOST_CHECK_EQUAL( expectedResult, testRead.getIntervalInRead( inputRefInterval ) );
 }
@@ -306,12 +306,12 @@ BOOST_AUTO_TEST_CASE( shouldGetStartOfReadSpanIfIntervalPreceedsReadSpanInRef )
     const auto startPos = 100L;
     const std::string seq( 8, 'A' );
     const std::string qual( 8, 'Q' );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
                                                                               std::string( 10, 'A' ) );
     const Read testRead( seq, qual, "", cigar, 0, startPos, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::utils::Interval inputRefInterval( startPos - 10, startPos );
-    echidna::utils::Interval expectedResult( 0L, 0L );
+    wecall::utils::Interval inputRefInterval( startPos - 10, startPos );
+    wecall::utils::Interval expectedResult( 0L, 0L );
 
     BOOST_CHECK_EQUAL( expectedResult, testRead.getIntervalInRead( inputRefInterval ) );
 }
@@ -323,11 +323,11 @@ BOOST_AUTO_TEST_CASE( shouldGetEndOfReadSpanIfIntervalFollowsReadSpanInRef )
     const std::string seq( 8, 'A' );
     const std::string qual( 8, 'Q' );
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 100, 110 ), std::string( 10, 'A' ) );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 100, 110 ), std::string( 10, 'A' ) );
     const Read testRead( seq, qual, "", cigar, 0, startPos, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::utils::Interval inputRefInterval( testRead.getAlignedEndPos(), testRead.getAlignedEndPos() + 10 );
-    echidna::utils::Interval expectedResult( testRead.getLength(), testRead.getLength() );
+    wecall::utils::Interval inputRefInterval( testRead.getAlignedEndPos(), testRead.getAlignedEndPos() + 10 );
+    wecall::utils::Interval expectedResult( testRead.getLength(), testRead.getLength() );
 
     BOOST_CHECK_EQUAL( expectedResult, testRead.getIntervalInRead( inputRefInterval ) );
 }
@@ -338,12 +338,12 @@ BOOST_AUTO_TEST_CASE( shouldGetEmptyIntervalIfInputIntervalIsEmptyAndReadFlatAli
     const auto startPos = 100L;
     const std::string seq( 8, 'A' );
     const std::string qual( 8, 'Q' );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
                                                                               std::string( 10, 'A' ) );
     const Read testRead( seq, qual, "", cigar, 0, startPos, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::utils::Interval inputRefInterval( startPos + 1L, startPos + 1L );
-    echidna::utils::Interval expectedResult( 1L, 1L );
+    wecall::utils::Interval inputRefInterval( startPos + 1L, startPos + 1L );
+    wecall::utils::Interval expectedResult( 1L, 1L );
 
     BOOST_CHECK_EQUAL( expectedResult, testRead.getIntervalInRead( inputRefInterval ) );
 }
@@ -354,12 +354,12 @@ BOOST_AUTO_TEST_CASE( shouldGetIntervalCorrespondingToInsertionInReadIfInputInte
     const auto startPos = 100L;
     const std::string seq( 8, 'A' );
     const std::string qual( 8, 'Q' );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
                                                                               std::string( 10, 'A' ) );
     const Read testRead( seq, qual, "", cigar, 0, startPos, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::utils::Interval inputRefInterval( startPos + 2L, startPos + 2L );
-    echidna::utils::Interval expectedResult( 2L, 4L );
+    wecall::utils::Interval inputRefInterval( startPos + 2L, startPos + 2L );
+    wecall::utils::Interval expectedResult( 2L, 4L );
 
     BOOST_CHECK_EQUAL( expectedResult, testRead.getIntervalInRead( inputRefInterval ) );
 }
@@ -370,12 +370,12 @@ BOOST_AUTO_TEST_CASE( shouldGetMatchingIntervalIfInputIntervalIsFlatAligned )
     const auto startPos = 100L;
     const std::string seq( 8, 'A' );
     const std::string qual( 8, 'Q' );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
                                                                               std::string( 10, 'A' ) );
     const Read testRead( seq, qual, "", cigar, 0, startPos, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::utils::Interval inputRefInterval( startPos + 3L, startPos + 4L );
-    echidna::utils::Interval expectedResult( 5L, 6L );
+    wecall::utils::Interval inputRefInterval( startPos + 3L, startPos + 4L );
+    wecall::utils::Interval expectedResult( 5L, 6L );
 
     BOOST_CHECK_EQUAL( expectedResult, testRead.getIntervalInRead( inputRefInterval ) );
 }
@@ -386,12 +386,12 @@ BOOST_AUTO_TEST_CASE( shouldGetEmptyIntervalForEmptyRefIntervalCorrespondingToDe
     const auto startPos = 100L;
     const std::string seq( 8, 'A' );
     const std::string qual( 8, 'Q' );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
                                                                               std::string( 10, 'A' ) );
     const Read testRead( seq, qual, "", cigar, 0, startPos, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::utils::Interval inputRefInterval( startPos + 5L, startPos + 5L );
-    echidna::utils::Interval expectedResult( 6L, 6L );
+    wecall::utils::Interval inputRefInterval( startPos + 5L, startPos + 5L );
+    wecall::utils::Interval expectedResult( 6L, 6L );
 
     BOOST_CHECK_EQUAL( expectedResult, testRead.getIntervalInRead( inputRefInterval ) );
 }
@@ -402,12 +402,12 @@ BOOST_AUTO_TEST_CASE( shouldGetEmptyIntervalForNonEmptyRefIntervalCorrespondingT
     const auto startPos = 100L;
     const std::string seq( 8, 'A' );
     const std::string qual( 8, 'Q' );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
                                                                               std::string( 10, 'A' ) );
     const Read testRead( seq, qual, "", cigar, 0, startPos, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::utils::Interval inputRefInterval( startPos + 4L, startPos + 6L );
-    echidna::utils::Interval expectedResult( 6L, 6L );
+    wecall::utils::Interval inputRefInterval( startPos + 4L, startPos + 6L );
+    wecall::utils::Interval expectedResult( 6L, 6L );
 
     BOOST_CHECK_EQUAL( expectedResult, testRead.getIntervalInRead( inputRefInterval ) );
 }
@@ -420,12 +420,12 @@ BOOST_AUTO_TEST_CASE( shouldGetInsertionAtStartOfReadForNonOverlappingInterval )
     const auto startPos = 100L;
     const std::string seq( 8, 'A' );
     const std::string qual( 8, 'Q' );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
                                                                               std::string( 10, 'A' ) );
     const Read testRead( seq, qual, "", cigar, 0, startPos, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::utils::Interval inputRefInterval( startPos + 0L, startPos + 0L );
-    echidna::utils::Interval expectedResult( 0L, 4L );
+    wecall::utils::Interval inputRefInterval( startPos + 0L, startPos + 0L );
+    wecall::utils::Interval expectedResult( 0L, 4L );
 
     BOOST_CHECK_EQUAL( expectedResult, testRead.getIntervalInRead( inputRefInterval ) );
 }
@@ -436,12 +436,12 @@ BOOST_AUTO_TEST_CASE( shouldIgnoreDeletionAtStartOfReadForNonOverlappingInterval
     const auto startPos = 100L;
     const std::string seq( 4, 'A' );
     const std::string qual( 4, 'Q' );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
                                                                               std::string( 10, 'A' ) );
     const Read testRead( seq, qual, "", cigar, 0, startPos, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::utils::Interval inputRefInterval( startPos + 0L, startPos + 0L );
-    echidna::utils::Interval expectedResult( 0L, 0L );
+    wecall::utils::Interval inputRefInterval( startPos + 0L, startPos + 0L );
+    wecall::utils::Interval expectedResult( 0L, 0L );
 
     BOOST_CHECK_EQUAL( expectedResult, testRead.getIntervalInRead( inputRefInterval ) );
 }
@@ -452,12 +452,12 @@ BOOST_AUTO_TEST_CASE( shouldGetInsertionAtEndOfReadForNonOverlappingInterval )
     const auto startPos = 100L;
     const std::string seq( 8, 'A' );
     const std::string qual( 8, 'Q' );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
                                                                               std::string( 10, 'A' ) );
     const Read testRead( seq, qual, "", cigar, 0, startPos, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::utils::Interval inputRefInterval( testRead.getAlignedEndPos(), testRead.getAlignedEndPos() );
-    echidna::utils::Interval expectedResult( 4L, 8L );
+    wecall::utils::Interval inputRefInterval( testRead.getAlignedEndPos(), testRead.getAlignedEndPos() );
+    wecall::utils::Interval expectedResult( 4L, 8L );
 
     BOOST_CHECK_EQUAL( expectedResult, testRead.getIntervalInRead( inputRefInterval ) );
 }
@@ -468,12 +468,12 @@ BOOST_AUTO_TEST_CASE( shouldIgnoreDeletionAtEndOfReadForNonOverlappingInterval )
     const auto startPos = 100L;
     const std::string seq( 4, 'A' );
     const std::string qual( 4, 'Q' );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
                                                                               std::string( 10, 'A' ) );
     const Read testRead( seq, qual, "", cigar, 0, startPos, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::utils::Interval inputRefInterval( testRead.getAlignedEndPos(), testRead.getAlignedEndPos() );
-    echidna::utils::Interval expectedResult( 4L, 4L );
+    wecall::utils::Interval inputRefInterval( testRead.getAlignedEndPos(), testRead.getAlignedEndPos() );
+    wecall::utils::Interval expectedResult( 4L, 4L );
 
     BOOST_CHECK_EQUAL( expectedResult, testRead.getIntervalInRead( inputRefInterval ) );
 }
@@ -486,12 +486,12 @@ BOOST_AUTO_TEST_CASE( shouldGetInsertionOnLeftOfQueryInterval )
     const auto startPos = 100L;
     const std::string seq( 8, 'A' );
     const std::string qual( 8, 'Q' );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
                                                                               std::string( 10, 'A' ) );
     const Read testRead( seq, qual, "", cigar, 0, startPos, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::utils::Interval inputRefInterval( startPos + 1L, startPos + 2L );
-    echidna::utils::Interval expectedResult( 1L, 6L );
+    wecall::utils::Interval inputRefInterval( startPos + 1L, startPos + 2L );
+    wecall::utils::Interval expectedResult( 1L, 6L );
 
     BOOST_CHECK_EQUAL( expectedResult, testRead.getIntervalInRead( inputRefInterval ) );
 }
@@ -502,12 +502,12 @@ BOOST_AUTO_TEST_CASE( shouldSkipDeletionOnLeftOfQueryInterval )
     const auto startPos = 100L;
     const std::string seq( 4, 'A' );
     const std::string qual( 4, 'Q' );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
                                                                               std::string( 10, 'A' ) );
     const Read testRead( seq, qual, "", cigar, 0, startPos, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::utils::Interval inputRefInterval( startPos + 5L, startPos + 6L );
-    echidna::utils::Interval expectedResult( 1L, 2L );
+    wecall::utils::Interval inputRefInterval( startPos + 5L, startPos + 6L );
+    wecall::utils::Interval expectedResult( 1L, 2L );
 
     BOOST_CHECK_EQUAL( expectedResult, testRead.getIntervalInRead( inputRefInterval ) );
 }
@@ -518,12 +518,12 @@ BOOST_AUTO_TEST_CASE( shouldGetInsertionOnRightOfQueryInterval )
     const auto startPos = 100L;
     const std::string seq( 8, 'A' );
     const std::string qual( 8, 'Q' );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
                                                                               std::string( 10, 'A' ) );
     const Read testRead( seq, qual, "", cigar, 0, startPos, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::utils::Interval inputRefInterval( startPos + 2L, startPos + 3L );
-    echidna::utils::Interval expectedResult( 2L, 7L );
+    wecall::utils::Interval inputRefInterval( startPos + 2L, startPos + 3L );
+    wecall::utils::Interval expectedResult( 2L, 7L );
 
     BOOST_CHECK_EQUAL( expectedResult, testRead.getIntervalInRead( inputRefInterval ) );
 }
@@ -534,12 +534,12 @@ BOOST_AUTO_TEST_CASE( shouldSkipDeletionOnRightOfQueryInterval )
     const auto startPos = 100L;
     const std::string seq( 4, 'A' );
     const std::string qual( 4, 'Q' );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
                                                                               std::string( 10, 'A' ) );
     const Read testRead( seq, qual, "", cigar, 0, startPos, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::utils::Interval inputRefInterval( startPos + 2L, startPos + 3L );
-    echidna::utils::Interval expectedResult( 2L, 3L );
+    wecall::utils::Interval inputRefInterval( startPos + 2L, startPos + 3L );
+    wecall::utils::Interval expectedResult( 2L, 3L );
 
     BOOST_CHECK_EQUAL( expectedResult, testRead.getIntervalInRead( inputRefInterval ) );
 }
@@ -634,7 +634,7 @@ BOOST_AUTO_TEST_CASE( shouldRetrieveInsertionFromReadEnd )
 BOOST_AUTO_TEST_CASE( needsTwoCigarItemsToGetBreakpoints )
 {
     const auto startPos = 1;
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
                                                                               std::string( 10, 'A' ) );
     const Read read( BasePairSequence( "AAAAA" ), QualitySequence( 5, 10 ), "", Cigar( "5S" ), 0, startPos, 0, 0, 0, 0,
                      0, refSequence );
@@ -645,7 +645,7 @@ BOOST_AUTO_TEST_CASE( needsTwoCigarItemsToGetBreakpoints )
 BOOST_AUTO_TEST_CASE( shouldRetrieveBreakpointFromReadStart )
 {
     const auto startPos = 1;
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
                                                                               std::string( 10, 'A' ) );
     const Read read( BasePairSequence( "AAAAA" ), QualitySequence( 5, 10 ), "", Cigar( "4S1M" ), 0, startPos, 0, 0, 0,
                      0, 0, refSequence );
@@ -657,7 +657,7 @@ BOOST_AUTO_TEST_CASE( shouldRetrieveBreakpointFromReadStart )
 BOOST_AUTO_TEST_CASE( shouldRetrieveBreakpointFromReadEnd )
 {
     const auto startPos = 1;
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
                                                                               std::string( 10, 'A' ) );
     const Read read( BasePairSequence( "AAAAA" ), QualitySequence( 5, 10 ), "", Cigar( "1M4S" ), 0, startPos, 0, 0, 0,
                      0, 0, refSequence );
@@ -673,7 +673,7 @@ BOOST_AUTO_TEST_CASE( testStoringOfMateRegion )
     const int64_t flag = BAM_FPROPER_PAIR;
     int64_t mateStartPos = 200;
 
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
                                                                               std::string( 10, 'A' ) );
     const Read read( BasePairSequence( "AAAAA" ), QualitySequence( 5, 10 ), "", Cigar( "1M4S" ), tid, startPos, flag, 0,
                      0, tid, mateStartPos, refSequence );
@@ -692,7 +692,7 @@ BOOST_AUTO_TEST_CASE( testStoringOfMateRegionGetsNoubtIfMateUnmapped )
     const int64_t flag = BAM_FPROPER_PAIR + BAM_FMUNMAP;
     int64_t mateStartPos = 200;
 
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", startPos - 1, startPos + 9 ),
                                                                               std::string( 10, 'A' ) );
     const auto mateRegions = Read( BasePairSequence( "AAAAA" ), QualitySequence( 5, 10 ), "", Cigar( "1M4S" ), tid,
                                    startPos, flag, 0, 0, tid, mateStartPos, refSequence )

@@ -14,7 +14,7 @@
 #include "align.hpp"
 #include "mmHelpers.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace alignment
 {

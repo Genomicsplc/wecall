@@ -8,7 +8,7 @@
 #include <sstream>
 #include <boost/optional.hpp>
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {
@@ -228,7 +228,7 @@ namespace variant
         }
         else
         {
-            throw utils::echidna_exception( "Only can substract variants starting or ending at same place" );
+            throw utils::wecall_exception( "Only can substract variants starting or ending at same place" );
         }
     }
 

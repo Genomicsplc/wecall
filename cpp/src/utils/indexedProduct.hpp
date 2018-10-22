@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <numeric>
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {

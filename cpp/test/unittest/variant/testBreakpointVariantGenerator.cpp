@@ -7,18 +7,18 @@
 #include "variant/breakpointVariantGenerator.hpp"
 #include "variant/haplotype.hpp"
 
-using echidna::utils::ReferenceSequence;
-using echidna::utils::referenceSequencePtr_t;
-using echidna::utils::BasePairSequence;
-using echidna::caller::Region;
-using echidna::variant::BreakpointVariantGenerator;
-using echidna::variant::BreakpointClusterer;
-using echidna::variant::BreakpointLocus;
-using echidna::variant::breakpointLocusSet_t;
-using echidna::variant::Breakpoint;
-using echidna::variant::Variant;
-using echidna::io::Read;
-using echidna::io::ReadDataset;
+using wecall::utils::ReferenceSequence;
+using wecall::utils::referenceSequencePtr_t;
+using wecall::utils::BasePairSequence;
+using wecall::caller::Region;
+using wecall::variant::BreakpointVariantGenerator;
+using wecall::variant::BreakpointClusterer;
+using wecall::variant::BreakpointLocus;
+using wecall::variant::breakpointLocusSet_t;
+using wecall::variant::Breakpoint;
+using wecall::variant::Variant;
+using wecall::io::Read;
+using wecall::io::ReadDataset;
 
 std::shared_ptr< Read > readFromBreakpoint( const Breakpoint & bp,
                                             const referenceSequencePtr_t & referenceSequence,
@@ -26,15 +26,15 @@ std::shared_ptr< Read > readFromBreakpoint( const Breakpoint & bp,
 {
     const int64_t paddingLength = int64_t( readLength ) - int64_t( bp.sequence().size() );
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( echidna::caller::Region( "1", 100, 110 ), "ACGTAAAAGT" );
+        std::make_shared< wecall::utils::ReferenceSequence >( wecall::caller::Region( "1", 100, 110 ), "ACGTAAAAGT" );
     if ( bp.isStartBreakpoint() )
     {
         const int64_t start = bp.pos() - paddingLength;
         const auto readSequence =
-            echidna::variant::Haplotype::buildHaplotypeSequence(
+            wecall::variant::Haplotype::buildHaplotypeSequence(
                 referenceSequence, Region( bp.contig(), start, bp.pos() ), bp.getLocalVariants() ) +
             bp.sequence();
-        const echidna::utils::QualitySequence qualitySequence( readSequence.size(), 20 );
+        const wecall::utils::QualitySequence qualitySequence( readSequence.size(), 20 );
 
         const auto cigarString = std::to_string( paddingLength ) + "M" + std::to_string( bp.sequence().size() ) + "S";
         return std::make_shared< Read >( readSequence, qualitySequence, "", cigarString, 0, start, 0, 0, 0, 0, 0,
@@ -44,9 +44,9 @@ std::shared_ptr< Read > readFromBreakpoint( const Breakpoint & bp,
     {
         const int64_t end = bp.pos() + paddingLength;
         const auto readSequence =
-            bp.sequence() + echidna::variant::Haplotype::buildHaplotypeSequence(
+            bp.sequence() + wecall::variant::Haplotype::buildHaplotypeSequence(
                                 referenceSequence, Region( bp.contig(), bp.pos(), end ), bp.getLocalVariants() );
-        const echidna::utils::QualitySequence qualitySequence( readSequence.size(), 20 );
+        const wecall::utils::QualitySequence qualitySequence( readSequence.size(), 20 );
 
         const auto cigarString = std::to_string( bp.sequence().size() ) + "S" + std::to_string( paddingLength ) + "M";
         return std::make_shared< Read >( readSequence, qualitySequence, "", cigarString, 0, bp.pos(), 0, 0, 0, 0, 0,
@@ -167,8 +167,8 @@ BOOST_AUTO_TEST_CASE( testShouldFindDeletionAt373682 )
         "GCAGGATCCAGTGAGGATCCCAATTTAGTC" );
 
     BreakpointVariantGenerator breakpointVariantGenerator( referenceSequence,
-                                                           echidna::caller::params::defaults::defaultBreakpointKmerSize,
-                                                           echidna::caller::params::defaults::maxBreakpointKmerSize );
+                                                           wecall::caller::params::defaults::defaultBreakpointKmerSize,
+                                                           wecall::caller::params::defaults::maxBreakpointKmerSize );
 
     const BasePairSequence added = "AAGGGGTGTTAGTGGGTACTAAGAAGTCAACCTTGGTAGAGT";
     const auto eventStart = 373682;
@@ -192,7 +192,7 @@ BOOST_AUTO_TEST_CASE( testShouldFindDeletionAt373682 )
 
     const auto variants = breakpointVariantGenerator.getVariantCandidates( {startBpLocus, endBpLocus}, allReads );
     BOOST_REQUIRE_EQUAL( variants.size(), 1 );
-    const std::vector< echidna::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
+    const std::vector< wecall::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
 
     BOOST_CHECK_EQUAL( *vecVariant[0], Variant( referenceSequence, Region( contig, eventStart, eventEnd ), added ) );
 
@@ -212,8 +212,8 @@ BOOST_AUTO_TEST_CASE( testWithLongOverlappingSoftClippedSequenceAt135116 )
         "ATAATATTTTGAGCAAGTTTCTTATGTTTTCTGTGCCTTTGAGTTTCTCATTTGTAGAATGGAGATAATAATATCTACCT" );
 
     BreakpointVariantGenerator breakpointVariantGenerator( referenceSequence,
-                                                           echidna::caller::params::defaults::defaultBreakpointKmerSize,
-                                                           echidna::caller::params::defaults::maxBreakpointKmerSize );
+                                                           wecall::caller::params::defaults::defaultBreakpointKmerSize,
+                                                           wecall::caller::params::defaults::maxBreakpointKmerSize );
     const BasePairSequence added1 = "TTGCATTCACAGGAAGAATATAAATAACT";
     const BasePairSequence added2 = "TTGCATTCACAGGAAGACTATAAATAACT";
     const auto eventStart = 135116;
@@ -237,7 +237,7 @@ BOOST_AUTO_TEST_CASE( testWithLongOverlappingSoftClippedSequenceAt135116 )
 
     const auto variants = breakpointVariantGenerator.getVariantCandidates( {startBpLocus, endBpLocus}, allReads );
     BOOST_REQUIRE_EQUAL( variants.size(), 2 );
-    const std::vector< echidna::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
+    const std::vector< wecall::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
 
     BOOST_CHECK_EQUAL( *vecVariant[0], Variant( referenceSequence, Region( contig, eventStart, eventEnd ), added1 ) );
 
@@ -259,8 +259,8 @@ BOOST_AUTO_TEST_CASE( testMediumInsertionAt1745352 )
         "AATGTGACAGAGACACGGAGTGGGCACATG" );
 
     BreakpointVariantGenerator breakpointVariantGenerator( referenceSequence,
-                                                           echidna::caller::params::defaults::defaultBreakpointKmerSize,
-                                                           echidna::caller::params::defaults::maxBreakpointKmerSize );
+                                                           wecall::caller::params::defaults::defaultBreakpointKmerSize,
+                                                           wecall::caller::params::defaults::maxBreakpointKmerSize );
     const BasePairSequence tailAdded = "TCAAAGAT";
     const auto eventStart = 1745352;
     const auto eventEnd = 1745352;
@@ -285,7 +285,7 @@ BOOST_AUTO_TEST_CASE( testMediumInsertionAt1745352 )
 
     const auto variants = breakpointVariantGenerator.getVariantCandidates( {startBpLocus, endBpLocus}, allReads );
     BOOST_REQUIRE_EQUAL( variants.size(), 2 );
-    const std::vector< echidna::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
+    const std::vector< wecall::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
 
     BOOST_CHECK_EQUAL( *vecVariant[0], Variant( referenceSequence, Region( contig, eventStart, eventEnd ), added1 ) );
     BOOST_CHECK_EQUAL( *vecVariant[1], Variant( referenceSequence, Region( contig, eventStart, eventEnd ), added2 ) );
@@ -305,8 +305,8 @@ BOOST_AUTO_TEST_CASE( testBobbleWithEndBreakpointBeforeStartBreakpointAt1778684 
         "TGAATTCAGGTGTTCAAGACCAGCCTGGACAACATAGCAAGACCCCGCCTCTAAAAAAAAATTAGCTGGGCATTGTAGAATACCTGTAGT" );
 
     BreakpointVariantGenerator breakpointVariantGenerator( referenceSequence,
-                                                           echidna::caller::params::defaults::defaultBreakpointKmerSize,
-                                                           echidna::caller::params::defaults::maxBreakpointKmerSize );
+                                                           wecall::caller::params::defaults::defaultBreakpointKmerSize,
+                                                           wecall::caller::params::defaults::maxBreakpointKmerSize );
     const auto eventStart = 1778684;
     const auto eventEnd = 1778684;
     const BasePairSequence added =
@@ -327,7 +327,7 @@ BOOST_AUTO_TEST_CASE( testBobbleWithEndBreakpointBeforeStartBreakpointAt1778684 
 
     const auto variants = breakpointVariantGenerator.getVariantCandidates( {startBpLocus, endBpLocus}, allReads );
     BOOST_REQUIRE_EQUAL( variants.size(), 1 );
-    const std::vector< echidna::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
+    const std::vector< wecall::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
 
     BOOST_CHECK_EQUAL( *vecVariant[0], Variant( referenceSequence, Region( contig, eventStart, eventEnd ), added ) );
 
@@ -347,8 +347,8 @@ BOOST_AUTO_TEST_CASE( testBobbleWithEndBreakpointBeforeStartBreakpointAt5291304 
         "CACATAAATCTTAGTCTCAGAGTCTGATTTGGGAGTAACCCAAGCTAAGACTCAGATATAAGTCCCTGTG" );
 
     BreakpointVariantGenerator breakpointVariantGenerator( referenceSequence,
-                                                           echidna::caller::params::defaults::defaultBreakpointKmerSize,
-                                                           echidna::caller::params::defaults::maxBreakpointKmerSize );
+                                                           wecall::caller::params::defaults::defaultBreakpointKmerSize,
+                                                           wecall::caller::params::defaults::maxBreakpointKmerSize );
 
     const BasePairSequence altSeq = "TTATGGGGAGCTGGGGTATAAATACCCCAGCTCCCTCCT";
     const auto eventStart = 5291304;
@@ -371,7 +371,7 @@ BOOST_AUTO_TEST_CASE( testBobbleWithEndBreakpointBeforeStartBreakpointAt5291304 
     const auto variants = breakpointVariantGenerator.getVariantCandidates( {startBpLocus, endBpLocus}, allReads );
 
     BOOST_REQUIRE( variants.size() == 2 );
-    const std::vector< echidna::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
+    const std::vector< wecall::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
 
     BOOST_CHECK_EQUAL( *vecVariant[0], Variant( referenceSequence, Region( "20", eventStart - 5, eventEnd ),
                                                 BasePairSequence( "TAATGACT" ) + altSeq ) );
@@ -396,8 +396,8 @@ BOOST_AUTO_TEST_CASE( testBobbleWithEndBreakpointBeforeStartBreakpointAt6645839 
     const auto eventEnd = 6645839;
 
     BreakpointVariantGenerator breakpointVariantGenerator( referenceSequence,
-                                                           echidna::caller::params::defaults::defaultBreakpointKmerSize,
-                                                           echidna::caller::params::defaults::maxBreakpointKmerSize );
+                                                           wecall::caller::params::defaults::defaultBreakpointKmerSize,
+                                                           wecall::caller::params::defaults::maxBreakpointKmerSize );
 
     const BasePairSequence added = "TTTTACTTTTTTAATGTGGCTACTAGAAAACTTGAAATTCCGTATGTGGCTTGCATTGCATTTCTA";
     const auto breakpoint1 = std::make_shared< Breakpoint >(
@@ -419,7 +419,7 @@ BOOST_AUTO_TEST_CASE( testBobbleWithEndBreakpointBeforeStartBreakpointAt6645839 
     const auto variants = breakpointVariantGenerator.getVariantCandidates( {startBpLocus, endBpLocus}, allReads );
 
     BOOST_REQUIRE_EQUAL( variants.size(), 1 );
-    const std::vector< echidna::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
+    const std::vector< wecall::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
 
     BOOST_CHECK_EQUAL( *vecVariant[0], Variant( referenceSequence, Region( contig, eventStart, eventEnd ), added ) );
 
@@ -440,8 +440,8 @@ BOOST_AUTO_TEST_CASE( testFindsDeletionAt9696769 )
         "TAAAATATAA" );
 
     BreakpointVariantGenerator breakpointVariantGenerator( referenceSequence,
-                                                           echidna::caller::params::defaults::defaultBreakpointKmerSize,
-                                                           echidna::caller::params::defaults::maxBreakpointKmerSize );
+                                                           wecall::caller::params::defaults::defaultBreakpointKmerSize,
+                                                           wecall::caller::params::defaults::maxBreakpointKmerSize );
     const auto eventStart = 9696761;
     const auto eventEnd = 9696815;
     const auto overlap = 8;
@@ -465,7 +465,7 @@ BOOST_AUTO_TEST_CASE( testFindsDeletionAt9696769 )
 
     const auto variants = breakpointVariantGenerator.getVariantCandidates( {startBpLocus, endBpLocus}, allReads );
     BOOST_REQUIRE_EQUAL( variants.size(), 1 );
-    const std::vector< echidna::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
+    const std::vector< wecall::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
 
     BOOST_CHECK_EQUAL( *vecVariant[0], Variant( referenceSequence, Region( contig, eventStart, eventEnd ), "" ) );
 
@@ -485,8 +485,8 @@ BOOST_AUTO_TEST_CASE( testFindsComplexDeletionAt11398595 )
         "TGGTTTCTGGTGAGAAGTCTGCTGTAATTTTAACCTTTTTCTCTATAGATAAGGTGATTT" );
 
     BreakpointVariantGenerator breakpointVariantGenerator( referenceSequence,
-                                                           echidna::caller::params::defaults::defaultBreakpointKmerSize,
-                                                           echidna::caller::params::defaults::maxBreakpointKmerSize );
+                                                           wecall::caller::params::defaults::defaultBreakpointKmerSize,
+                                                           wecall::caller::params::defaults::maxBreakpointKmerSize );
 
     const auto breakpoint1 =
         std::make_shared< Breakpoint >( "20", 11398595, true, "CTGTCTTCTTGCTTTCATGGTTTCTGGTGAGAAGTCTGCTGTAATTTTAA" );
@@ -504,7 +504,7 @@ BOOST_AUTO_TEST_CASE( testFindsComplexDeletionAt11398595 )
 
     const auto variants = breakpointVariantGenerator.getVariantCandidates( {startBpLocus, endBpLocus}, allReads );
     BOOST_REQUIRE_EQUAL( variants.size(), 1 );
-    const std::vector< echidna::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
+    const std::vector< wecall::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
 
     BOOST_CHECK_EQUAL( *vecVariant[0], Variant( referenceSequence, Region( "20", 11398595, 11398628 ), "CTGTC" ) );
 }
@@ -517,8 +517,8 @@ BOOST_AUTO_TEST_CASE( testShouldNotFindVariantsAsBelievedToBeGenuineBreakpoints 
                                                "AAAGGAGGAGGTATCTCAATGTGCAAAGTGAACCTAATT" );
 
     BreakpointVariantGenerator breakpointVariantGenerator( referenceSequence,
-                                                           echidna::caller::params::defaults::defaultBreakpointKmerSize,
-                                                           echidna::caller::params::defaults::maxBreakpointKmerSize );
+                                                           wecall::caller::params::defaults::defaultBreakpointKmerSize,
+                                                           wecall::caller::params::defaults::maxBreakpointKmerSize );
 
     const auto breakpoint1 = std::make_shared< Breakpoint >(
         "20", 12359712, true, "TTAGCTCTATAACTATATTTAGAGACTAAAATACCTGGTAATATCCCGTTCAGTCGCCCCTATTGATTTAGGAATTCAT" );
@@ -555,8 +555,8 @@ BOOST_AUTO_TEST_CASE( testShouldFind1000GTrueDeletionAt6150945 )
         "TGTACTGGGG" );
 
     BreakpointVariantGenerator breakpointVariantGenerator( referenceSequence,
-                                                           echidna::caller::params::defaults::defaultBreakpointKmerSize,
-                                                           echidna::caller::params::defaults::maxBreakpointKmerSize );
+                                                           wecall::caller::params::defaults::defaultBreakpointKmerSize,
+                                                           wecall::caller::params::defaults::maxBreakpointKmerSize );
 
     const auto breakpoint1 =
         std::make_shared< Breakpoint >( "20", 6150959, true, "TTTCTGTGGAAATGAGAATCTTTGTGGAACCCTGGTGCT" );
@@ -574,7 +574,7 @@ BOOST_AUTO_TEST_CASE( testShouldFind1000GTrueDeletionAt6150945 )
 
     const auto variants = breakpointVariantGenerator.getVariantCandidates( {startBpLocus, endBpLocus}, allReads );
     BOOST_REQUIRE_EQUAL( variants.size(), 1 );
-    const std::vector< echidna::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
+    const std::vector< wecall::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
     BOOST_CHECK_EQUAL( *vecVariant[0], Variant( referenceSequence, Region( "20", 6150945, 6151277 ), "" ) );
 
     for ( const auto & variant : variants )
@@ -594,8 +594,8 @@ BOOST_AUTO_TEST_CASE( testShouldFind1000GTrueDeletionAt19170061 )
         "AATGTAAATA" );
 
     BreakpointVariantGenerator breakpointVariantGenerator( referenceSequence,
-                                                           echidna::caller::params::defaults::defaultBreakpointKmerSize,
-                                                           echidna::caller::params::defaults::maxBreakpointKmerSize );
+                                                           wecall::caller::params::defaults::defaultBreakpointKmerSize,
+                                                           wecall::caller::params::defaults::maxBreakpointKmerSize );
 
     const auto breakpoint1 =
         std::make_shared< Breakpoint >( "20", 19170076, true, "ATACATATTTTGTTAAGTTTTTATGTAAGTATTTTATTTTT" );
@@ -613,7 +613,7 @@ BOOST_AUTO_TEST_CASE( testShouldFind1000GTrueDeletionAt19170061 )
 
     const auto variants = breakpointVariantGenerator.getVariantCandidates( {startBpLocus, endBpLocus}, allReads );
     BOOST_REQUIRE_EQUAL( variants.size(), 1 );
-    const std::vector< echidna::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
+    const std::vector< wecall::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
     BOOST_CHECK_EQUAL( *vecVariant[0], Variant( referenceSequence, Region( "20", 19170061, 19170377 ), "" ) );
 
     for ( const auto & variant : variants )
@@ -634,8 +634,8 @@ BOOST_AUTO_TEST_CASE( testShouldFindDeletionAt38337632 )
         "A" );
 
     BreakpointVariantGenerator breakpointVariantGenerator( referenceSequence,
-                                                           echidna::caller::params::defaults::defaultBreakpointKmerSize,
-                                                           echidna::caller::params::defaults::maxBreakpointKmerSize );
+                                                           wecall::caller::params::defaults::defaultBreakpointKmerSize,
+                                                           wecall::caller::params::defaults::maxBreakpointKmerSize );
     const auto eventStart = 38337632;
     const auto eventEnd = 38337769;
 
@@ -660,7 +660,7 @@ BOOST_AUTO_TEST_CASE( testShouldFindDeletionAt38337632 )
     const auto variants =
         breakpointVariantGenerator.getVariantCandidates( {startBpLocus, endBpLocus, endBpLocus2}, allReads );
     BOOST_REQUIRE_EQUAL( variants.size(), 1 );
-    const std::vector< echidna::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
+    const std::vector< wecall::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
     BOOST_CHECK_EQUAL( *vecVariant[0], Variant( referenceSequence, Region( contig, eventStart, eventEnd ), "" ) );
 }
 
@@ -674,8 +674,8 @@ BOOST_AUTO_TEST_CASE( testShouldFindDeletionAt48543735 )
         "AAATAAATAAATAAATAACAGAAGATCTGGACAGACACTTCACAGAGGTAAAACATACAAAATGGCCAATAAACAAATGAAAAGGTACTC" );
 
     BreakpointVariantGenerator breakpointVariantGenerator( referenceSequence,
-                                                           echidna::caller::params::defaults::defaultBreakpointKmerSize,
-                                                           echidna::caller::params::defaults::maxBreakpointKmerSize );
+                                                           wecall::caller::params::defaults::defaultBreakpointKmerSize,
+                                                           wecall::caller::params::defaults::maxBreakpointKmerSize );
     const auto eventStart = 48543735;
     const auto eventEnd = 48543815;
 
@@ -709,7 +709,7 @@ BOOST_AUTO_TEST_CASE( testShouldFindDeletionAt48543735 )
 
     const auto variants = breakpointVariantGenerator.getVariantCandidates( {startBpLocus, endBpLocus}, allReads );
     BOOST_REQUIRE_EQUAL( variants.size(), 1 );
-    const std::vector< echidna::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
+    const std::vector< wecall::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
 
     BOOST_CHECK_EQUAL( *vecVariant[0], Variant( referenceSequence, Region( contig, eventStart, eventEnd ), "" ) );
 }
@@ -724,8 +724,8 @@ BOOST_AUTO_TEST_CASE( testShouldFindDeletionAtChr22_50664005 )
         "GCCCCCATCTTGCACAGCCCTCATGTCCGC" );
 
     BreakpointVariantGenerator breakpointVariantGenerator( referenceSequence,
-                                                           echidna::caller::params::defaults::defaultBreakpointKmerSize,
-                                                           echidna::caller::params::defaults::maxBreakpointKmerSize );
+                                                           wecall::caller::params::defaults::defaultBreakpointKmerSize,
+                                                           wecall::caller::params::defaults::maxBreakpointKmerSize );
 
     // Truth data has 'event' right-aligned 10 bps due to not considering snp at 50664064.
     // Use these positions for convenience.
@@ -763,7 +763,7 @@ BOOST_AUTO_TEST_CASE( testShouldFindDeletionAtChr22_50664005 )
 
     const auto variants = breakpointVariantGenerator.getVariantCandidates( {startBpLocus, endBpLocus}, allReads );
     BOOST_REQUIRE_EQUAL( variants.size(), 2 );
-    const std::vector< echidna::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
+    const std::vector< wecall::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
 
     BOOST_CHECK_EQUAL( *vecVariant[0],
                        Variant( referenceSequence, Region( contig, eventStart - 10, eventEnd - 10 ), "" ) );
@@ -805,12 +805,12 @@ BOOST_AUTO_TEST_CASE( testShouldFindDeletionAtChr1_165731209 )
     const auto allReads = readDataset.getAllReads( 0 );
 
     BreakpointVariantGenerator breakpointVariantGenerator( referenceSequence,
-                                                           echidna::caller::params::defaults::defaultBreakpointKmerSize,
-                                                           echidna::caller::params::defaults::maxBreakpointKmerSize );
+                                                           wecall::caller::params::defaults::defaultBreakpointKmerSize,
+                                                           wecall::caller::params::defaults::maxBreakpointKmerSize );
     const auto variants = breakpointVariantGenerator.getVariantCandidates( {startBpLocus, endBpLocus}, allReads );
 
     BOOST_REQUIRE_EQUAL( variants.size(), 1 );
-    const std::vector< echidna::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
+    const std::vector< wecall::variant::varPtr_t > vecVariant( variants.begin(), variants.end() );
 
     BOOST_CHECK_EQUAL( *vecVariant[0], Variant( referenceSequence, Region( contig, eventStart, eventEnd ), "" ) );
 }

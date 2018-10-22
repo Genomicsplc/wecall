@@ -4,7 +4,7 @@
 
 #include <numeric>
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {

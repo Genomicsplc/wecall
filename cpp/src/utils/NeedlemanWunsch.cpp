@@ -4,7 +4,7 @@
 #include <stack>
 #include "utils/interval.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {

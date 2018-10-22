@@ -11,12 +11,12 @@
 #include "caller/params.hpp"
 #include "io/readDataSet.hpp"
 
-using echidna::io::ReadDataset;
+using wecall::io::ReadDataset;
 
 BOOST_AUTO_TEST_CASE( testReadDataSetInitialisation )
 {
     std::vector< std::string > samples = {"NA12878", "NA12891"};
-    ReadDataset readDataSet( samples, echidna::caller::Region( "1", 0, 0 ) );
+    ReadDataset readDataSet( samples, wecall::caller::Region( "1", 0, 0 ) );
     BOOST_CHECK( readDataSet.isEmpty() );
     std::vector< std::string > setSamples = readDataSet.getSampleNames();
     BOOST_CHECK_EQUAL_COLLECTIONS( setSamples.begin(), setSamples.end(), samples.begin(), samples.end() );

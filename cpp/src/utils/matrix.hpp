@@ -7,7 +7,7 @@
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/matrix_proxy.hpp>
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {
@@ -37,6 +37,6 @@ namespace utils
     void smoothLowOutliers( utils::matrix_t & matrix_t, const double maxDifference );
 
 }  // namespace utils
-}  // namespace echidna
+}  // namespace wecall
 
 #endif

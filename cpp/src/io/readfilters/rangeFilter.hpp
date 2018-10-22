@@ -6,7 +6,7 @@
 #include <functional>
 #include <sstream>
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

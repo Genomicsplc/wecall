@@ -10,7 +10,7 @@
 #include "utils/logging.hpp"
 #include "utils/bestScoreSelector.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {

@@ -3,7 +3,7 @@
 #include "haplotype.hpp"
 #include "variantCombinations.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {

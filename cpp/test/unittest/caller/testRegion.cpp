@@ -7,16 +7,16 @@
 #include "utils/exceptions.hpp"
 #include "io/fastaFile.hpp"
 
-using echidna::utils::Interval;
+using wecall::utils::Interval;
 
-using echidna::caller::Region;
-using echidna::caller::SetRegions;
+using wecall::caller::Region;
+using wecall::caller::SetRegions;
 
 BOOST_AUTO_TEST_CASE( testGetPaddedByAmountProvided )
 {
     BOOST_CHECK_EQUAL( Region( "1", 0, 10 ).getPadded( 5 ), Region( "1", -5, 15 ) );
     BOOST_CHECK_EQUAL( Region( "1", 0, 10 ).getPadded( -5 ), Region( "1", 5, 5 ) );
-    BOOST_CHECK_THROW( Region( "1", 0, 11 ).getPadded( -6 ), echidna::utils::echidna_exception );
+    BOOST_CHECK_THROW( Region( "1", 0, 11 ).getPadded( -6 ), wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( testEquality )
@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE( shouldThrowWhenCombiningRegionsOnDifferentContigs )
 {
     Region regionChr1( "1", 5, 10 );
     Region regionChr2( "2", 8, 15 );
-    BOOST_CHECK_THROW( regionChr1.combine( regionChr2 ), echidna::utils::echidna_exception );
+    BOOST_CHECK_THROW( regionChr1.combine( regionChr2 ), wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( shouldCombineNonOverlappingRegionsWithSameContig )

@@ -3,7 +3,7 @@
 #include <sstream>
 #include <cstdlib>
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

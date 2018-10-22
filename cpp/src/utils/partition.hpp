@@ -2,7 +2,7 @@
 #pragma once
 #include <vector>
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {
@@ -39,4 +39,4 @@ namespace utils
 
     }  // namespace functional
 }  // namespace utils
-}  // namespace echidna
+}  // namespace wecall

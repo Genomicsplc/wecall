@@ -1,7 +1,7 @@
 // All content Copyright (C) 2018 Genomics plc
 #include "vcf/filterDescription.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace vcf
 {

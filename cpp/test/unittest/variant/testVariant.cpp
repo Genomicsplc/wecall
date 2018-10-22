@@ -7,10 +7,10 @@
 #include "alignment/cigar.hpp"
 #include "caller/region.hpp"
 
-using namespace echidna::variant;
-using namespace echidna::alignment;
-using namespace echidna::caller;
-using echidna::utils::ReferenceSequence;
+using namespace wecall::variant;
+using namespace wecall::alignment;
+using namespace wecall::caller;
+using wecall::utils::ReferenceSequence;
 
 BOOST_AUTO_TEST_CASE( should_not_alter_untrimmable_variant )
 {
@@ -293,7 +293,7 @@ BOOST_AUTO_TEST_CASE( should_not_overlap_del_before_with_read_with_matches )
     const auto referenceSequence = std::make_shared< ReferenceSequence >( Region( "1", 10, 20 ), "AAAAAAAAAA" );
     // Variant deletes pos < 15.
     auto del = std::make_shared< Variant >( referenceSequence, Region( "1", 10, 15 ), "" );
-    echidna::io::Read read( std::string( 5, 'A' ), std::string( 5, 'Q' ), "", Cigar( "5M" ), 0, 15, 0, 0, 0, 0, 0,
+    wecall::io::Read read( std::string( 5, 'A' ), std::string( 5, 'Q' ), "", Cigar( "5M" ), 0, 15, 0, 0, 0, 0, 0,
                             referenceSequence );
     BOOST_CHECK( not del->interval().overlaps( read.getMaximalReadInterval() ) );
 }
@@ -303,7 +303,7 @@ BOOST_AUTO_TEST_CASE( should_overlap_del_touching_start_of_read_with_matches )
     const auto referenceSequence = std::make_shared< ReferenceSequence >( Region( "1", 11, 21 ), "AAAAAAAAAA" );
     // Variant deletes pos 15.
     auto del = std::make_shared< Variant >( referenceSequence, Region( "1", 11, 16 ), "" );
-    echidna::io::Read read( std::string( 5, 'A' ), std::string( 5, 'Q' ), "", Cigar( "5M" ), 0, 15, 0, 0, 0, 0, 0,
+    wecall::io::Read read( std::string( 5, 'A' ), std::string( 5, 'Q' ), "", Cigar( "5M" ), 0, 15, 0, 0, 0, 0, 0,
                             referenceSequence );
     BOOST_CHECK( del->interval().overlaps( read.getMaximalReadInterval() ) );
 }
@@ -313,7 +313,7 @@ BOOST_AUTO_TEST_CASE( should_not_overlap_del_before_with_read_with_insertion_at_
     const auto referenceSequence = std::make_shared< ReferenceSequence >( Region( "1", 10, 15 ), "AAAAA" );
     // Variant deletes pos < 15.
     auto del = std::make_shared< Variant >( referenceSequence, referenceSequence->region(), "" );
-    echidna::io::Read read( std::string( 5, 'A' ), std::string( 5, 'Q' ), "", Cigar( "1I4M" ), 0, 16, 0, 0, 0, 0, 0,
+    wecall::io::Read read( std::string( 5, 'A' ), std::string( 5, 'Q' ), "", Cigar( "1I4M" ), 0, 16, 0, 0, 0, 0, 0,
                             referenceSequence );
     BOOST_CHECK( not del->interval().overlaps( read.getMaximalReadInterval() ) );
 }
@@ -325,7 +325,7 @@ BOOST_AUTO_TEST_CASE( should_overlap_del_touching_start_of_read_with_insertion_a
     auto del = std::make_shared< Variant >( referenceSequence, referenceSequence->region(), "" );
     // Read starts at aligned pos 16 BUT has an insertion before first piece of matching sequence in effect could be
     // flattened to start at 15.
-    echidna::io::Read read( std::string( 5, 'A' ), std::string( 5, 'Q' ), "", Cigar( "1I4M" ), 0, 16, 0, 0, 0, 0, 0,
+    wecall::io::Read read( std::string( 5, 'A' ), std::string( 5, 'Q' ), "", Cigar( "1I4M" ), 0, 16, 0, 0, 0, 0, 0,
                             referenceSequence );
     BOOST_CHECK( del->interval().overlaps( read.getMaximalReadInterval() ) );
 }
@@ -337,7 +337,7 @@ BOOST_AUTO_TEST_CASE( should_not_overlap_del_after_with_read_with_matches )
     // Variant deletes pos >= 20.
     // Read last pos it 19.
     auto del = std::make_shared< Variant >( referenceSequence, Region( "1", 20, 25 ), "" );
-    echidna::io::Read read( std::string( 5, 'A' ), std::string( 5, 'Q' ), "", Cigar( "5M" ), 0, 15, 0, 0, 0, 0, 0,
+    wecall::io::Read read( std::string( 5, 'A' ), std::string( 5, 'Q' ), "", Cigar( "5M" ), 0, 15, 0, 0, 0, 0, 0,
                             referenceSequence );
     BOOST_CHECK( not del->interval().overlaps( read.getMaximalReadInterval() ) );
 }
@@ -348,7 +348,7 @@ BOOST_AUTO_TEST_CASE( should_overlap_del_touching_end_of_read_with_matches )
     // Variant deletes pos 19.
     // Read last pos is 19
     auto del = std::make_shared< Variant >( referenceSequence, Region( "1", 19, 24 ), "" );
-    echidna::io::Read read( std::string( 5, 'A' ), std::string( 5, 'Q' ), "", Cigar( "5M" ), 0, 15, 0, 0, 0, 0, 0,
+    wecall::io::Read read( std::string( 5, 'A' ), std::string( 5, 'Q' ), "", Cigar( "5M" ), 0, 15, 0, 0, 0, 0, 0,
                             referenceSequence );
     BOOST_CHECK( del->interval().overlaps( read.getMaximalReadInterval() ) );
 }
@@ -359,7 +359,7 @@ BOOST_AUTO_TEST_CASE( should_not_overlap_del_after_with_read_with_insertion_at_e
     // Variant deletes pos >= 20.
     // Read last aligned pos is 18 with one insertion.
     auto del = std::make_shared< Variant >( referenceSequence, referenceSequence->region(), "" );
-    echidna::io::Read read( std::string( 5, 'A' ), std::string( 5, 'Q' ), "", Cigar( "4M1I" ), 0, 15, 0, 0, 0, 0, 0,
+    wecall::io::Read read( std::string( 5, 'A' ), std::string( 5, 'Q' ), "", Cigar( "4M1I" ), 0, 15, 0, 0, 0, 0, 0,
                             referenceSequence );
     BOOST_CHECK( not del->interval().overlaps( read.getMaximalReadInterval() ) );
 }
@@ -370,7 +370,7 @@ BOOST_AUTO_TEST_CASE( should_overlap_del_touching_end_of_read_with_insertion_at_
     // Variant deletes pos 19.
     // Read last aligned pos is 18 but has one bit of insertion meaning they "touch"
     auto del = std::make_shared< Variant >( referenceSequence, referenceSequence->region(), "" );
-    echidna::io::Read read( std::string( 5, 'A' ), std::string( 5, 'Q' ), "", Cigar( "4M1I" ), 0, 15, 0, 0, 0, 0, 0,
+    wecall::io::Read read( std::string( 5, 'A' ), std::string( 5, 'Q' ), "", Cigar( "4M1I" ), 0, 15, 0, 0, 0, 0, 0,
                             referenceSequence );
     BOOST_CHECK( del->interval().overlaps( read.getMaximalReadInterval() ) );
 }
@@ -384,7 +384,7 @@ BOOST_AUTO_TEST_CASE( shouldSortVariantsFirstOnContig )
 
     std::vector< varPtr_t > variants = {snpB, snpA};
 
-    std::sort( variants.begin(), variants.end(), echidna::variant::varPtrComp() );
+    std::sort( variants.begin(), variants.end(), wecall::variant::varPtrComp() );
 
     std::vector< varPtr_t > expectedResult = {snpA, snpB};
 
@@ -402,7 +402,7 @@ BOOST_AUTO_TEST_CASE( shouldSortVariantsSecondOnLastRefPosBeforeSequence )
 
     std::vector< varPtr_t > variants = {del, mnp};
 
-    std::sort( variants.begin(), variants.end(), echidna::variant::varPtrComp() );
+    std::sort( variants.begin(), variants.end(), wecall::variant::varPtrComp() );
 
     std::vector< varPtr_t > expectedResult = {mnp, del};
 
@@ -421,7 +421,7 @@ BOOST_AUTO_TEST_CASE( shouldSortThirdlyEndPosition )
 
     std::vector< varPtr_t > variants = {mnp, del};
 
-    std::sort( variants.begin(), variants.end(), echidna::variant::varPtrComp() );
+    std::sort( variants.begin(), variants.end(), wecall::variant::varPtrComp() );
 
     std::vector< varPtr_t > expectedResult = {del, mnp};
 
@@ -441,7 +441,7 @@ BOOST_AUTO_TEST_CASE( shouldSortForthlyOnend )
 
     std::vector< varPtr_t > variants = {mnp, snp};
 
-    std::sort( variants.begin(), variants.end(), echidna::variant::varPtrComp() );
+    std::sort( variants.begin(), variants.end(), wecall::variant::varPtrComp() );
 
     std::vector< varPtr_t > expectedResult = {snp, mnp};
 
@@ -462,7 +462,7 @@ BOOST_AUTO_TEST_CASE( shouldSortFiftlyOnSequenceLength )
 
     std::vector< varPtr_t > variants = {ins_2, ins_1};
 
-    std::sort( variants.begin(), variants.end(), echidna::variant::varPtrComp() );
+    std::sort( variants.begin(), variants.end(), wecall::variant::varPtrComp() );
 
     std::vector< varPtr_t > expectedResult = {ins_1, ins_2};
 
@@ -485,7 +485,7 @@ BOOST_AUTO_TEST_CASE( shouldSortFinallyOnSequence )
 
     std::vector< varPtr_t > variants = {mnp_2, mnp_1};
 
-    std::sort( variants.begin(), variants.end(), echidna::variant::varPtrComp() );
+    std::sort( variants.begin(), variants.end(), wecall::variant::varPtrComp() );
 
     std::vector< varPtr_t > expectedResult = {mnp_1, mnp_2};
 
@@ -508,7 +508,7 @@ BOOST_AUTO_TEST_CASE( shouldSortCollectionAtSameVCFPosition )
 
     std::vector< varPtr_t > variants = {del, ins, mnp, snp};
 
-    std::sort( variants.begin(), variants.end(), echidna::variant::varPtrComp() );
+    std::sort( variants.begin(), variants.end(), wecall::variant::varPtrComp() );
 
     std::vector< varPtr_t > expectedResult = {snp, mnp, ins, del};
 
@@ -531,7 +531,7 @@ BOOST_AUTO_TEST_CASE( shouldSortCollectionWithLastRefBeforeSequence )
 
     std::vector< varPtr_t > variants = {del, ins, mnp, snp};
 
-    std::sort( variants.begin(), variants.end(), echidna::variant::varPtrComp() );
+    std::sort( variants.begin(), variants.end(), wecall::variant::varPtrComp() );
 
     std::vector< varPtr_t > expectedResult = {ins, del, snp, mnp};
 
@@ -678,7 +678,7 @@ BOOST_AUTO_TEST_CASE( testVariantOnlyRemovableIfContainedInOthersRegion )
     BOOST_CHECK_EQUAL( *expectPureDeletion, Variant( referenceSequence, Region( "1", 0, 1 ), "" ) );
 
     BOOST_CHECK( not variant2->removable( variant1 ) );
-    BOOST_CHECK_THROW( variant2->remove( variant1 ), echidna::utils::echidna_exception );
+    BOOST_CHECK_THROW( variant2->remove( variant1 ), wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( testVariantOnlyRemovableIfStartsOrEndsAtSameLocation )
@@ -688,7 +688,7 @@ BOOST_AUTO_TEST_CASE( testVariantOnlyRemovableIfStartsOrEndsAtSameLocation )
     const auto variant2 = std::make_shared< Variant >( referenceSequence, Region( "1", 1, 9 ), "TC" );
 
     BOOST_CHECK( not variant1->removable( variant2 ) );
-    BOOST_CHECK_THROW( variant1->remove( variant2 ), echidna::utils::echidna_exception );
+    BOOST_CHECK_THROW( variant1->remove( variant2 ), wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( testVariantOnlyRemovableIfAlternateSequenceMatches )
@@ -708,8 +708,8 @@ BOOST_AUTO_TEST_CASE( testVariantOnlyRemovableIfAlternateSequenceMatches )
     BOOST_CHECK_EQUAL( *variant1->remove( variant2 ), Variant( referenceSequence, Region( "1", 5, 10 ), "C" ) );
     BOOST_CHECK_EQUAL( *variant1->remove( variant3 ), Variant( referenceSequence, Region( "1", 0, 5 ), "T" ) );
 
-    BOOST_CHECK_THROW( variant1->remove( variant4 ), echidna::utils::echidna_exception );
-    BOOST_CHECK_THROW( variant1->remove( variant5 ), echidna::utils::echidna_exception );
+    BOOST_CHECK_THROW( variant1->remove( variant4 ), wecall::utils::wecall_exception );
+    BOOST_CHECK_THROW( variant1->remove( variant5 ), wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( testShouldTrimResultOfRemovingVariant )
@@ -730,15 +730,15 @@ BOOST_AUTO_TEST_CASE( testShouldCacheReadsInVariantClass )
 {
     const auto referenceSequence = std::make_shared< ReferenceSequence >( Region( "1", 5, 17 ), "GGGGGATGGGGG" );
     auto var = std::make_shared< Variant >( referenceSequence, Region( "1", 10, 12 ), "CG" );
-    auto readPtr1 = std::make_shared< echidna::io::Read >( "EDWARD", "ADRIAN", "", echidna::alignment::Cigar( "6M" ), 0,
+    auto readPtr1 = std::make_shared< wecall::io::Read >( "EDWARD", "ADRIAN", "", wecall::alignment::Cigar( "6M" ), 0,
                                                            10, 0, 0, 0, 0, 0, referenceSequence );
-    auto readPtr2 = std::make_shared< echidna::io::Read >( "ADRIAN", "EDWARD", "", echidna::alignment::Cigar( "6M" ), 0,
+    auto readPtr2 = std::make_shared< wecall::io::Read >( "ADRIAN", "EDWARD", "", wecall::alignment::Cigar( "6M" ), 0,
                                                            10, 0, 0, 0, 0, 0, referenceSequence );
 
     var->addRead( readPtr1 );
     var->addRead( readPtr2 );
 
-    const std::vector< echidna::io::readPtr_t > expected = {readPtr1, readPtr2};
+    const std::vector< wecall::io::readPtr_t > expected = {readPtr1, readPtr2};
     const auto actual = var->getReads();
 
     BOOST_CHECK_EQUAL_COLLECTIONS( expected.begin(), expected.end(), actual.begin(), actual.end() );

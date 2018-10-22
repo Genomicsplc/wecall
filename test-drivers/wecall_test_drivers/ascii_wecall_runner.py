@@ -3,7 +3,7 @@ from collections import OrderedDict
 import copy
 from wecall.bamutils.sample_bank import SampleBank
 from wecall.bamutils.sequence import Sequence
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 from wecall.genomics.variant import Variant
 from wecall.vcfutils.genotype_call import GenotypeCall
 from wecall_test_drivers.base_test import BaseTest
@@ -237,7 +237,7 @@ class AsciiWecallRunnerTest(BaseTest):
     @staticmethod
     def __validate_expected_calls(expected_ascii, expected_stubs):
         if expected_ascii is None and expected_stubs is None:
-            raise EchidnaException(
+            raise weCallException(
                 "Expected variants have to be provided either in the ascii or variant stub format."
             )
 
@@ -268,7 +268,7 @@ class AsciiWecallRunnerTest(BaseTest):
                 ascii_strings, reference)
             for variant, genotype in calls_for_sample.items():
                 if variant in calls_per_variant and sample_name in calls_per_variant[variant]:
-                    raise EchidnaException(
+                    raise weCallException(
                         "Cannot supply multiple genotypes for "
                         "sample_name {} and variant {}.".format(
                             sample_name, variant))
@@ -284,11 +284,11 @@ class AsciiWecallRunnerTest(BaseTest):
     @staticmethod
     def __get_expected_calls_from_haplotypes(ascii_strings, reference):
         if len(ascii_strings) != 2:
-            raise EchidnaException(
+            raise weCallException(
                 "Expected calls have to be defined as a diploid.")
         if not all(len(str) == reference.length_with_deletions()
                    for str in ascii_strings):
-            raise EchidnaException(
+            raise weCallException(
                 "Ascii haplotypes have to be of the same length as the reference")
 
         vars_from_hap1 = Sequence(reference, ascii_strings[0]).variants

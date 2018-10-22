@@ -6,7 +6,7 @@
 #include "utils/write.hpp"
 #include "vcf/field.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace varfilters
 {

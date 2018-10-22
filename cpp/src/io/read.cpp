@@ -17,7 +17,7 @@
 #include <utils/sequence.hpp>
 #include <samtools/bam.h>
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {
@@ -73,7 +73,7 @@ namespace io
         m_sequenceStr = sequenceStr;
         if ( sequenceStr.size() == 0 || q[0] == 0xff )
         {
-            throw utils::echidna_exception( "Invalid bamRecord in Read constructor" );
+            throw utils::wecall_exception( "Invalid bamRecord in Read constructor" );
         }
     }
 

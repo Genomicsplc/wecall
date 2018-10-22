@@ -3,7 +3,7 @@
 #include "variant/breakpointVariantGenerator.hpp"
 #include "variant/haplotypeGenerator.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {

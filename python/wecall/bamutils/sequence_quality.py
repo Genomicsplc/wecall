@@ -1,7 +1,7 @@
 # All content Copyright (C) 2018 Genomics plc
 from wecall.bamutils.sequence_position import MISSING_BASE
 import re
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 
 
 class SequenceQuality(object):
@@ -22,7 +22,7 @@ class SequenceQuality(object):
 
     def __init__(self, quality_string, quality_mapping=QUALITY_MAPPING):
         if not SequenceQuality.is_valid_qual(quality_string):
-            raise EchidnaException(
+            raise weCallException(
                 "Illegal character in the quality string {!r}".format(quality_string))
 
         self.quality_mapping = quality_mapping

@@ -14,7 +14,7 @@
 #include "utils/exceptions.hpp"
 #include <boost/container/flat_set.hpp>
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {
@@ -334,7 +334,7 @@ namespace utils
                 {
                     ECHIDNA_LOG( DEBUG, "Unable to insert interval= " << newInterval.toString() << " On "
                                                                       << this->toString() );
-                    throw utils::echidna_exception( "Unable to insert interval" );
+                    throw utils::wecall_exception( "Unable to insert interval" );
                 }
             }
 
@@ -448,7 +448,7 @@ namespace utils
                 {
                     ECHIDNA_LOG( FATAL, "Error finding overlaps for interval " << queryInterval.toString() << " on "
                                                                                << this->toString() );
-                    throw utils::echidna_exception( "Error finding overlaps for interval" );
+                    throw utils::wecall_exception( "Error finding overlaps for interval" );
                 }
             }
 

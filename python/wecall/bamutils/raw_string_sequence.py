@@ -3,7 +3,7 @@ from wecall.bamutils.read_sequence import ReadSequence, ReadSequenceWithCoverage
 from wecall.bamutils.sequence import Sequence
 from wecall.bamutils.sequence_position import DELETED_BASE
 from wecall.bamutils.sequence_quality import SequenceQuality
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 import re
 
 from wecall.genomics.reference_chromosome import ReferenceChromosome
@@ -21,7 +21,7 @@ class RawStringSequences(object):
     @property
     def sequence_string(self):
         if not self.is_forward_seq() and not self.is_reverse_seq():
-            raise EchidnaException(
+            raise weCallException(
                 "Illegal character in sequence {!r}".format(
                     self.__sequence_string))
 
@@ -71,5 +71,5 @@ class RawStringSequences(object):
         elif self.is_forward_seq():
             return [ReadSequenceWithCoverage(read_sequence, 1, 0)]
         else:
-            raise EchidnaException(
+            raise weCallException(
                 "Raw sequence: {} is neither forward or reverse".format(self))

@@ -8,14 +8,14 @@
 #include "utils/exceptions.hpp"
 #include "utils/referenceSequence.hpp"
 
-using echidna::caller::Region;
-using echidna::caller::SetRegions;
-using echidna::utils::ReferenceSequence;
-using echidna::variant::Variant;
+using wecall::caller::Region;
+using wecall::caller::SetRegions;
+using wecall::utils::ReferenceSequence;
+using wecall::variant::Variant;
 
 BOOST_AUTO_TEST_CASE( testInsertion )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     const std::string contig( "1" );
     const std::string added( "A" );
@@ -27,13 +27,13 @@ BOOST_AUTO_TEST_CASE( testInsertion )
     BOOST_CHECK_EQUAL( theInsertion->end(), 1000001 );
 
     auto expectedPrior = 1e-4 * pow( 0.33, added.size() );
-    echidna::variant::setDefaultPriors( {theInsertion} );
+    wecall::variant::setDefaultPriors( {theInsertion} );
     BOOST_CHECK_CLOSE( theInsertion->prior(), expectedPrior, 1e-5 );
 }
 
 BOOST_AUTO_TEST_CASE( testLeftAlignIns )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     const auto refSeq = std::make_shared< ReferenceSequence >( Region( "1", 999999, 1000003 ), "AGGG" );
 
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE( testLeftAlignIns )
 BOOST_AUTO_TEST_CASE( testLeftAlignIns2 )
 {
     // Test left-aligning insertions
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     // Reference genome 37, chrom 1 from 1000000 - 1000099
     //
@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE( testLeftAlignIns2 )
 BOOST_AUTO_TEST_CASE( insertionWontLeftAlignWhenBoundaryInsideRepetitiveRegion )
 {
     // Test left-aligning insertions
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     // Reference genome 37, chrom 1 from 1000000 - 1000099
     //
@@ -135,7 +135,7 @@ BOOST_AUTO_TEST_CASE( insertionWontLeftAlignWhenBoundaryInsideRepetitiveRegion )
 BOOST_AUTO_TEST_CASE( insertionWillLeftAlignWhenBoundaryInsideRepetitiveRegion )
 {
     // Test left-aligning insertions
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     // Reference genome 37, chrom 1 from 1000000 - 1000099
     //
@@ -154,7 +154,7 @@ BOOST_AUTO_TEST_CASE( insertionWillLeftAlignWhenBoundaryInsideRepetitiveRegion )
 
 BOOST_AUTO_TEST_CASE( insertionWillLeftAlignInComplexRepeatRegion )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
     const auto refSeq = std::make_shared< ReferenceSequence >( Region( "1", 51, 101 ),
                                                                "TGATTACAGATTACAGATTACAGATTACAGATTACAGATTACAGATTACA" );
     varPtr_t ins( new Variant( refSeq, Region( "1", 101, 101 ), "GATTACA", false ) );
@@ -166,7 +166,7 @@ BOOST_AUTO_TEST_CASE( insertionWillLeftAlignInComplexRepeatRegion )
 
 BOOST_AUTO_TEST_CASE( insertionWillLeftAlignInComplexRepeatRegionWithAllRefStringOfRepeatUnits )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
     const auto refSeq = std::make_shared< ReferenceSequence >( Region( "1", 52, 101 ),
                                                                "GATTACAGATTACAGATTACAGATTACAGATTACAGATTACAGATTACA" );
     varPtr_t ins( new Variant( refSeq, Region( "1", 101, 101 ), "GATTACA", false ) );
@@ -179,7 +179,7 @@ BOOST_AUTO_TEST_CASE( insertionWillLeftAlignInComplexRepeatRegionWithAllRefStrin
 
 BOOST_AUTO_TEST_CASE( insertionWillLeftAlignInComplexRepeatRegionWithChangeToSequence )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
     const auto referenceSequence = std::make_shared< ReferenceSequence >(
         Region( "1", 50, 101 ), "TAGATTACAGATTACAGATTACAGATTACAGATTACAGATTACAGATTACA" );
     varPtr_t var( new Variant( referenceSequence, Region( "1", 101, 101 ), "GATTACA", false ) );
@@ -194,7 +194,7 @@ BOOST_AUTO_TEST_CASE( insertionWillLeftAlignInComplexRepeatRegionWithChangeToSeq
 
     BOOST_CHECK_EQUAL( var->refSequence(), var3->refSequence() );
     BOOST_CHECK_EQUAL( var->sequence(), var3->sequence() );
-    echidna::variant::setDefaultPriors( {var, var3} );
+    wecall::variant::setDefaultPriors( {var, var3} );
     BOOST_CHECK_CLOSE( var->prior(), var3->prior(), 1e-5 );
     BOOST_CHECK( not var3->isFullyLeftAligned() );
 }
@@ -202,7 +202,7 @@ BOOST_AUTO_TEST_CASE( insertionWillLeftAlignInComplexRepeatRegionWithChangeToSeq
 BOOST_AUTO_TEST_CASE(
     insertionWillLeftAlignInComplexRepeatRegionWithChangeToSequenceAndAllRefStringMatchingRepeatUnits )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
     const auto referenceSequence = std::make_shared< ReferenceSequence >(
         Region( "1", 50, 101 ), "CAGATTACAGATTACAGATTACAGATTACAGATTACAGATTACAGATTACA" );
     varPtr_t var = std::make_shared< Variant >( referenceSequence, Region( "1", 101, 101 ), "GATTACA", false );
@@ -216,7 +216,7 @@ BOOST_AUTO_TEST_CASE(
 
     BOOST_CHECK_EQUAL( var->refSequence(), var3->refSequence() );
     BOOST_CHECK_EQUAL( var->sequence(), var3->sequence() );
-    echidna::variant::setDefaultPriors( {var, var3} );
+    wecall::variant::setDefaultPriors( {var, var3} );
     BOOST_CHECK_CLOSE( var->prior(), var3->prior(), 1e-5 );
 }
 
@@ -236,7 +236,7 @@ BOOST_AUTO_TEST_CASE( testInsertionJoinsWithDeletionOnlyOnRight )
     BOOST_CHECK_EQUAL( join->sequence(), "AT" );
 
     BOOST_CHECK( not ins1->joinable( ins3 ) );
-    BOOST_CHECK_THROW( ins1->join( ins3 ), echidna::utils::echidna_exception );
+    BOOST_CHECK_THROW( ins1->join( ins3 ), wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( testInsertionBah )
@@ -255,28 +255,28 @@ BOOST_AUTO_TEST_CASE( testInsertionBah )
 BOOST_AUTO_TEST_CASE( insertionnWillRightAlignSingleRepeatUnit )
 {
     const auto refSeq = std::make_shared< ReferenceSequence >( Region( "1", 100, 110 ), "AAAAATTTTT" );
-    echidna::variant::varPtr_t del = std::make_shared< Variant >( refSeq, Region( "1", 100, 100 ), "A" );
+    wecall::variant::varPtr_t del = std::make_shared< Variant >( refSeq, Region( "1", 100, 100 ), "A" );
 
     auto del2 = del->getRightAligned( 109 );
 
     BOOST_CHECK_EQUAL( del2->contig(), "1" );
     BOOST_CHECK_EQUAL( del2->start(), 105 );
     BOOST_CHECK_EQUAL( del2->end(), 105 );
-    BOOST_CHECK_EQUAL( del2->sequence(), echidna::utils::BasePairSequence( "A" ) );
+    BOOST_CHECK_EQUAL( del2->sequence(), wecall::utils::BasePairSequence( "A" ) );
     BOOST_CHECK( not del2->isFullyLeftAligned() );
 }
 
 BOOST_AUTO_TEST_CASE( insertionWillRightAlignMultiRepeatUnit )
 {
     const auto refSeq = std::make_shared< ReferenceSequence >( Region( "1", 100, 110 ), "ATATATACCC" );
-    echidna::variant::varPtr_t var = std::make_shared< Variant >( refSeq, Region( "1", 100, 100 ), "AT" );
+    wecall::variant::varPtr_t var = std::make_shared< Variant >( refSeq, Region( "1", 100, 100 ), "AT" );
 
     auto var2 = var->getRightAligned( 109 );
 
     BOOST_CHECK_EQUAL( var2->contig(), "1" );
     BOOST_CHECK_EQUAL( var2->start(), 107 );
     BOOST_CHECK_EQUAL( var2->end(), 107 );
-    BOOST_CHECK_EQUAL( var2->sequence(), echidna::utils::BasePairSequence( "TA" ) );
+    BOOST_CHECK_EQUAL( var2->sequence(), wecall::utils::BasePairSequence( "TA" ) );
     BOOST_CHECK( not var2->isFullyLeftAligned() );
 
     BOOST_CHECK_EQUAL( var2->getStartEndRegions( var2->start() - 1, var2->end() + 1 ),

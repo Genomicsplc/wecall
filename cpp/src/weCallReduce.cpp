@@ -1,7 +1,7 @@
 // All content Copyright (C) 2018 Genomics plc
 #include "weCallReduce.hpp"
 
-namespace echidna
+namespace wecall
 {
 using namespace boost::program_options;
 using namespace io;

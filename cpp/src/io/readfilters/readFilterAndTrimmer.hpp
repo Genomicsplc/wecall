@@ -9,7 +9,7 @@
 #include "caller/params.hpp"
 #include "io/readfilters/readFilter.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

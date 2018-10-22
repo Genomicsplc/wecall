@@ -1,7 +1,7 @@
 # All content Copyright (C) 2018 Genomics plc
 from unittest import TestCase
 from wecall.bamutils.sequence_quality import SequenceQuality
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 
 
 class TestGetVariantsFromSequence(TestCase):
@@ -22,7 +22,7 @@ class TestGetVariantsFromSequence(TestCase):
 
     def test_should_raise_on_non_numerical_character(self):
         self.assertRaisesRegex(
-            EchidnaException,
+            weCallException,
             "Illegal character in the quality string .*",
             SequenceQuality,
             "  A "

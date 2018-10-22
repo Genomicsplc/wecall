@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-namespace echidna
+namespace wecall
 {
 namespace alignment
 {

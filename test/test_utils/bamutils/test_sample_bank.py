@@ -1,5 +1,5 @@
 # All content Copyright (C) 2018 Genomics plc
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 import unittest
 from wecall.bamutils.sample_bank import SampleBank
 from wecall.genomics.variant import Variant
@@ -34,7 +34,7 @@ class TestSampleBank(unittest.TestCase):
 
     def test_should_raise_for_invalid_ref_string(self):
         self.assertRaisesRegex(
-            EchidnaException,
+            weCallException,
             "Illegal character in reference sequence .*",
             SampleBank,
             "..ATTTTGGGAG"
@@ -46,7 +46,7 @@ class TestSampleBank(unittest.TestCase):
         sample_bank.add_sample_name(sample_name)
 
         self.assertRaisesRegex(
-            EchidnaException,
+            weCallException,
             "Sample SAMPLE1 already exists in the SampleBank.",
             sample_bank.add_sample_with_seqs_and_quals,
             sample_name,
@@ -138,7 +138,7 @@ class TestSampleBank(unittest.TestCase):
         sample_bank = SampleBank("AAA")
 
         self.assertRaisesRegex(
-            EchidnaException,
+            weCallException,
             "Illegal character in sequence \'008\'",
             sample_bank.add_sample_with_seqs_and_quals,
             "SAMPLE1",

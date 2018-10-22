@@ -7,7 +7,7 @@
 
 #include "common.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace corrector
 {
@@ -30,6 +30,6 @@ namespace corrector
         // TODO(semen): check that max abs distances == padding
     };
 }  // namespace corrector
-}  // namespace echidna
+}  // namespace wecall
 
 #endif

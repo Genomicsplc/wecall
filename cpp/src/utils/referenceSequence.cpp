@@ -3,11 +3,11 @@
 #include "caller/region.hpp"
 #include "utils/sequence.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {
-    ReferenceSequence::ReferenceSequence( caller::Region region, echidna::utils::BasePairSequence sequence )
+    ReferenceSequence::ReferenceSequence( caller::Region region, wecall::utils::BasePairSequence sequence )
         : m_region( region ), m_sequence( sequence )
     {
         ECHIDNA_ASSERT( ( static_cast< std::size_t >( m_region.size() ) == m_sequence.size() ),

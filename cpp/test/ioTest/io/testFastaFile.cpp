@@ -8,10 +8,10 @@
 
 #include <iostream>
 
-using namespace echidna::caller;
-using namespace echidna::test;
+using namespace wecall::caller;
+using namespace wecall::test;
 
-using echidna::utils::Interval;
+using wecall::utils::Interval;
 
 BOOST_FIXTURE_TEST_CASE( testFastafileContigOrder, FastaIndexFileFixture )
 {
@@ -95,19 +95,19 @@ BOOST_FIXTURE_TEST_CASE( testFastafileGetSequence, FastaFileFixture )
     // Here we check that we can recover some sequences from a FASTA file.
 
     BOOST_CHECK_EQUAL( refFiles[0]->getSequence( Region( "1", 55, 65 ) ).sequence(),
-                       echidna::utils::BasePairSequence( "NNNNNCGCAG" ) );
+                       wecall::utils::BasePairSequence( "NNNNNCGCAG" ) );
 
     BOOST_CHECK_EQUAL( refFiles[0]->getSequence( Region( "2", 55, 65 ) ).sequence(),
-                       echidna::utils::BasePairSequence( "NNNNNCCACA" ) );
+                       wecall::utils::BasePairSequence( "NNNNNCCACA" ) );
 
     BOOST_CHECK_EQUAL( refFiles[0]->getSequence( Region( "1", 235, 245 ) ).sequence(),
-                       echidna::utils::BasePairSequence( "CAGGANNNNN" ) );
+                       wecall::utils::BasePairSequence( "CAGGANNNNN" ) );
 
     BOOST_CHECK_EQUAL( refFiles[0]->getSequence( Region( "2", 205, 215 ) ).sequence(),
-                       echidna::utils::BasePairSequence( "ATGGANNNNN" ) );
+                       wecall::utils::BasePairSequence( "ATGGANNNNN" ) );
 
     BOOST_CHECK_THROW( refFiles[0]->getSequence( Region( "3", 205, 215 ) ).sequence(),
-                       echidna::utils::echidna_exception );
+                       wecall::utils::wecall_exception );
 }
 
 BOOST_FIXTURE_TEST_CASE( testFastafileGetForClusterWithPaddingWiderThanMaximumRegion, FastaFileFixture )
@@ -121,9 +121,9 @@ BOOST_FIXTURE_TEST_CASE( testFastafileGetForClusterWithPaddingWiderThanMaximumRe
         refSequenceForCluster.getPaddedSequence( clusterRegion, maximalRefFileRegion, desiredPadding );
 
     BOOST_CHECK_EQUAL( paddedSequence.region(), Region( "1", 100, 130 ) );
-    BOOST_CHECK_EQUAL( paddedSequence.sequence(), echidna::utils::BasePairSequence( "NNN" ) +
-                                                      echidna::utils::BasePairSequence( "GTGGCGCAGGCGCAGAGAGGCGCA" ) +
-                                                      echidna::utils::BasePairSequence( "NNN" ) );
+    BOOST_CHECK_EQUAL( paddedSequence.sequence(), wecall::utils::BasePairSequence( "NNN" ) +
+                                                      wecall::utils::BasePairSequence( "GTGGCGCAGGCGCAGAGAGGCGCA" ) +
+                                                      wecall::utils::BasePairSequence( "NNN" ) );
 }
 
 BOOST_FIXTURE_TEST_CASE( testFastafileGetForClusterThrowsIfMaximalRegionNotContainingClusterRegion, FastaFileFixture )
@@ -132,9 +132,9 @@ BOOST_FIXTURE_TEST_CASE( testFastafileGetForClusterThrowsIfMaximalRegionNotConta
     const auto referenceSequence = refFiles[0]->getSequence( maximumRefFileRegion );
 
     BOOST_CHECK_THROW( referenceSequence.getPaddedSequence( Region( "1", 110, 120 ), maximumRefFileRegion, 10 ),
-                       echidna::utils::echidna_exception );
+                       wecall::utils::wecall_exception );
     BOOST_CHECK_THROW( referenceSequence.getPaddedSequence( Region( "1", 111, 128 ), maximumRefFileRegion, 10 ),
-                       echidna::utils::echidna_exception );
+                       wecall::utils::wecall_exception );
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -145,9 +145,9 @@ BOOST_FIXTURE_TEST_CASE( testFastafileGetPaddedSequence, FastaFileFixture )
     // a FASTA file. Regions which are beyond the chromosome arAGGCGCACCG
 
     BOOST_CHECK_EQUAL( refFiles[0]->getSequence( Region( "1", -10, 0 ) ).sequence(),
-                       echidna::utils::BasePairSequence( "NNNNNNNNNN" ) );
+                       wecall::utils::BasePairSequence( "NNNNNNNNNN" ) );
     BOOST_CHECK_EQUAL( refFiles[0]->getSequence( Region( "1", 240, 250 ) ).sequence(),
-                       echidna::utils::BasePairSequence( "NNNNNNNNNN" ) );
+                       wecall::utils::BasePairSequence( "NNNNNNNNNN" ) );
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -158,20 +158,20 @@ BOOST_FIXTURE_TEST_CASE( testFastafileCaching, FastaFileFixture )
     // a FASTA file, with caching.
 
     // Cache a large chunk of chr1
-    refFiles[0]->cacheSequence( echidna::caller::Region( "1", 0, 240 ) );
+    refFiles[0]->cacheSequence( wecall::caller::Region( "1", 0, 240 ) );
 
     BOOST_CHECK_EQUAL( refFiles[0]->getSequence( Region( "1", 100, 110 ) ).sequence(),
-                       echidna::utils::BasePairSequence( "GGCGTGGCGC" ) );
+                       wecall::utils::BasePairSequence( "GGCGTGGCGC" ) );
     BOOST_CHECK_EQUAL(
         refFiles[0]->getSequence( Region( "1", 120, 180 ) ).sequence(),
-        echidna::utils::BasePairSequence( "AGGCGCACCGCGCCGGCGCAGGCGCAGAGACACATGCTAGCGCGTCCAGGGGTGGAGGCG" ) );
+        wecall::utils::BasePairSequence( "AGGCGCACCGCGCCGGCGCAGGCGCAGAGACACATGCTAGCGCGTCCAGGGGTGGAGGCG" ) );
 
     // doesn't throw at the attempt to cache beyond the end of the sequence.
-    refFiles[0]->cacheSequence( echidna::caller::Region( "1", 0, 20000 ) );
+    refFiles[0]->cacheSequence( wecall::caller::Region( "1", 0, 20000 ) );
 
     // Check boundaries of cache. Can get same region as specified by cache.
     Region smallRegion( "1", 100, 110 );
     refFiles[0]->cacheSequence( smallRegion );
     BOOST_CHECK_EQUAL( refFiles[0]->getSequence( smallRegion ).sequence(),
-                       echidna::utils::BasePairSequence( "GGCGTGGCGC" ) );
+                       wecall::utils::BasePairSequence( "GGCGTGGCGC" ) );
 }

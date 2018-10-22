@@ -6,7 +6,7 @@
 #include "assembly/node.hpp"
 #include <cassert>
 
-namespace echidna
+namespace wecall
 {
 namespace assembly
 {

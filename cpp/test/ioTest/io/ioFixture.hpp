@@ -11,7 +11,7 @@
 #include <vector>
 #include <string>
 
-namespace echidna
+namespace wecall
 {
 namespace test
 {
@@ -59,7 +59,7 @@ namespace test
 
             for ( const auto & filename : bedNames )
             {
-                bedFiles.emplace_back( new echidna::io::BedFile( filename ) );
+                bedFiles.emplace_back( new wecall::io::BedFile( filename ) );
             }
         }
 
@@ -73,7 +73,7 @@ namespace test
 
         fs::path tempDir;
         std::vector< std::string > bedNames;
-        std::vector< std::unique_ptr< echidna::io::BedFile > > bedFiles;
+        std::vector< std::unique_ptr< wecall::io::BedFile > > bedFiles;
     };
 
     struct FastaFileFixture
@@ -97,14 +97,14 @@ namespace test
                        "CCACAATGCATTTGTCAAAATATGCAGAATTTTACAGCCATATGGTTAGAGCAAACTCTA\n"
                        "TTCAAATTAAATAAAATTACTCAGGATGTGGAGTATCCCAGGACAGAATACATCATGTGA\n"
                        "AAAAGCATTTATGCTACAAATTACTATGGA\n" );
-            refFiles.emplace_back( new echidna::io::FastaFile( refFilename ) );
+            refFiles.emplace_back( new wecall::io::FastaFile( refFilename ) );
         }
 
         ~FastaFileFixture() { fs::remove( refFilename.c_str() ); }
 
         std::string refFilename;
         std::string indexFilename;
-        std::vector< std::unique_ptr< echidna::io::FastaFile > > refFiles;
+        std::vector< std::unique_ptr< wecall::io::FastaFile > > refFiles;
     };
 
     struct FastaIndexFileFixture
@@ -141,13 +141,13 @@ namespace test
                        "GL000192.1\t547496\t3152949897\t60\t61\n"
                        "NC_007605\t171823\t3153506529\t60\t61\n"
                        "hs37d5\t35477943\t3153681224\t60\t61\n" );
-            fastaIndices.emplace_back( new echidna::io::FastaIndex( indexFilename ) );
+            fastaIndices.emplace_back( new wecall::io::FastaIndex( indexFilename ) );
         }
 
         ~FastaIndexFileFixture() { fs::remove( indexFilename.c_str() ); }
 
         std::string indexFilename;
-        std::vector< std::unique_ptr< echidna::io::FastaIndex > > fastaIndices;
+        std::vector< std::unique_ptr< wecall::io::FastaIndex > > fastaIndices;
     };
 }
 }

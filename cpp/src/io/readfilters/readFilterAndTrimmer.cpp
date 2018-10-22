@@ -11,7 +11,7 @@
 #include "io/readfilters/baseQualityFilter.hpp"
 #include "io/readfilters/shortReadFilter.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

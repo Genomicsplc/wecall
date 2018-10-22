@@ -9,31 +9,31 @@
 #include "vcf/field.hpp"
 #include <cmath>
 
-using Read = echidna::io::Read;
-using Cigar = echidna::alignment::Cigar;
-using echidna::caller::Region;
-using echidna::caller::Call;
-using echidna::io::RegionsReads;
-using echidna::utils::BasePairSequence;
-using echidna::caller::model::buildRefCall;
-using Annotation = echidna::caller::Annotation;
-using echidna::vcf::info::DP_key;
+using Read = wecall::io::Read;
+using Cigar = wecall::alignment::Cigar;
+using wecall::caller::Region;
+using wecall::caller::Call;
+using wecall::io::RegionsReads;
+using wecall::utils::BasePairSequence;
+using wecall::caller::model::buildRefCall;
+using Annotation = wecall::caller::Annotation;
+using wecall::vcf::info::DP_key;
 
 BOOST_AUTO_TEST_CASE( shouldCallRefFor1ReadAnd1Sample )
 {
     Region region = Region( "1", 0, 5 );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( region, std::string( 5, 'A' ) );
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( region, std::string( 5, 'A' ) );
 
     const int64_t startPos = 0;
     const auto read1 = std::make_shared< Read >( BasePairSequence( 4, 'A' ), std::string( 4, 'Q' ), "0", Cigar( "4M" ),
                                                  0, startPos, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::io::readIntervalTree_t readContainer( 0, 100 );
+    wecall::io::readIntervalTree_t readContainer( 0, 100 );
     readContainer.insert( read1 );
 
     RegionsReads regionSetReads( region, readContainer.getFullRange(), 0 );
 
-    echidna::io::perSampleRegionsReads_t perSampleReads = {{"sample1", regionSetReads}};
+    wecall::io::perSampleRegionsReads_t perSampleReads = {{"sample1", regionSetReads}};
 
     const auto refCalls = buildRefCall( region, perSampleReads, 10, {2}, 0.2 );
 
@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE( shouldCallRefFor1ReadAnd1Sample )
 BOOST_AUTO_TEST_CASE( shouldCallRefFor2OverlappingReadsAnd1Sample )
 {
     Region region = Region( "1", 0, 5 );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( region, std::string( 5, 'A' ) );
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( region, std::string( 5, 'A' ) );
 
     const int64_t startPos = 0;
     const auto read1 = std::make_shared< Read >( BasePairSequence( 3, 'A' ), std::string( 3, 'Q' ), "0", Cigar( "3M" ),
@@ -66,13 +66,13 @@ BOOST_AUTO_TEST_CASE( shouldCallRefFor2OverlappingReadsAnd1Sample )
     const auto read2 = std::make_shared< Read >( BasePairSequence( 3, 'A' ), std::string( 3, 'Q' ), "0", Cigar( "3M" ),
                                                  0, startPos + 2, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::io::readIntervalTree_t readContainer( 0, 100 );
+    wecall::io::readIntervalTree_t readContainer( 0, 100 );
     readContainer.insert( read1 );
     readContainer.insert( read2 );
 
     RegionsReads regionSetReads( region, readContainer.getFullRange(), 0 );
 
-    echidna::io::perSampleRegionsReads_t perSampleReads = {{"sample1", regionSetReads}};
+    wecall::io::perSampleRegionsReads_t perSampleReads = {{"sample1", regionSetReads}};
 
     const auto refCalls = buildRefCall( region, perSampleReads, 10, {2}, 0.2 );
 
@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE( shouldCallRefFor2OverlappingReadsAnd1Sample )
 BOOST_AUTO_TEST_CASE( shouldCallRefForManyReadsFor1Sample )
 {
     Region region = Region( "1", 0, 5 );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( region, std::string( 5, 'A' ) );
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( region, std::string( 5, 'A' ) );
 
     const int64_t startPos = 0;
     const auto read1 = std::make_shared< Read >( BasePairSequence( 4, 'A' ), std::string( 4, 'Q' ), "0", Cigar( "4M" ),
@@ -136,7 +136,7 @@ BOOST_AUTO_TEST_CASE( shouldCallRefForManyReadsFor1Sample )
     const auto read10 = std::make_shared< Read >( BasePairSequence( 4, 'A' ), std::string( 4, 'Q' ), "0", Cigar( "4M" ),
                                                   0, startPos + 1, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::io::readIntervalTree_t readContainer( 0, 100 );
+    wecall::io::readIntervalTree_t readContainer( 0, 100 );
     readContainer.insert( read1 );
     readContainer.insert( read2 );
     readContainer.insert( read3 );
@@ -150,7 +150,7 @@ BOOST_AUTO_TEST_CASE( shouldCallRefForManyReadsFor1Sample )
 
     RegionsReads regionSetReads( region, readContainer.getFullRange(), 0 );
 
-    echidna::io::perSampleRegionsReads_t perSampleReads = {{"sample1", regionSetReads}};
+    wecall::io::perSampleRegionsReads_t perSampleReads = {{"sample1", regionSetReads}};
 
     const auto refCalls = buildRefCall( region, perSampleReads, 10, {2}, 0.1 );
 
@@ -174,7 +174,7 @@ BOOST_AUTO_TEST_CASE( shouldCallRefForManyReadsFor1Sample )
 BOOST_AUTO_TEST_CASE( shouldCallRefFor1ReadsFor2Samples )
 {
     Region region = Region( "1", 0, 5 );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( region, std::string( 5, 'A' ) );
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( region, std::string( 5, 'A' ) );
 
     const int64_t startPos = 0;
     const auto read1 = std::make_shared< Read >( BasePairSequence( 3, 'A' ), std::string( 3, 'Q' ), "0", Cigar( "3M" ),
@@ -183,15 +183,15 @@ BOOST_AUTO_TEST_CASE( shouldCallRefFor1ReadsFor2Samples )
     const auto read2 = std::make_shared< Read >( BasePairSequence( 4, 'A' ), std::string( 4, 'Q' ), "0", Cigar( "4M" ),
                                                  0, startPos + 1, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::io::readIntervalTree_t readContainer1( 0, 100 );
+    wecall::io::readIntervalTree_t readContainer1( 0, 100 );
     readContainer1.insert( read1 );
     RegionsReads regionSetReads1( region, readContainer1.getFullRange(), 0 );
 
-    echidna::io::readIntervalTree_t readContainer2( 0, 100 );
+    wecall::io::readIntervalTree_t readContainer2( 0, 100 );
     readContainer2.insert( read2 );
     RegionsReads regionSetReads2( region, readContainer2.getFullRange(), 0 );
 
-    echidna::io::perSampleRegionsReads_t perSampleReads = {{"sample1", regionSetReads1}, {"sample2", regionSetReads2}};
+    wecall::io::perSampleRegionsReads_t perSampleReads = {{"sample1", regionSetReads1}, {"sample2", regionSetReads2}};
 
     const auto refCalls = buildRefCall( region, perSampleReads, 10, {2, 2}, 0.2 );
 

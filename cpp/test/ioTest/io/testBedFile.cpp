@@ -6,10 +6,10 @@
 
 #include "ioFixture.hpp"
 
-using echidna::caller::Region;
-using echidna::caller::regions_t;
+using wecall::caller::Region;
+using wecall::caller::regions_t;
 
-using namespace echidna::test;
+using namespace wecall::test;
 
 BOOST_FIXTURE_TEST_CASE( shouldReadBedWithSingleThreeColumnLine, BedFileFixture )
 {

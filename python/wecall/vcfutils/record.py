@@ -8,7 +8,7 @@ import sys
 from collections import OrderedDict
 from itertools import repeat
 
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 from wecall.genomics import variant
 from wecall.genomics.variant import Variant
 from wecall.vcfutils.fieldmetadata import UNKNOWN
@@ -41,11 +41,11 @@ def read_records(schema, line):
         cols = [l for l in line.strip().split("\t")]
         for item in generate_records(schema, cols):
             yield item
-    except EchidnaException:
+    except weCallException:
         raise
     except Exception:
         _, exc, tb = sys.exc_info()
-        new_exc = EchidnaException(
+        new_exc = weCallException(
             "while reading record from line {!r}: {!s}".format(
                 line, exc.message))
         raise new_exc.__class__(new_exc).with_traceback(tb)
@@ -283,12 +283,12 @@ def common_prefix_length(lhs, rhs):
 
 def trimmed_vcf_ref_alt(ref, alt):
     if len(ref) == 0 or len(alt) == 0:
-        raise EchidnaException("VCF format requires non-empty ref and alt")
+        raise weCallException("VCF format requires non-empty ref and alt")
     if ref == alt and len(ref) > 1:
-        raise EchidnaException("VCF requires refcalls of length 1")
+        raise weCallException("VCF requires refcalls of length 1")
     if alt == UNKNOWN or ref == UNKNOWN:
         # VCF allows this to indicate unknown data.
-        raise EchidnaException("not dealing with monomorphic variants")
+        raise weCallException("not dealing with monomorphic variants")
     offset, new_ref, new_alt = trimmed_ref_alt(ref, alt)
     start_context, end_context = 0, 0
     if len(ref) != len(alt) or (not new_ref and not new_alt):

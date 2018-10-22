@@ -7,7 +7,7 @@
 #include "variant/type/variant.hpp"
 #include "variant/snpFinder.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace alignment
 {
@@ -113,4 +113,4 @@ namespace alignment
     }
 
 }  // namespace variant
-}  // namespace echidna
+}  // namespace wecall

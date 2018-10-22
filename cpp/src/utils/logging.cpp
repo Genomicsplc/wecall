@@ -12,7 +12,7 @@
 
 #include "caller/params.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {
@@ -46,7 +46,7 @@ namespace utils
         }
         // TODO: Make sure that everything works when run with multiple threads.
 
-        // Set up logging output for Echidna. The various output handlers are added
+        // Set up logging output for weCall. The various output handlers are added
         // to the logging core,
         using sink_t = sinks::synchronous_sink< sinks::text_ostream_backend >;
 

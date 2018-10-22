@@ -9,14 +9,14 @@
 #include "readrecalibration/kmerDistribution.hpp"
 #include "readrecalibration/errorCorrectionParameters.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace corrector
 {
     class ReadDataForErrorPosterior
     {
     public:
-        ReadDataForErrorPosterior( echidna::io::readPtr_t read );
+        ReadDataForErrorPosterior( wecall::io::readPtr_t read );
 
         void calculateProbabilities( const KmerDistribution & kmerDistribution,
                                      const ErrorCorrectionParameters & errorCorrectionParameters );
@@ -35,13 +35,13 @@ namespace corrector
         }
 
     private:
-        echidna::io::readPtr_t m_readPtr;
+        wecall::io::readPtr_t m_readPtr;
 
         std::vector< SiteReadDataForErrorPosterior > m_readData;
         bool m_isForward = false;
         std::size_t m_start = 0;
     };
 }  // namespace corrector
-}  // namespace echidna
+}  // namespace wecall
 
 #endif

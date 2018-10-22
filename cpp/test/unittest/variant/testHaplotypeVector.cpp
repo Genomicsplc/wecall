@@ -9,21 +9,21 @@
 #include "utils/referenceSequence.hpp"
 #include "common.hpp"
 
-using echidna::utils::ReferenceSequence;
-using echidna::utils::referenceSequencePtr_t;
-using echidna::caller::Region;
-using echidna::variant::HaplotypeVector;
-using echidna::variant::varPtr_t;
-using echidna::variant::Haplotype;
-using echidna::variant::Variant;
-using echidna::variant::variantSet_t;
+using wecall::utils::ReferenceSequence;
+using wecall::utils::referenceSequencePtr_t;
+using wecall::caller::Region;
+using wecall::variant::HaplotypeVector;
+using wecall::variant::varPtr_t;
+using wecall::variant::Haplotype;
+using wecall::variant::Variant;
+using wecall::variant::variantSet_t;
 
 BOOST_AUTO_TEST_CASE( constructorShouldRaiseExceptionIfRegionsNotCompatible )
 {
 
     auto referenceSequence = std::make_shared< ReferenceSequence >( Region( "1", 0, 1 ), "A" );
     const Region incompatibleRegion( "2", 0, 1 );
-    BOOST_CHECK_THROW( HaplotypeVector( incompatibleRegion, referenceSequence ), echidna::utils::echidna_exception );
+    BOOST_CHECK_THROW( HaplotypeVector( incompatibleRegion, referenceSequence ), wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( testShouldBeAbleToAddHaplotypeForSNP )
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE( testShouldRaiseForOverlappingVariants )
     BOOST_CHECK_THROW( haplotypeVector.push_back(
                            {std::make_shared< Variant >( referenceSequence, referenceSequence->region(), "T" ),
                             std::make_shared< Variant >( referenceSequence, referenceSequence->region(), "G" )} ),
-                       echidna::utils::echidna_exception );
+                       wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( testShouldSortByAltString )

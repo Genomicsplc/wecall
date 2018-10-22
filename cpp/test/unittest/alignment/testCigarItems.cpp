@@ -8,10 +8,10 @@
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 
-using namespace echidna::alignment;
-using namespace echidna::variant;
-using echidna::caller::Region;
-using echidna::utils::ReferenceSequence;
+using namespace wecall::alignment;
+using namespace wecall::variant;
+using wecall::caller::Region;
+using wecall::utils::ReferenceSequence;
 
 // Test get lengths from cigar items.
 

@@ -1,6 +1,6 @@
 # All content Copyright (C) 2018 Genomics plc
 import functools
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 from wecall.genomics.chromosome import standardise_chromosome, get_chromosome_index, \
     chromosome_comp
 
@@ -360,7 +360,7 @@ def read_interval(interval_string):
     start_string, end_string = tuple(interval_string.split("-"))
     start, end = int(start_string), int(end_string)
     if end <= start:
-        raise EchidnaException(
+        raise weCallException(
             "Interval {} does not have start < end".format(interval_string))
     return Interval(start, end)
 

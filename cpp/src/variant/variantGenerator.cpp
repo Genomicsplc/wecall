@@ -14,7 +14,7 @@
 
 #include "utils/exceptions.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {

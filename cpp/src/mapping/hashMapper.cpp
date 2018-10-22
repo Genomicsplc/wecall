@@ -11,7 +11,7 @@
 #include <map>
 #include <cassert>
 
-namespace echidna
+namespace wecall
 {
 namespace mapping
 {
@@ -61,7 +61,7 @@ namespace mapping
     }
 
     std::vector< std::size_t > KmerMatches::countKmerMatches(
-        const echidna::utils::BasePairSequence & readSequence ) const
+        const wecall::utils::BasePairSequence & readSequence ) const
     {
         ECHIDNA_ASSERT( readSequence.size() <= m_paddedHaplotypeSequenceLength,
                         "Require padded Haplotype sequence to be longer than any chosen read-sequence" );

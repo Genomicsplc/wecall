@@ -9,7 +9,7 @@
 #include "caller/region.hpp"
 #include "io/fastaFile.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

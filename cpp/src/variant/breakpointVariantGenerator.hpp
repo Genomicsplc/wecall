@@ -8,7 +8,7 @@
 #include "variant/type/breakpoint.hpp"
 #include "variant/type/variant.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {

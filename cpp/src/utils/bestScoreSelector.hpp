@@ -12,7 +12,7 @@
 #include <numeric>
 #include "common.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {

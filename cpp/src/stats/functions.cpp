@@ -6,7 +6,7 @@
 #include <cmath>
 #include "utils/logging.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace stats
 {

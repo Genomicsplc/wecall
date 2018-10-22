@@ -2,7 +2,7 @@
 #include "io/readfilters/mapQualityFilter.hpp"
 #include <sstream>
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

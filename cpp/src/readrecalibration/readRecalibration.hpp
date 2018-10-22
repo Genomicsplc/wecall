@@ -16,19 +16,19 @@
 #include "readrecalibration/readDataForErrorPosterior.hpp"
 #include "readrecalibration/commonTypes.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace corrector
 {
     void floorLowQualityScores( const io::perSampleRegionsReads_t & allReadsInRegion, char qualityFloor, char floorTo );
 
     void recalibrateDephasingErrors( const io::perSampleRegionsReads_t & allReadsInRegion,
-                                     const echidna::io::FastaFile & fa,
+                                     const wecall::io::FastaFile & fa,
                                      const caller::Region & region,
                                      const ErrorCorrectionParameters & errorCorrectionParameters );
 
     void recalibrateReads( const io::perSampleRegionsReads_t & allReadsInRegion,
-                           const echidna::io::FastaFile & fa,
+                           const wecall::io::FastaFile & fa,
                            const caller::Region & region,
                            const ErrorCorrectionParameters & errorCorrectionParameters );
 }

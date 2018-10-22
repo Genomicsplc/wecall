@@ -12,7 +12,7 @@
 #include "utils/sequence.hpp"
 #include "variant/type/variant.hpp"
 
-namespace echidna
+namespace wecall
 {
 
 namespace assembly

@@ -12,7 +12,7 @@
 #include <stack>
 #include <boost/algorithm/string/join.hpp>
 
-namespace echidna
+namespace wecall
 {
 namespace assembly
 {

@@ -18,7 +18,7 @@
 #include "boost/filesystem.hpp"
 #include "utils/timer.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {
@@ -39,7 +39,7 @@ namespace io
         {
             ECHIDNA_LOG( FATAL, "Could not load index for BAM file "
                                     << fileName << ". Check that index file exists and is readable" );
-            throw utils::echidna_exception( "Cannot load BAM index" );
+            throw utils::wecall_exception( "Cannot load BAM index" );
         }
 
         m_samFile = samopen( fileName.c_str(), "rb", nullptr );
@@ -73,7 +73,7 @@ namespace io
         }
         else
         {
-            throw utils::echidna_exception( "Invalid tid value in BamFile::getContigName" );
+            throw utils::wecall_exception( "Invalid tid value in BamFile::getContigName" );
         }
     }
 
@@ -173,7 +173,7 @@ namespace io
     {
         if ( not m_samFile )
         {
-            throw utils::echidna_exception( "Attempted to call 'fetch' on a closed BAM file" );
+            throw utils::wecall_exception( "Attempted to call 'fetch' on a closed BAM file" );
         }
 
         int rtid = 0;
@@ -196,7 +196,7 @@ namespace io
         {
             ECHIDNA_LOG( FATAL, "Could not retrieve region " << clippedRegion << " from BAM file " << m_fileName );
             ECHIDNA_LOG( FATAL, "Check that the contig range in the FASTA file matches that in the BAM" );
-            throw utils::echidna_exception( "Invalid region - BAM file start coordinate > end" );
+            throw utils::wecall_exception( "Invalid region - BAM file start coordinate > end" );
         }
 
         bam_fetch_iterator_t * bam_fetch_iterator =

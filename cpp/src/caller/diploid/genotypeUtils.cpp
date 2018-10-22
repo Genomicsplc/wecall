@@ -5,7 +5,7 @@
 #include "caller/diploid/genotypeUtils.hpp"
 #include "utils/indexedProduct.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {

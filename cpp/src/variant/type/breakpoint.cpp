@@ -5,7 +5,7 @@
 #include <sstream>
 #include <variant/haplotype.hpp>
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {

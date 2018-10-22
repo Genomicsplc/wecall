@@ -2,7 +2,7 @@
 #include <algorithm>
 #include "io/readUtils.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

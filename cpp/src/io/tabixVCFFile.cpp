@@ -17,7 +17,7 @@
 #include "vcf/reader.hpp"
 #include "vcf/filterDescription.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {
@@ -38,11 +38,11 @@ namespace io
 
         if ( headerLines.empty() )
         {
-            throw utils::echidna_exception( "Malformed VCF: missing header." );
+            throw utils::wecall_exception( "Malformed VCF: missing header." );
         }
         else if ( not boost::starts_with( headerLines.back(), "#CHROM" ) )
         {
-            throw utils::echidna_exception( "Malformed VCF: did not find #CHROM at start of final header line." );
+            throw utils::wecall_exception( "Malformed VCF: did not find #CHROM at start of final header line." );
         }
 
         for ( const auto & line : headerLines )
@@ -53,7 +53,7 @@ namespace io
                 auto filterDesc = parseFilterHeaderLine( line );
                 if ( containsFilterId( m_filterDescs, filterDesc.id ) )
                 {
-                    throw utils::echidna_exception( "The header contains repeated filter " + filterDesc.id + "." );
+                    throw utils::wecall_exception( "The header contains repeated filter " + filterDesc.id + "." );
                 }
                 m_filterDescs.insert( filterDesc );
             }
@@ -92,7 +92,7 @@ namespace io
 
             if ( cols.size() < 8 )
             {
-                throw utils::echidna_exception( "Record line should have at least 7 columns: " + line );
+                throw utils::wecall_exception( "Record line should have at least 7 columns: " + line );
             }
 
             const std::string chrom = cols.at( 0 );
@@ -151,7 +151,7 @@ namespace io
         }
         else
         {
-            throw utils::echidna_exception( "Failed to match meta information header line: " + line );
+            throw utils::wecall_exception( "Failed to match meta information header line: " + line );
         }
     }
 
@@ -168,7 +168,7 @@ namespace io
         }
         else
         {
-            throw utils::echidna_exception( "Failed to match filter header line: " + line );
+            throw utils::wecall_exception( "Failed to match filter header line: " + line );
         }
     }
 }

@@ -8,7 +8,7 @@
 #include "io/readRange.hpp"
 #include "variant/genotype.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {

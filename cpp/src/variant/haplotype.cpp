@@ -9,7 +9,7 @@
 #include "variant/type/variant.hpp"
 #include "variantNormalizer.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {

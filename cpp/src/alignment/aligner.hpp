@@ -4,7 +4,7 @@
 
 #include "common.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

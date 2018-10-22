@@ -11,21 +11,21 @@ BOOST_AUTO_TEST_CASE( shouldConstructReferenceStringFromPaddedReference )
     // Given
     //                             123456789
     std::string paddedReference = "ATCGCTCTG";
-    BOOST_CHECK_EQUAL( paddedReference.size(), 2 * echidna::corrector::padding + echidna::corrector::kmerSize );
+    BOOST_CHECK_EQUAL( paddedReference.size(), 2 * wecall::corrector::padding + wecall::corrector::kmerSize );
 
     // When
-    echidna::corrector::SiteKmerDistribution siteKmerDistribution( paddedReference );
+    wecall::corrector::SiteKmerDistribution siteKmerDistribution( paddedReference );
 
     // Then
-    BOOST_CHECK_EQUAL( echidna::corrector::show_string( siteKmerDistribution.getReferenceKmer() ),
+    BOOST_CHECK_EQUAL( wecall::corrector::show_string( siteKmerDistribution.getReferenceKmer() ),
                        paddedReference.substr( 1, paddedReference.size() - 2 ) );
-    BOOST_CHECK_EQUAL( echidna::corrector::show_string( siteKmerDistribution.getExtReferenceKmer() ), paddedReference );
+    BOOST_CHECK_EQUAL( wecall::corrector::show_string( siteKmerDistribution.getExtReferenceKmer() ), paddedReference );
 }
 
 BOOST_AUTO_TEST_CASE( shouldComputePErrorAsPriorOnBeingReset )
 {
     std::string paddedReference = "ATCGCTCTG";
-    echidna::corrector::SiteKmerDistribution siteKmerDistribution( paddedReference );
+    wecall::corrector::SiteKmerDistribution siteKmerDistribution( paddedReference );
     auto priorPerNucProbOfReadTurningIntoErrorState = 0.661238;
 
     siteKmerDistribution.resetErrorCountData( priorPerNucProbOfReadTurningIntoErrorState );

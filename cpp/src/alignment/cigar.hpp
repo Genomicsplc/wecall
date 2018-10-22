@@ -9,7 +9,7 @@
 
 #include "alignment/cigarItems.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace alignment
 {
@@ -62,6 +62,6 @@ namespace alignment
         int32_t m_lengthAfterRefEndPos;
     };
 }  // namespace alignment
-}  // namespace echidna
+}  // namespace wecall
 
 #endif  // CIGAR_HPP

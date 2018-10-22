@@ -15,8 +15,8 @@ struct LoggingGlobalFixture
     {
         std::string logFile = "iotest-cpp.log";
         std::cout << "Initialising log to file " << logFile << std::endl;
-        echidna::caller::params::Logging loggingParams( loggingLevel::DEBUG, logFile, false, -1, false );
-        echidna::utils::initialiseLog( loggingParams.m_logLevel, loggingParams.m_logFilename, loggingParams.m_quietMode,
+        wecall::caller::params::Logging loggingParams( loggingLevel::DEBUG, logFile, false, -1, false );
+        wecall::utils::initialiseLog( loggingParams.m_logLevel, loggingParams.m_logFilename, loggingParams.m_quietMode,
                                        loggingParams.m_verbosity, loggingParams.m_logTimings );
     }
 };

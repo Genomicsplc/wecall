@@ -8,7 +8,7 @@
 #include "readrecalibration/siteKmerDistribution.hpp"
 #include "utils/sequence.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace corrector
 {
@@ -20,8 +20,8 @@ namespace corrector
     {
 
     public:
-        SiteReadDataForErrorPosterior( const echidna::utils::BasePairSequence & sequenceKmer,
-                                       const echidna::utils::BasePairSequence & qualityKmer,
+        SiteReadDataForErrorPosterior( const wecall::utils::BasePairSequence & sequenceKmer,
+                                       const wecall::utils::BasePairSequence & qualityKmer,
                                        std::size_t indexIntoRead,
                                        std::size_t refPos )
         {
@@ -81,6 +81,6 @@ namespace corrector
         kmer_t< kmerSize > m_readQualityKmer;  ///< Kmer of quality values at this position
     };
 }  // namespace corrector
-}  // namespace echidna
+}  // namespace wecall
 
 #endif

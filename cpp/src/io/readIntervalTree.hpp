@@ -7,7 +7,7 @@
 
 #include <cstdint>
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {
@@ -48,6 +48,6 @@ namespace io
         }
     };
 }  // io
-}  // echidna
+}  // wecall
 
 #endif  // WECALL_READINTERVALTREE_HPP_H

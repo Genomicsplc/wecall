@@ -2,7 +2,7 @@
 #include "utils/matrix.hpp"
 #include "utils/median.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {

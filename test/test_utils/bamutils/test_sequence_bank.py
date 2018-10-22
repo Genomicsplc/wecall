@@ -1,7 +1,7 @@
 # All content Copyright (C) 2018 Genomics plc
 from unittest import TestCase
 from wecall.bamutils.sequence_bank import SequenceBank, AsciiVariantGenerator
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 from wecall.genomics.reference_chromosome import ReferenceChromosome
 from wecall.genomics.variant import Variant
 
@@ -14,7 +14,7 @@ class TestSequenceBank(TestCase):
         seq = "CC"
         sequence_bank = SequenceBank(ReferenceChromosome(ref_seq))
         # Then
-        self.assertRaises(EchidnaException, sequence_bank.add_sequence, seq)
+        self.assertRaises(weCallException, sequence_bank.add_sequence, seq)
 
     def test_should_be_able_to_add_snp_using_dsl_syntax(self):
         # Given

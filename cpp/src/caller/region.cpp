@@ -12,7 +12,7 @@
 #include "utils/interval.hpp"
 #include "common.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {

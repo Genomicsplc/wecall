@@ -2,7 +2,7 @@
 #include "variantGenerationData.hpp"
 #include "io/read.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {
@@ -14,4 +14,4 @@ namespace variant
     //-----------------------------------------------------------------------------------------
 
 }  // namespace variant
-}  // namespace echidna
+}  // namespace wecall

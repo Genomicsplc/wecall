@@ -30,10 +30,10 @@
 #include <limits>
 #include <boost/filesystem/operations.hpp>
 
-using namespace echidna::io;
-using echidna::variant::varPtr_t;
+using namespace wecall::io;
+using wecall::variant::varPtr_t;
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {

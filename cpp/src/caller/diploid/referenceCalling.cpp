@@ -5,7 +5,7 @@
 #include "io/readSummaries.hpp"
 #include "stats/models.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {

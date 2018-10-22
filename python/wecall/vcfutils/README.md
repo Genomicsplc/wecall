@@ -10,8 +10,8 @@ Create a VCFReader and read `records`.
 Short example (read all variant calls and print position of all SNPs to the screen)
 
 ```python
-from echidna.vcfutils.parser import VCFReaderContextManager
-from echidna.genomics import variant
+from wecall.vcfutils.parser import VCFReaderContextManager
+from wecall.genomics import variant
 
 with VCFReaderContextManager('myFile.vcf') as vcf_reader:
     for record in vcf_reader.read_records():
@@ -39,7 +39,7 @@ Sample info fields are accessable as dictionary.
 Example: Print all lines that have a homozygous variant for the sample "yoursample".
 
 ```python
-from echidna.vcfutils.parser import VCFReaderContextManager
+from wecall.vcfutils.parser import VCFReaderContextManager
 with VCFReaderContextManager('inFile.vcf') as vcf_reader:
     for record in vcf_reader.read_records():
         if record.sample_info['yoursample']['GT'] == [1, 1]:
@@ -79,8 +79,8 @@ The following adapters are available:
 General usage:
 Example: This will split MNPs when reading in a record:
 ```python
-from echidna.vcfutils.parser import VCFReaderContextManager
-from echidna.vcfutils import adapters
+from wecall.vcfutils.parser import VCFReaderContextManager
+from wecall.vcfutils import adapters
 
 with VCFReaderContextManager('my_file.vcf') as vcf_reader:
     for record in adapters.SplitMNPs(vcf_reader).read_records():
@@ -88,8 +88,8 @@ with VCFReaderContextManager('my_file.vcf') as vcf_reader:
 ```
 Example: Multiple Adapters
 ```python
-from echidna.vcfutils.parser import VCFReaderContextManager
-from echidna.vcfutils import adapters
+from wecall.vcfutils.parser import VCFReaderContextManager
+from wecall.vcfutils import adapters
 
 with VCFReaderContextManager('my_file.vcf') as vcf_reader:
     for record in adapters.Sort(adapters.SplitMNPs(vcf_reader)).read_records():
@@ -98,8 +98,8 @@ with VCFReaderContextManager('my_file.vcf') as vcf_reader:
 Example: LeftAlign requires a reference genome (fasta file)
 ```python
 import pysam
-from echidna.vcfutils.parser import VCFReaderContextManager
-from echidna.vcfutils import adapters
+from wecall.vcfutils.parser import VCFReaderContextManager
+from wecall.vcfutils import adapters
 
 with VCFReaderContextManager('my_file.vcf') as vcf_reader:
     for record in adapters.LeftAlign(vcf_reader, pysam.Fastafile('reference.fa')).read_records():
@@ -108,8 +108,8 @@ with VCFReaderContextManager('my_file.vcf') as vcf_reader:
 Example: Sort adapter sorts localy in a rolling window of 10 variants by default. To change the window width provide a second argument with the width to the Sort adapter.
 ```python
 import pysam
-from echidna.vcfutils.parser import VCFReaderContextManager
-from echidna.vcfutils import adapters
+from wecall.vcfutils.parser import VCFReaderContextManager
+from wecall.vcfutils import adapters
 
 with VCFReaderContextManager('my_file.vcf') as vcf_reader:
     for record in adapters.Sort(vcf_reader, window_size = 20).read_records():
@@ -128,9 +128,9 @@ A special type of adapter is a `Filter`.  The `Filter` adapter enables you to fi
 
 Example use for a single filter (print all SNP's from a file):
 ```python
-from echidna.vcfutils.parser import VCFReaderContextManager
-from echidna.vcfutils import adapters
-from echidna.vcfutils import filter
+from wecall.vcfutils.parser import VCFReaderContextManager
+from wecall.vcfutils import adapters
+from wecall.vcfutils import filter
 
 with VCFReaderContextManager(vcffile) as vcf_reader:
     for record in adapters.Filter(vcf_reader, filter.snp_filter).read_records():
@@ -139,9 +139,9 @@ with VCFReaderContextManager(vcffile) as vcf_reader:
 
 Example use for a single filter - get all heterozygous variants for sample 'NA12878':
 ```python
-from echidna.vcfutils.parser import VCFReaderContextManager
-from echidna.vcfutils import adapters
-from echidna.vcfutils import filter
+from wecall.vcfutils.parser import VCFReaderContextManager
+from wecall.vcfutils import adapters
+from wecall.vcfutils import filter
 
 with VCFReaderContextManager(vcffile) as vcf_reader:
     for record in adapters.Filter(vcf_reader, filter.het_filter_for_sample('NA12878')).read_records():
@@ -152,9 +152,9 @@ Filters can be combined using standard logical operators AND, OR, NOT as follows
 
 1)  Using operator NOT to extract all variants but SNP's
 ```python
-from echidna.vcfutils.parser import VCFReaderContextManager
-from echidna.vcfutils import adapters
-from echidna.vcfutils import filter
+from wecall.vcfutils.parser import VCFReaderContextManager
+from wecall.vcfutils import adapters
+from wecall.vcfutils import filter
 
 with VCFReaderContextManager(vcffile) as vcf_reader:
     for record in adapters.Filter(vcf_reader, filter.filter_not(filter.snp_filter)).read_records():
@@ -162,9 +162,9 @@ with VCFReaderContextManager(vcffile) as vcf_reader:
 ```
 2)  Use operator OR to extract all SNP's and MNP's
 ```python
-from echidna.vcfutils.parser import VCFReaderContextManager
-from echidna.vcfutils import adapters
-from echidna.vcfutils import filter
+from wecall.vcfutils.parser import VCFReaderContextManager
+from wecall.vcfutils import adapters
+from wecall.vcfutils import filter
 
 with VCFReaderContextManager(vcffile) as vcf_reader:
     for record in adapters.Filter(
@@ -195,7 +195,7 @@ The python interface of this utility is in the `comparison.py` module. Only vari
 The input files can be gzipped or raw vcf's. Optionally, an output filter string and output file dir can be passed into the constructor. Output filter string is then written into the FILTER field in the output files; PASS filter string is written otherwise. Output files `left_difference.vcf`, `right_difference.vcf` and `intersection.vcf` are written to the output dir provided or to the current working directory as default.  Headers and annotations for these files are inherited from the input files, the intersection inherits the 'left' file's header.
 
 ```python
-from echidna.vcfutils.comparison import Comparison
+from wecall.vcfutils.comparison import Comparison
 comparator = Comparison(
     'left_hand_side_file.vcf',
     'right_hand_side_file.vcf',

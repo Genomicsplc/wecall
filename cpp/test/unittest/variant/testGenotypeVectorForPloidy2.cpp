@@ -9,15 +9,15 @@
 #include "variant/type/variant.hpp"
 #include "caller/diploid/diploidAnnotate.hpp"
 
-using echidna::variant::GenotypeVector;
-using echidna::variant::HaplotypeVector;
-using echidna::variant::genotypePtr_t;
-using echidna::variant::varPtr_t;
-using echidna::variant::variantSet_t;
-using echidna::variant::Haplotype;
-using echidna::utils::ReferenceSequence;
-using echidna::caller::Region;
-using echidna::variant::Variant;
+using wecall::variant::GenotypeVector;
+using wecall::variant::HaplotypeVector;
+using wecall::variant::genotypePtr_t;
+using wecall::variant::varPtr_t;
+using wecall::variant::variantSet_t;
+using wecall::variant::Haplotype;
+using wecall::utils::ReferenceSequence;
+using wecall::caller::Region;
+using wecall::variant::Variant;
 
 BOOST_AUTO_TEST_CASE( testConstructsAllPloidy2CombinationsFromHaplotypeVector )
 {

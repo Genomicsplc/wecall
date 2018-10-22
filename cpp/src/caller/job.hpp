@@ -17,7 +17,7 @@
 #include "variant/type/variant.hpp"
 #include "varfilters/variantSoftFilterBank.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {

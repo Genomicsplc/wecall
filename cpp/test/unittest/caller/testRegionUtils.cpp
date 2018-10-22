@@ -6,9 +6,9 @@
 #include "caller/regionUtils.hpp"
 #include "utils/flatten.hpp"
 
-using echidna::caller::Region;
-using echidna::utils::Interval;
-using echidna::caller::parseRegionString;
+using wecall::caller::Region;
+using wecall::utils::Interval;
+using wecall::caller::parseRegionString;
 
 BOOST_AUTO_TEST_CASE( testGettingContigsFromRegions )
 {
@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_CASE( testGettingContigsFromRegions )
 
     std::vector< Region > expectedContigs = {Region( "1", Interval( 0, 100 ) ), Region( "2", Interval( 0, 100 ) )};
 
-    auto contigs = echidna::caller::getContigsFromRegions( regions, referenceContigs );
+    auto contigs = wecall::caller::getContigsFromRegions( regions, referenceContigs );
 
     BOOST_CHECK_EQUAL( contigs.size(), 2 );
     BOOST_CHECK_EQUAL( contigs.front().contig(), expectedContigs.front().contig() );  // Doesn't change order
@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE( padRegionsShouldReturnEmptyVectorForEmptyInput )
     std::vector< Region > input = {};
     std::vector< Region > expectedOutput = {};
 
-    auto results = echidna::caller::padRegions( input, 0 );
+    auto results = wecall::caller::padRegions( input, 0 );
     BOOST_CHECK_EQUAL_COLLECTIONS( results.begin(), results.end(), expectedOutput.begin(), expectedOutput.end() );
 }
 
@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE( mergeRegionsShouldReturnEmptyVectorForEmptyInput )
     std::vector< Region > input = {};
     std::vector< Region > expectedOutput = {};
 
-    auto results = echidna::caller::mergeRegions( input );
+    auto results = wecall::caller::mergeRegions( input );
     BOOST_CHECK_EQUAL_COLLECTIONS( results.begin(), results.end(), expectedOutput.begin(), expectedOutput.end() );
 }
 
@@ -50,28 +50,28 @@ BOOST_AUTO_TEST_CASE( padRegionsShouldFailIfNotAllContigsAreTheSame )
 {
     std::vector< Region > input = {{"1", 1, 2}, {"2", 1, 2}};
 
-    BOOST_CHECK_THROW( echidna::caller::padRegions( input, 0 ), echidna::utils::echidna_exception );
+    BOOST_CHECK_THROW( wecall::caller::padRegions( input, 0 ), wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( mergeRegionsShouldFailIfNotAllContigsAreTheSame )
 {
     std::vector< Region > input = {{"1", 1, 2}, {"2", 1, 2}};
 
-    BOOST_CHECK_THROW( echidna::caller::mergeRegions( input ), echidna::utils::echidna_exception );
+    BOOST_CHECK_THROW( wecall::caller::mergeRegions( input ), wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( padRegionsShouldFailIfNotAllRegionsAreSorted )
 {
     std::vector< Region > input = {{"1", 1, 2}, {"1", 0, 20}};
 
-    BOOST_CHECK_THROW( echidna::caller::padRegions( input, 0 ), echidna::utils::echidna_exception );
+    BOOST_CHECK_THROW( wecall::caller::padRegions( input, 0 ), wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( mergeRegionsShouldFailIfNotAllRegionsAreSorted )
 {
     std::vector< Region > input = {{"1", 1, 2}, {"1", 0, 20}};
 
-    BOOST_CHECK_THROW( echidna::caller::mergeRegions( input ), echidna::utils::echidna_exception );
+    BOOST_CHECK_THROW( wecall::caller::mergeRegions( input ), wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( padRegionsShouldPadRegionsIntoSingleRegion )
@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_CASE( padRegionsShouldPadRegionsIntoSingleRegion )
     const auto padding = 1;
     std::vector< Region > expectedOutput = {{"1", 0, 5}};
 
-    auto results = echidna::caller::padRegions( input, padding );
+    auto results = wecall::caller::padRegions( input, padding );
     BOOST_CHECK_EQUAL_COLLECTIONS( results.begin(), results.end(), expectedOutput.begin(), expectedOutput.end() );
 }
 
@@ -90,7 +90,7 @@ BOOST_AUTO_TEST_CASE( padParitionedShouldMaintainContigs )
     const auto padding = 1;
     std::vector< std::vector< Region > > expectedOutput = {{{"1", 0, 5}}, {{"2", 0, 3}}};
 
-    auto results = echidna::caller::padPartitionedRegions( input, padding );
+    auto results = wecall::caller::padPartitionedRegions( input, padding );
     BOOST_REQUIRE_EQUAL( results.size(), 2 );
 
     BOOST_CHECK_EQUAL_COLLECTIONS( results[0].begin(), results[0].end(), expectedOutput[0].begin(),
@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE( mergeRegionsShouldNotMergeNonOverlappingRegions )
     std::vector< Region > input = {{"1", 1, 2}, {"1", 3, 4}};
     std::vector< Region > expectedOutput = {{"1", 1, 2}, {"1", 3, 4}};
 
-    auto results = echidna::caller::mergeRegions( input );
+    auto results = wecall::caller::mergeRegions( input );
     BOOST_CHECK_EQUAL_COLLECTIONS( results.begin(), results.end(), expectedOutput.begin(), expectedOutput.end() );
 }
 
@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE( mergeRegionsShouldMergeOverlappingRegions )
     std::vector< Region > input = {{"1", 1, 4}, {"1", 3, 5}};
     std::vector< Region > expectedOutput = {{"1", 1, 5}};
 
-    auto results = echidna::caller::mergeRegions( input );
+    auto results = wecall::caller::mergeRegions( input );
     BOOST_CHECK_EQUAL_COLLECTIONS( results.begin(), results.end(), expectedOutput.begin(), expectedOutput.end() );
 }
 
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE( mergeRegionsShouldMergeTouchingRegions )
     std::vector< Region > input = {{"1", 1, 3}, {"1", 3, 5}};
     std::vector< Region > expectedOutput = {{"1", 1, 5}};
 
-    auto results = echidna::caller::mergeRegions( input );
+    auto results = wecall::caller::mergeRegions( input );
     BOOST_CHECK_EQUAL_COLLECTIONS( results.begin(), results.end(), expectedOutput.begin(), expectedOutput.end() );
 }
 
@@ -202,38 +202,38 @@ BOOST_AUTO_TEST_CASE( testParseRegionContigStartPos )
 BOOST_AUTO_TEST_CASE( testFailsIfNoDashWithColon )
 {
     const std::map< std::string, Interval > contigs = {{"2", Interval( 0, 100 )}};
-    BOOST_CHECK_THROW( parseRegionString( "2:123", contigs ), echidna::utils::echidna_exception );
+    BOOST_CHECK_THROW( parseRegionString( "2:123", contigs ), wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( testFailsIfTwoColons )
 {
     const std::map< std::string, Interval > contigs = {{"1", Interval( 0, 100 )}, {"2", Interval( 0, 100 )}};
-    BOOST_CHECK_THROW( parseRegionString( "2:1:23-26", contigs ), echidna::utils::echidna_exception );
+    BOOST_CHECK_THROW( parseRegionString( "2:1:23-26", contigs ), wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( testFailsIfHaveNonNumericRanges )
 {
     const std::map< std::string, Interval > contigs = {{"1", Interval( 0, 100 )}, {"2", Interval( 0, 100 )}};
-    BOOST_CHECK_THROW( parseRegionString( "2:Inf-12", contigs ), echidna::utils::echidna_exception );
-    BOOST_CHECK_THROW( parseRegionString( "2:1-Inf", contigs ), echidna::utils::echidna_exception );
+    BOOST_CHECK_THROW( parseRegionString( "2:Inf-12", contigs ), wecall::utils::wecall_exception );
+    BOOST_CHECK_THROW( parseRegionString( "2:1-Inf", contigs ), wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( testFailsIfTooManyDashes )
 {
     const std::map< std::string, Interval > contigs = {{"1", Interval( 0, 100 )}, {"2", Interval( 0, 100 )}};
-    BOOST_CHECK_THROW( parseRegionString( "2:A-12-14", contigs ), echidna::utils::echidna_exception );
+    BOOST_CHECK_THROW( parseRegionString( "2:A-12-14", contigs ), wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( testFailsIfNotValidHalfOpenRegion )
 {
     const std::map< std::string, Interval > contigs = {{"1", Interval( 0, 100 )}, {"2", Interval( 0, 100 )}};
-    BOOST_CHECK_THROW( parseRegionString( "2:10-9", contigs ), echidna::utils::echidna_exception );
+    BOOST_CHECK_THROW( parseRegionString( "2:10-9", contigs ), wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( testFailsIfContainsNegativeValues )
 {
     const std::map< std::string, Interval > contigs = {{"1", Interval( 0, 100 )}, {"2", Interval( 0, 100 )}};
-    BOOST_CHECK_THROW( parseRegionString( "2:-10-10", contigs ), echidna::utils::echidna_exception );
+    BOOST_CHECK_THROW( parseRegionString( "2:-10-10", contigs ), wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( testSetsTheIntervalToBeEmptyAtZeroIfContigNotContainedInReferenceContigs )

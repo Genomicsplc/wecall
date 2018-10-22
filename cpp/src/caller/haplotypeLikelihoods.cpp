@@ -4,7 +4,7 @@
 #include "alignment/aligner.hpp"
 #include "utils/matrix.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {

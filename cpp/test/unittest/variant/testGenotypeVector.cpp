@@ -8,15 +8,15 @@
 #include "variant/type/variant.hpp"
 #include "caller/diploid/diploidAnnotate.hpp"
 
-using echidna::variant::GenotypeVector;
-using echidna::variant::HaplotypeVector;
-using echidna::variant::genotypePtr_t;
-using echidna::variant::varPtr_t;
-using echidna::variant::variantSet_t;
-using echidna::variant::Haplotype;
-using echidna::utils::ReferenceSequence;
-using echidna::caller::Region;
-using echidna::variant::Variant;
+using wecall::variant::GenotypeVector;
+using wecall::variant::HaplotypeVector;
+using wecall::variant::genotypePtr_t;
+using wecall::variant::varPtr_t;
+using wecall::variant::variantSet_t;
+using wecall::variant::Haplotype;
+using wecall::utils::ReferenceSequence;
+using wecall::caller::Region;
+using wecall::variant::Variant;
 
 BOOST_AUTO_TEST_CASE( testConstructorThrowsIfProvidedWithUnMergedHaplotypes )
 {
@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE( testConstructorThrowsIfProvidedWithUnMergedHaplotypes )
     haplotypeVector.push_back( variantSet_t{} );
     haplotypeVector.push_back( variantSet_t{} );
 
-    BOOST_CHECK_THROW( GenotypeVector( 2, haplotypeVector, {0, 1}, {} ), echidna::utils::echidna_exception );
+    BOOST_CHECK_THROW( GenotypeVector( 2, haplotypeVector, {0, 1}, {} ), wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( testConstructsZeroGenotypesForEmptyHaplotypeVector )
@@ -84,9 +84,9 @@ BOOST_AUTO_TEST_CASE( testPhaseQualityComputationEqualLikelihoods )
     const double expectedPhaseQuality = 0;  // 1.0 - ( 0.1 * 2 ) / ( 0.1 * 2 );
     const std::size_t calledGenotypeIndex = 1;
 
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred( echidna::caller::annotate::computePhaseQuality(
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred( wecall::caller::annotate::computePhaseQuality(
                            calledGenotypeIndex, genotypeVector, genotypeLikelihoods ) ),
-                       echidna::stats::roundPhred( echidna::stats::toPhredQ( expectedPhaseQuality ) ) );
+                       wecall::stats::roundPhred( wecall::stats::toPhredQ( expectedPhaseQuality ) ) );
 }
 
 BOOST_AUTO_TEST_CASE( testPhaseQualityComputationUnequalLikelihoods )
@@ -110,9 +110,9 @@ BOOST_AUTO_TEST_CASE( testPhaseQualityComputationUnequalLikelihoods )
     const double expectedPhaseQuality = 0;  // 1.0 - 0.9 / ( 0.9 );
     const std::size_t calledGenotypeIndex = 0;
 
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred( echidna::caller::annotate::computePhaseQuality(
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred( wecall::caller::annotate::computePhaseQuality(
                            calledGenotypeIndex, genotypeVector, genotypeLikelihoods ) ),
-                       echidna::stats::roundPhred( echidna::stats::toPhredQ( expectedPhaseQuality ) ) );
+                       wecall::stats::roundPhred( wecall::stats::toPhredQ( expectedPhaseQuality ) ) );
 }
 
 BOOST_AUTO_TEST_CASE( testPhaseQualityComputationSmallLikelihoods )
@@ -136,9 +136,9 @@ BOOST_AUTO_TEST_CASE( testPhaseQualityComputationSmallLikelihoods )
     const double expectedPhaseQuality = 1.0 - 3.0 / ( 3.0 );
     const std::size_t calledGenotypeIndex = 0;
 
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred( echidna::caller::annotate::computePhaseQuality(
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred( wecall::caller::annotate::computePhaseQuality(
                            calledGenotypeIndex, genotypeVector, genotypeLikelihoods ) ),
-                       echidna::stats::roundPhred( echidna::stats::toPhredQ( expectedPhaseQuality ) ) );
+                       wecall::stats::roundPhred( wecall::stats::toPhredQ( expectedPhaseQuality ) ) );
 }
 
 BOOST_AUTO_TEST_CASE( testPhaseQualityComputationLargeLikelihoods )
@@ -162,9 +162,9 @@ BOOST_AUTO_TEST_CASE( testPhaseQualityComputationLargeLikelihoods )
     const double expectedPhaseQuality = 1.0 - 3.0 / ( 3.0 );
     const std::size_t calledGenotypeIndex = 0;
 
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred( echidna::caller::annotate::computePhaseQuality(
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred( wecall::caller::annotate::computePhaseQuality(
                            calledGenotypeIndex, genotypeVector, genotypeLikelihoods ) ),
-                       echidna::stats::roundPhred( echidna::stats::toPhredQ( expectedPhaseQuality ) ) );
+                       wecall::stats::roundPhred( wecall::stats::toPhredQ( expectedPhaseQuality ) ) );
 }
 
 BOOST_AUTO_TEST_CASE( testGenotypeQualityComputationEqualLikelihoods )
@@ -188,9 +188,9 @@ BOOST_AUTO_TEST_CASE( testGenotypeQualityComputationEqualLikelihoods )
     // Middle genotype likelihood has two possible combinations.
     const double expectedGenotypeQuality = 1.0 - ( 0.1 * 2 ) / ( 0.1 + 0.1 * 2 + 0.1 );
 
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred(
-                           echidna::caller::annotate::computeGenotypeQuality( genotypeVector, genotypeLikelihoods ) ),
-                       echidna::stats::roundPhred( echidna::stats::toPhredQ( expectedGenotypeQuality ) ) );
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred(
+                           wecall::caller::annotate::computeGenotypeQuality( genotypeVector, genotypeLikelihoods ) ),
+                       wecall::stats::roundPhred( wecall::stats::toPhredQ( expectedGenotypeQuality ) ) );
 }
 
 BOOST_AUTO_TEST_CASE( testGenotypeQualityComputationUnequalLikelihoods )
@@ -213,9 +213,9 @@ BOOST_AUTO_TEST_CASE( testGenotypeQualityComputationUnequalLikelihoods )
     // Middle genotype likelihood has two possible combinations.
     const double expectedGenotypeQuality = 1.0 - 0.9 / ( 0.9 + 0.1 * 2 + 0.1 );
 
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred(
-                           echidna::caller::annotate::computeGenotypeQuality( genotypeVector, genotypeLikelihoods ) ),
-                       echidna::stats::roundPhred( echidna::stats::toPhredQ( expectedGenotypeQuality ) ) );
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred(
+                           wecall::caller::annotate::computeGenotypeQuality( genotypeVector, genotypeLikelihoods ) ),
+                       wecall::stats::roundPhred( wecall::stats::toPhredQ( expectedGenotypeQuality ) ) );
 }
 
 BOOST_AUTO_TEST_CASE( testGenotypeQualityComputationSmallLikelihoods )
@@ -238,9 +238,9 @@ BOOST_AUTO_TEST_CASE( testGenotypeQualityComputationSmallLikelihoods )
     // Middle genotype likelihood has two possible combinations.
     const double expectedGenotypeQuality = 1.0 - 3.0 / ( 3.0 + 1.0 * 2 + 1.0 );
 
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred(
-                           echidna::caller::annotate::computeGenotypeQuality( genotypeVector, genotypeLikelihoods ) ),
-                       echidna::stats::roundPhred( echidna::stats::toPhredQ( expectedGenotypeQuality ) ) );
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred(
+                           wecall::caller::annotate::computeGenotypeQuality( genotypeVector, genotypeLikelihoods ) ),
+                       wecall::stats::roundPhred( wecall::stats::toPhredQ( expectedGenotypeQuality ) ) );
 }
 
 BOOST_AUTO_TEST_CASE( testGenotypeQualityComputationLargeLikelihoods )
@@ -263,9 +263,9 @@ BOOST_AUTO_TEST_CASE( testGenotypeQualityComputationLargeLikelihoods )
     // Middle genotype likelihood has two possible combinations.
     const double expectedGenotypeQuality = 1.0 - 3.0 / ( 3.0 + 1.0 * 2 + 1.0 );
 
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred(
-                           echidna::caller::annotate::computeGenotypeQuality( genotypeVector, genotypeLikelihoods ) ),
-                       echidna::stats::roundPhred( echidna::stats::toPhredQ( expectedGenotypeQuality ) ) );
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred(
+                           wecall::caller::annotate::computeGenotypeQuality( genotypeVector, genotypeLikelihoods ) ),
+                       wecall::stats::roundPhred( wecall::stats::toPhredQ( expectedGenotypeQuality ) ) );
 }
 
 BOOST_AUTO_TEST_CASE( testGenotypeLikelihoodsComputationEqualLikelihoods )
@@ -285,7 +285,7 @@ BOOST_AUTO_TEST_CASE( testGenotypeLikelihoodsComputationEqualLikelihoods )
 
     // Genotype quality should be 1.0 - max-likelihood / total-likelihoods.
     const std::vector< double > genotypeLikelihoods = {0.1, 0.1, 0.1};
-    const auto likelihoods = echidna::caller::annotate::get_RR_RA_AA_Likelihoods_as_phred_scores(
+    const auto likelihoods = wecall::caller::annotate::get_RR_RA_AA_Likelihoods_as_phred_scores(
         std::make_shared< Variant >( referenceSequence, Region( "1", 0, 1 ), "C" ), haplotypeVector, genotypeVector,
         genotypeLikelihoods );
 
@@ -293,9 +293,9 @@ BOOST_AUTO_TEST_CASE( testGenotypeLikelihoodsComputationEqualLikelihoods )
 
     // Expect 0.1, 0.2, 0.1 from raw likelihoods as het call should be scaled by 2.0
     // This is equivalent to 0.5, 1.0, 0.5 which in phred space is rounded to 3, 0, 3
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred( likelihoods[0] ), 3 );
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred( likelihoods[1] ), 0 );
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred( likelihoods[2] ), 3 );
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred( likelihoods[0] ), 3 );
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred( likelihoods[1] ), 0 );
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred( likelihoods[2] ), 3 );
 }
 
 BOOST_AUTO_TEST_CASE( testGenotypeLikelihoodsComputationUnequalLikelihoods )
@@ -314,7 +314,7 @@ BOOST_AUTO_TEST_CASE( testGenotypeLikelihoodsComputationUnequalLikelihoods )
     BOOST_REQUIRE_EQUAL( genotypeVector.size(), 3 );
 
     const std::vector< double > genotypeLikelihoods = {0.9, 0.1, 0.1};
-    const auto likelihoods = echidna::caller::annotate::get_RR_RA_AA_Likelihoods_as_phred_scores(
+    const auto likelihoods = wecall::caller::annotate::get_RR_RA_AA_Likelihoods_as_phred_scores(
         std::make_shared< Variant >( referenceSequence, Region( "1", 0, 1 ), "C" ), haplotypeVector, genotypeVector,
         genotypeLikelihoods );
 
@@ -322,9 +322,9 @@ BOOST_AUTO_TEST_CASE( testGenotypeLikelihoodsComputationUnequalLikelihoods )
 
     // Expect 0.9, 0.2, 0.1 from raw likelihoods as het call should be scaled by 2.0
     // Equivalent to 1.0, 0.22222, 0.11111 --> 0, 6.5321, 9.54245
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred( likelihoods[0] ), 0 );
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred( likelihoods[1] ), 7 );
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred( likelihoods[2] ), 10 );
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred( likelihoods[0] ), 0 );
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred( likelihoods[1] ), 7 );
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred( likelihoods[2] ), 10 );
 }
 
 BOOST_AUTO_TEST_CASE( testGenotypeLikelihoodsComputationSmallLikelihoods )
@@ -342,16 +342,16 @@ BOOST_AUTO_TEST_CASE( testGenotypeLikelihoodsComputationSmallLikelihoods )
 
     BOOST_REQUIRE_EQUAL( genotypeVector.size(), 3 );
     const std::vector< double > genotypeLikelihoods = {3e-9, 1e-9, 1e-9};
-    const auto likelihoods = echidna::caller::annotate::get_RR_RA_AA_Likelihoods_as_phred_scores(
+    const auto likelihoods = wecall::caller::annotate::get_RR_RA_AA_Likelihoods_as_phred_scores(
         std::make_shared< Variant >( referenceSequence, Region( "1", 0, 1 ), "C" ), haplotypeVector, genotypeVector,
         genotypeLikelihoods );
 
     BOOST_REQUIRE_EQUAL( likelihoods.size(), 3 );  // In ploidy = 2 expect 2 + 1 likelihoods.
 
     // 1.0, 0.66666, 0.333333 as scaling --> 0, 1.7609, 4.7712
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred( likelihoods[0] ), 0 );
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred( likelihoods[1] ), 2 );
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred( likelihoods[2] ), 5 );
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred( likelihoods[0] ), 0 );
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred( likelihoods[1] ), 2 );
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred( likelihoods[2] ), 5 );
 }
 
 BOOST_AUTO_TEST_CASE( testGenotypeLikelihoodsComputationLargeLikelihoods )
@@ -369,16 +369,16 @@ BOOST_AUTO_TEST_CASE( testGenotypeLikelihoodsComputationLargeLikelihoods )
 
     BOOST_REQUIRE_EQUAL( genotypeVector.size(), 3 );
     const std::vector< double > genotypeLikelihoods = {3e9, 1e9, 1e9};
-    const auto likelihoods = echidna::caller::annotate::get_RR_RA_AA_Likelihoods_as_phred_scores(
+    const auto likelihoods = wecall::caller::annotate::get_RR_RA_AA_Likelihoods_as_phred_scores(
         std::make_shared< Variant >( referenceSequence, Region( "1", 0, 1 ), "C" ), haplotypeVector, genotypeVector,
         genotypeLikelihoods );
 
     BOOST_REQUIRE_EQUAL( likelihoods.size(), 3 );  // In ploidy = 2 expect 2 + 1 likelihoods.
 
     // 1.0, 0.66666, 0.333333 as scaling --> 0, 1.7609, 4.7712
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred( likelihoods[0] ), 0 );
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred( likelihoods[1] ), 2 );
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred( likelihoods[2] ), 5 );
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred( likelihoods[0] ), 0 );
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred( likelihoods[1] ), 2 );
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred( likelihoods[2] ), 5 );
 }
 
 BOOST_AUTO_TEST_CASE( testGenotypeLikelihoodsComputationForHomAltWithMultipleVariants )
@@ -401,16 +401,16 @@ BOOST_AUTO_TEST_CASE( testGenotypeLikelihoodsComputationForHomAltWithMultipleVar
     BOOST_REQUIRE_EQUAL( genotypeVector.size(), 6 );
 
     const std::vector< double > genotypeLikelihoods = {1, 1, 1, 1, 1, 1};
-    const auto likelihoods = echidna::caller::annotate::get_RR_RA_AA_Likelihoods_as_phred_scores(
+    const auto likelihoods = wecall::caller::annotate::get_RR_RA_AA_Likelihoods_as_phred_scores(
         snp0, haplotypeVector, genotypeVector, genotypeLikelihoods );
 
     BOOST_REQUIRE_EQUAL( likelihoods.size(), 3 );  // In ploidy = 2 expect 2 + 1 likelihoods.
 
     // Expect 1, 1 * 2 + 1 * 2, 1 + 2 * 1 + 1
     // This is equivalent to 1/4, 1, 1 --> 6.02, 0, 0
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred( likelihoods[0] ), 6 );
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred( likelihoods[1] ), 0 );
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred( likelihoods[2] ), 0 );
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred( likelihoods[0] ), 6 );
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred( likelihoods[1] ), 0 );
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred( likelihoods[2] ), 0 );
 }
 
 BOOST_AUTO_TEST_CASE( testGenotypeLikelihoodsComputationForHetCallWithMultipleVariants )
@@ -432,12 +432,12 @@ BOOST_AUTO_TEST_CASE( testGenotypeLikelihoodsComputationForHetCallWithMultipleVa
     BOOST_REQUIRE_EQUAL( genotypeVector.size(), 6 );
 
     const std::vector< double > genotypeLikelihoods = {1, 1, 1, 1, 1, 1};
-    const auto likelihoods = echidna::caller::annotate::get_RR_RA_AA_Likelihoods_as_phred_scores(
+    const auto likelihoods = wecall::caller::annotate::get_RR_RA_AA_Likelihoods_as_phred_scores(
         snp1, haplotypeVector, genotypeVector, genotypeLikelihoods );
 
     BOOST_REQUIRE_EQUAL( likelihoods.size(), 3 );  // In ploidy = 2 expect 2 + 1 likelihoods.
 
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred( likelihoods[0] ), 0 );
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred( likelihoods[1] ), 0 );
-    BOOST_CHECK_EQUAL( echidna::stats::roundPhred( likelihoods[2] ), 6 );
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred( likelihoods[0] ), 0 );
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred( likelihoods[1] ), 0 );
+    BOOST_CHECK_EQUAL( wecall::stats::roundPhred( likelihoods[2] ), 6 );
 }

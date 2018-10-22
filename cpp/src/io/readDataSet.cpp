@@ -1,7 +1,7 @@
 // All content Copyright (C) 2018 Genomics plc
 #include "io/readDataSet.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

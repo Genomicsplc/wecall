@@ -4,7 +4,7 @@
 #include "common.hpp"
 #include "utils/logging.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {

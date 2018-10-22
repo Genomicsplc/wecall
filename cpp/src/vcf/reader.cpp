@@ -9,7 +9,7 @@
 
 #include "reader.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace vcf
 {

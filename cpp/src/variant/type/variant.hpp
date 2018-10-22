@@ -17,7 +17,7 @@
 #include "caller/region.hpp"
 #include "utils/sequence.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {
@@ -27,7 +27,7 @@ namespace io
 }
 }
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {

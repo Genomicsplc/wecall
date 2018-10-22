@@ -6,7 +6,7 @@
 #include <vector>
 #include "utils/logging.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {

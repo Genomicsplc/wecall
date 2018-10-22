@@ -15,7 +15,7 @@
 #include "io/fastaFile.hpp"
 #include "io/bedFile.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {
@@ -94,7 +94,7 @@ namespace caller
             std::transform( m_inputRegionStrings.begin(), m_inputRegionStrings.end(),
                             std::back_inserter( areStringsBedFiles ), this->isBedFile );
 
-            using echidna::utils::functional::identity;
+            using wecall::utils::functional::identity;
 
             if ( std::all_of(areStringsBedFiles.begin(), areStringsBedFiles.end(), identity< bool >))
             {
@@ -106,7 +106,7 @@ namespace caller
             }
             else
             {
-                throw utils::echidna_exception( "Can not have mixture of BED files and region strings" );
+                throw utils::wecall_exception( "Can not have mixture of BED files and region strings" );
             }
         }
         return regions;
@@ -213,7 +213,7 @@ namespace caller
         }
         else
         {
-            throw utils::echidna_exception( "Invalid region specification format: " + regionString +
+            throw utils::wecall_exception( "Invalid region specification format: " + regionString +
                                             ". Expecting: chrom or chrom:start-end" );
         }
     }

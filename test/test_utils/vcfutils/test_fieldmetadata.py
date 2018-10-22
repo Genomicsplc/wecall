@@ -4,7 +4,7 @@ import unittest
 import testfixtures
 
 from wecall.vcfutils import fieldmetadata
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 from wecall.vcfutils.fieldmetadata import make_split_sample_alt_func
 from wecall.vcfutils.genotype_call import GenotypeCall
 
@@ -69,7 +69,7 @@ class VCFFieldMetadataTest(unittest.TestCase):
         self.assertEqual(True, field('YES'))
         self.assertEqual(True, field('TRUE'))
         self.assertEqual(False, field('FALSE'))
-        with self.assertRaises(EchidnaException):
+        with self.assertRaises(weCallException):
             field("blah")
 
 

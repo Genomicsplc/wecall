@@ -2,11 +2,11 @@
 #include "readrecalibration/readDataForErrorPosterior.hpp"
 #include "alignment/cigarItems.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace corrector
 {
-    ReadDataForErrorPosterior::ReadDataForErrorPosterior( echidna::io::readPtr_t readPtr ) : m_readPtr( readPtr )
+    ReadDataForErrorPosterior::ReadDataForErrorPosterior( wecall::io::readPtr_t readPtr ) : m_readPtr( readPtr )
     {
         m_isForward = not m_readPtr->isReverse();
 

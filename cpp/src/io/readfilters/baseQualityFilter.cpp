@@ -2,7 +2,7 @@
 #include "io/readfilters/baseQualityFilter.hpp"
 #include <sstream>
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

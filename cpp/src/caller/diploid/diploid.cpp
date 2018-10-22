@@ -23,7 +23,7 @@
 #include "caller/haplotypeLikelihoods.hpp"
 #include "caller/metadata.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {

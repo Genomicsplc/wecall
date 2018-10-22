@@ -7,13 +7,13 @@
 #include "assembly/sequenceGraph.hpp"
 #include "common.hpp"
 
-using echidna::assembly::Node;
-using echidna::assembly::SequenceGraph;
-using echidna::assembly::SequenceGraph;
-using echidna::utils::ReferenceSequence;
-using echidna::caller::Region;
-using echidna::utils::BasePairSequence;
-using echidna::utils::QualitySequence;
+using wecall::assembly::Node;
+using wecall::assembly::SequenceGraph;
+using wecall::assembly::SequenceGraph;
+using wecall::utils::ReferenceSequence;
+using wecall::caller::Region;
+using wecall::utils::BasePairSequence;
+using wecall::utils::QualitySequence;
 
 BOOST_AUTO_TEST_CASE( testKmerSequenceConstruction )
 {
@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE( testAddingReadSequenceWithFewerBPsThanKmerSize )
     const auto disallowRepeats = false;
     const BasePairSequence readSequence( "AATCA" );
     BOOST_CHECK_THROW( sequenceGraph.addReadSequence( &readSequence, QualitySequence( 5, 20 ), disallowRepeats ),
-                       echidna::utils::echidna_exception );
+                       wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( testAddingReadSequenceContructsTwoNodesWithEdge )

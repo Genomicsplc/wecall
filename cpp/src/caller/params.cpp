@@ -16,7 +16,7 @@
 #include "utils/exceptions.hpp"
 #include "utils/partition.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {
@@ -40,7 +40,7 @@ namespace caller
                 }
                 else
                 {
-                    throw utils::echidna_exception( "Duplicate command line/config parameter \"--" + option.string_key +
+                    throw utils::wecall_exception( "Duplicate command line/config parameter \"--" + option.string_key +
                                                     "\". \nAborting...." );
                 }
             }

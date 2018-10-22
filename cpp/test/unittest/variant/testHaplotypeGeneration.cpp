@@ -7,27 +7,27 @@
 #include "variant/type/variant.hpp"
 #include "variant/haplotypeGenerator.hpp"
 
-using echidna::caller::Region;
-using echidna::utils::ReferenceSequence;
-using echidna::utils::BasePairSequence;
-using echidna::variant::AlignmentHaplotypeGenerator;
-using echidna::variant::VariantCluster;
-using echidna::variant::Variant;
-using echidna::variant::varPtr_t;
-using echidna::variant::variantSet_t;
-using echidna::variant::varPtrComp;
-using echidna::io::Read;
-using echidna::alignment::Cigar;
-using echidna::io::ReadDataset;
-using echidna::utils::QualitySequence;
-using echidna::io::RegionsReads;
+using wecall::caller::Region;
+using wecall::utils::ReferenceSequence;
+using wecall::utils::BasePairSequence;
+using wecall::variant::AlignmentHaplotypeGenerator;
+using wecall::variant::VariantCluster;
+using wecall::variant::Variant;
+using wecall::variant::varPtr_t;
+using wecall::variant::variantSet_t;
+using wecall::variant::varPtrComp;
+using wecall::io::Read;
+using wecall::alignment::Cigar;
+using wecall::io::ReadDataset;
+using wecall::utils::QualitySequence;
+using wecall::io::RegionsReads;
 
-std::shared_ptr< Read > makeFakeRead( echidna::utils::referenceSequencePtr_t reference,
+std::shared_ptr< Read > makeFakeRead( wecall::utils::referenceSequencePtr_t reference,
                                       Region region,
                                       variantSet_t variants )
 {
     const char defaultReadQual = 70;
-    const auto readStartSeq = echidna::variant::Haplotype::buildHaplotypeSequence( reference, region, variants );
+    const auto readStartSeq = wecall::variant::Haplotype::buildHaplotypeSequence( reference, region, variants );
     const auto cigar = Cigar( std::to_string( region.size() ) + "M" );
     const auto mapq = 30;
     return std::make_shared< Read >( readStartSeq, QualitySequence( readStartSeq.size(), defaultReadQual ), "", cigar,
@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE( testHaplotypeGenerationWithLotsSNPsInTwoClustersAndUnsuppo
 
     std::sort( allVariants.begin(), allVariants.end(), varPtrComp() );
 
-    echidna::variant::setDefaultPriors( allVariants );
+    wecall::variant::setDefaultPriors( allVariants );
 
     VariantCluster variantCluster( allVariants, Region( contig, regionStart, regionEnd ) );
 

@@ -9,7 +9,7 @@
 #include "variant/type/variant.hpp"
 #include "caller/annotation.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {

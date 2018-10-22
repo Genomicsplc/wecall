@@ -5,10 +5,10 @@
 
 #include "utils/NeedlemanWunsch.hpp"
 
-using echidna::utils::BasePairSequence;
-using echidna::utils::NeedlemanWunsch;
-using echidna::utils::NWPenalties;
-using echidna::utils::NWVariant;
+using wecall::utils::BasePairSequence;
+using wecall::utils::NeedlemanWunsch;
+using wecall::utils::NWPenalties;
+using wecall::utils::NWVariant;
 
 BOOST_AUTO_TEST_CASE( shouldRealWorld1 )
 {

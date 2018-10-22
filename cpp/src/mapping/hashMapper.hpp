@@ -11,7 +11,7 @@
 #include "utils/logging.hpp"
 #include "boost/optional.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace mapping
 {
@@ -44,7 +44,7 @@ namespace mapping
                      const int kmerSize,
                      const int haplotypePadding );
 
-        std::vector< std::size_t > countKmerMatches( const echidna::utils::BasePairSequence & readSequence ) const;
+        std::vector< std::size_t > countKmerMatches( const wecall::utils::BasePairSequence & readSequence ) const;
 
         utils::Interval allowableStartPositionsInHaplotype( const int64_t readSeqLen ) const;
 
@@ -71,7 +71,7 @@ namespace mapping
                     const int kmerSize,
                     const int haplotypePadding );
 
-        std::vector< std::size_t > mapSequence( const echidna::utils::BasePairSequence & seq,
+        std::vector< std::size_t > mapSequence( const wecall::utils::BasePairSequence & seq,
                                                 boost::optional< std::size_t > hintPosition ) const;
 
     private:

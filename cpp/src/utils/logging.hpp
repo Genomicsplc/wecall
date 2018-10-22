@@ -10,15 +10,15 @@
 #include "common.hpp"
 #include "utils/exceptions.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {
-    static boost::log::sources::severity_logger_mt< loggingLevel > g_echidnaLog;
+    static boost::log::sources::severity_logger_mt< loggingLevel > g_wecallLog;
 
-    /// Sets up the logging configuration for Echidna
+    /// Sets up the logging configuration for weCall
     ///
-    /// @param loggingParams Logging parameter list from Echidna
+    /// @param loggingParams Logging parameter list from weCall
     void initialiseLog( int logLevel, std::string logFileName, bool quietMode, int verbosity, bool logTimings );
 }
 }
@@ -26,7 +26,7 @@ namespace utils
 #define ECHIDNA_LOG( LEVEL, MESSAGE )                                         \
     do                                                                        \
     {                                                                         \
-        BOOST_LOG_SEV( utils::g_echidnaLog, loggingLevel::LEVEL ) << MESSAGE; \
+        BOOST_LOG_SEV( utils::g_wecallLog, loggingLevel::LEVEL ) << MESSAGE; \
     } while ( 0 )
 
 #define ECHIDNA_ASSERT( COND, MESSAGE )                \
@@ -35,7 +35,7 @@ namespace utils
         if ( not( COND ) )                             \
         {                                              \
             ECHIDNA_LOG( FATAL, MESSAGE );             \
-            throw utils::echidna_exception( MESSAGE ); \
+            throw utils::wecall_exception( MESSAGE ); \
         }                                              \
     } while ( 0 )
 
@@ -45,7 +45,7 @@ namespace utils
         if ( not( COND ) )                             \
         {                                              \
             ECHIDNA_LOG( ERROR, MESSAGE );             \
-            throw utils::echidna_exception( MESSAGE ); \
+            throw utils::wecall_exception( MESSAGE ); \
         }                                              \
     } while ( 0 )
 

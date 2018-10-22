@@ -2,7 +2,7 @@
 #include "io/readRange.hpp"
 #include "alignment/cigarItems.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

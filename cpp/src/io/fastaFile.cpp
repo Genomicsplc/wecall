@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include "caller/region.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {
@@ -42,7 +42,7 @@ namespace io
 
         if ( not( theFile.is_open() ) )
         {
-            throw utils::echidna_exception( "Could not open FASTA index file" );
+            throw utils::wecall_exception( "Could not open FASTA index file" );
         }
 
         parseContigInfoFromFile( theFile );
@@ -107,7 +107,7 @@ namespace io
     {
         if ( not( m_file.is_open() ) )
         {
-            throw utils::echidna_exception( "Could not open FASTA file" );
+            throw utils::wecall_exception( "Could not open FASTA file" );
         }
     }
 

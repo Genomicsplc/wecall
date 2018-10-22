@@ -11,14 +11,14 @@
 #include <boost/test/unit_test.hpp>
 #include <string>
 
-using namespace echidna::variant;
-using namespace echidna::alignment;
-using namespace echidna::io;
-using ReadContainer = echidna::io::readIntervalTree_t;
+using namespace wecall::variant;
+using namespace wecall::alignment;
+using namespace wecall::io;
+using ReadContainer = wecall::io::readIntervalTree_t;
 using ReadIterator = ReadContainer::iterator;
-using echidna::caller::Region;
-using echidna::utils::ReferenceSequence;
-using echidna::io::ReadDataset;
+using wecall::caller::Region;
+using wecall::utils::ReferenceSequence;
+using wecall::io::ReadDataset;
 
 // TODO(ES): Breakpoints
 
@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_CASE( testShouldRetrieveCorrectQualitiesForSNPs )
     auto var2 = std::make_shared< Variant >( alignedSequence, Region( "1", 2, 3 ), "C" );
     auto var3 = std::make_shared< Variant >( alignedSequence, Region( "1", 4, 5 ), "T" );
 
-    const auto qualities = echidna::variant::getVariantsReadBaseQualities( 0, "STEFT", {var1, var2, var3}, {} );
+    const auto qualities = wecall::variant::getVariantsReadBaseQualities( 0, "STEFT", {var1, var2, var3}, {} );
 
     const auto expectedResults = {
         static_cast< phred_t >( 'S' ), static_cast< phred_t >( 'E' ), static_cast< phred_t >( 'T' )};
@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE( testShouldRetrieveCorrectQualitiesForSNPsAndDeletion )
     auto var2 = std::make_shared< Variant >( alignedSequence, Region( "1", 2, 3 ), "" );
     auto var3 = std::make_shared< Variant >( alignedSequence, Region( "1", 4, 5 ), "T" );
 
-    const auto qualities = echidna::variant::getVariantsReadBaseQualities( 0, "STEF", {var1, var2, var3}, {} );
+    const auto qualities = wecall::variant::getVariantsReadBaseQualities( 0, "STEF", {var1, var2, var3}, {} );
 
     const auto expectedResults = {static_cast< phred_t >( 'S' ), 1000.0, static_cast< phred_t >( 'F' )};
     BOOST_CHECK_EQUAL_COLLECTIONS( expectedResults.begin(), expectedResults.end(), qualities.begin(), qualities.end() );
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE( testShouldRetrieveCorrectQualitiesForSNPsAndInsertion )
     auto var2 = std::make_shared< Variant >( alignedSequence, Region( "1", 2, 2 ), "C" );
     auto var3 = std::make_shared< Variant >( alignedSequence, Region( "1", 4, 5 ), "T" );
 
-    const auto qualities = echidna::variant::getVariantsReadBaseQualities( 0, "STEFTH", {var1, var2, var3}, {} );
+    const auto qualities = wecall::variant::getVariantsReadBaseQualities( 0, "STEFTH", {var1, var2, var3}, {} );
 
     const auto expectedResults = {
         static_cast< phred_t >( 'S' ), static_cast< phred_t >( 'E' ), static_cast< phred_t >( 'H' )};
@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE( testShouldRetrieveCorrectQualitiesForDeletion )
     // Check alignment correctly altered
     auto var2 = std::make_shared< Variant >( alignedSequence, Region( "1", 4, 5 ), "T" );
 
-    const auto qualities = echidna::variant::getVariantsReadBaseQualities( 0, "ST", {var1, var2}, {} );
+    const auto qualities = wecall::variant::getVariantsReadBaseQualities( 0, "ST", {var1, var2}, {} );
 
     const auto expectedResults = {1000.0, static_cast< phred_t >( 'T' )};
     BOOST_CHECK_EQUAL_COLLECTIONS( expectedResults.begin(), expectedResults.end(), qualities.begin(), qualities.end() );
@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE( testShouldRetrieveCorrectQualitiesForInsertion )
     // Check alignment correctly altered
     auto var2 = std::make_shared< Variant >( alignedSequence, Region( "1", 1, 2 ), "T" );
 
-    const auto qualities = echidna::variant::getVariantsReadBaseQualities( 0, "STEFA", {var1, var2}, {} );
+    const auto qualities = wecall::variant::getVariantsReadBaseQualities( 0, "STEFA", {var1, var2}, {} );
 
     const auto expectedResults = {static_cast< phred_t >( 'T' ), static_cast< phred_t >( 'A' )};
     BOOST_CHECK_EQUAL_COLLECTIONS( expectedResults.begin(), expectedResults.end(), qualities.begin(), qualities.end() );
@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_CASE( testShouldRetrieveCorrectQualitiesWithBreakpointAtStart )
     // Check alignment correctly altered
     auto var = std::make_shared< Variant >( alignedSequence, Region( "1", 1, 2 ), "T" );
 
-    const auto qualities = echidna::variant::getVariantsReadBaseQualities( 0, "STEFA", {var}, {bp} );
+    const auto qualities = wecall::variant::getVariantsReadBaseQualities( 0, "STEFA", {var}, {bp} );
 
     const auto expectedResults = {static_cast< phred_t >( 'A' )};
     BOOST_CHECK_EQUAL_COLLECTIONS( expectedResults.begin(), expectedResults.end(), qualities.begin(), qualities.end() );
@@ -116,7 +116,7 @@ BOOST_AUTO_TEST_CASE( testShouldRetrieveCorrectQualitiesWithBreakpointNotAtStart
     // Check alignment correctly altered
     auto var = std::make_shared< Variant >( alignedSequence, Region( "1", 101, 102 ), "T" );
 
-    const auto qualities = echidna::variant::getVariantsReadBaseQualities( 100, "STEFA", {var}, {bp} );
+    const auto qualities = wecall::variant::getVariantsReadBaseQualities( 100, "STEFA", {var}, {bp} );
 
     const auto expectedResults = {static_cast< phred_t >( 'T' )};
     BOOST_CHECK_EQUAL_COLLECTIONS( expectedResults.begin(), expectedResults.end(), qualities.begin(), qualities.end() );
@@ -126,7 +126,7 @@ BOOST_AUTO_TEST_CASE( testShouldRetrieveCorrectQualitiesWithBreakpointNotAtStart
 BOOST_AUTO_TEST_CASE( testNormaliseVariantsOnStrandReturnsEmptyFromEmptyInput )
 {
     const auto alignedSequence = std::make_shared< ReferenceSequence >( Region( "1", 0, 10 ), "AGGGCACAGC" );
-    const auto variants = echidna::variant::normaliseVariantsOnStrand( {}, *alignedSequence );
+    const auto variants = wecall::variant::normaliseVariantsOnStrand( {}, *alignedSequence );
 
     BOOST_CHECK( variants.empty() );
 }
@@ -138,7 +138,7 @@ BOOST_AUTO_TEST_CASE( testNormaliseVariantsCancelsInputs )
     auto del = std::make_shared< Variant >( alignedSequence, Region( "1", 1, 2 ), "" );
     auto ins = std::make_shared< Variant >( alignedSequence, Region( "1", 2, 2 ), "G" );
 
-    const auto variants = echidna::variant::normaliseVariantsOnStrand( {del, ins}, *alignedSequence );
+    const auto variants = wecall::variant::normaliseVariantsOnStrand( {del, ins}, *alignedSequence );
 
     BOOST_CHECK( variants.empty() );
 }
@@ -148,7 +148,7 @@ BOOST_AUTO_TEST_CASE( testNormaliseVariantsOnStrandLeavesIsolatedSNPUnchanged )
     const auto alignedSequence = std::make_shared< ReferenceSequence >( Region( "1", 0, 10 ), "AGGGCACAGC" );
     auto snp = std::make_shared< Variant >( alignedSequence, Region( "1", 2, 3 ), "A" );
 
-    const auto variants = echidna::variant::normaliseVariantsOnStrand( {snp}, *alignedSequence );
+    const auto variants = wecall::variant::normaliseVariantsOnStrand( {snp}, *alignedSequence );
 
     BOOST_CHECK_EQUAL( variants.size(), 1 );
     BOOST_CHECK( checkVariantInVector( std::vector< varPtr_t >( variants.begin(), variants.end() ),
@@ -160,7 +160,7 @@ BOOST_AUTO_TEST_CASE( testNormaliseVariantsLeftAlignsInsertionToMinPos )
     const auto alignedSequence = std::make_shared< ReferenceSequence >( Region( "1", 0, 10 ), "GGGGGGGGGG" );
     auto var = std::make_shared< Variant >( alignedSequence, Region( "1", 3, 3 ), "G" );
 
-    const auto variants = echidna::variant::normaliseVariantsOnStrand( {var}, *alignedSequence );
+    const auto variants = wecall::variant::normaliseVariantsOnStrand( {var}, *alignedSequence );
 
     BOOST_CHECK_EQUAL( variants.size(), 1 );
     BOOST_CHECK( checkVariantInVector( std::vector< varPtr_t >( variants.begin(), variants.end() ),
@@ -172,7 +172,7 @@ BOOST_AUTO_TEST_CASE( testNormaliseVariantsLeftAlignsDeletionToMinPos )
     const auto alignedSequence = std::make_shared< ReferenceSequence >( Region( "1", 0, 10 ), "GGGGGGGGGG" );
     auto var = std::make_shared< Variant >( alignedSequence, Region( "1", 3, 4 ), "" );
 
-    const auto variants = echidna::variant::normaliseVariantsOnStrand( {var}, *alignedSequence );
+    const auto variants = wecall::variant::normaliseVariantsOnStrand( {var}, *alignedSequence );
 
     BOOST_CHECK_EQUAL( variants.size(), 1 );
     BOOST_CHECK( checkVariantInVector( std::vector< varPtr_t >( variants.begin(), variants.end() ),
@@ -186,7 +186,7 @@ BOOST_AUTO_TEST_CASE( testNormaliseVariantsLeftAlignsDeletionToPositionOfSNP )
     auto snp = std::make_shared< Variant >( alignedSequence, Region( "1", 3, 4 ), "A" );
     auto var = std::make_shared< Variant >( alignedSequence, Region( "1", 5, 6 ), "" );
 
-    const auto variants = echidna::variant::normaliseVariantsOnStrand( {snp, var}, *alignedSequence );
+    const auto variants = wecall::variant::normaliseVariantsOnStrand( {snp, var}, *alignedSequence );
 
     BOOST_CHECK_EQUAL( variants.size(), 2 );
     BOOST_CHECK( checkVariantInVector( std::vector< varPtr_t >( variants.begin(), variants.end() ),
@@ -204,7 +204,7 @@ BOOST_AUTO_TEST_CASE( testNormaliseVariantsLeftAlignsComplexCombinationOfInserti
     auto ins2 = std::make_shared< Variant >( alignedSequence, Region( "1", 23, 23 ), "T" );
     auto ins3 = std::make_shared< Variant >( alignedSequence, Region( "1", 26, 26 ), "A" );
 
-    const auto variants = echidna::variant::normaliseVariantsOnStrand( {ins1, ins2, ins3}, *alignedSequence );
+    const auto variants = wecall::variant::normaliseVariantsOnStrand( {ins1, ins2, ins3}, *alignedSequence );
 
     BOOST_CHECK_EQUAL( variants.size(), 1 );
 
@@ -220,7 +220,7 @@ BOOST_AUTO_TEST_CASE( testNormalizationJoinsSNPsWithIndelsThenSplits )
     auto ins = std::make_shared< Variant >( alignedSequence, Region( "1", 18, 18 ), "G" );
     auto snp = std::make_shared< Variant >( alignedSequence, Region( "1", 18, 19 ), "G" );
 
-    const auto variants = echidna::variant::normaliseVariantsOnStrand( {ins, snp}, *alignedSequence );
+    const auto variants = wecall::variant::normaliseVariantsOnStrand( {ins, snp}, *alignedSequence );
 
     BOOST_CHECK_EQUAL( variants.size(), 2 );
 
@@ -237,7 +237,7 @@ BOOST_AUTO_TEST_CASE( testNormaliseVariantsLeftAlignsInsertionToPositionOfSNPJoi
     auto snp = std::make_shared< Variant >( alignedSequence, Region( "1", 3, 4 ), "A" );
     auto var = std::make_shared< Variant >( alignedSequence, Region( "1", 8, 8 ), "G" );
 
-    const auto variants = echidna::variant::normaliseVariantsOnStrand( {snp, var}, *alignedSequence );
+    const auto variants = wecall::variant::normaliseVariantsOnStrand( {snp, var}, *alignedSequence );
 
     BOOST_CHECK_EQUAL( variants.size(), 1 );
     BOOST_CHECK( checkVariantInVector( std::vector< varPtr_t >( variants.begin(), variants.end() ),
@@ -251,7 +251,7 @@ BOOST_AUTO_TEST_CASE( testNormaliseVariantsLeftAlignsDeletionJoinsInsertionsToge
     auto var1 = std::make_shared< Variant >( alignedSequence, Region( "1", 3, 4 ), "" );
     auto var2 = std::make_shared< Variant >( alignedSequence, Region( "1", 5, 6 ), "" );
 
-    const auto variants = echidna::variant::normaliseVariantsOnStrand( {var1, var2}, *alignedSequence );
+    const auto variants = wecall::variant::normaliseVariantsOnStrand( {var1, var2}, *alignedSequence );
 
     BOOST_CHECK_EQUAL( variants.size(), 1 );
     BOOST_CHECK( checkVariantInVector( std::vector< varPtr_t >( variants.begin(), variants.end() ),
@@ -265,7 +265,7 @@ BOOST_AUTO_TEST_CASE( testNormaliseVariantsLeftAlignsInsertionJoinsInsertionsTog
     auto var1 = std::make_shared< Variant >( alignedSequence, Region( "1", 6, 6 ), "G" );
     auto var2 = std::make_shared< Variant >( alignedSequence, Region( "1", 8, 8 ), "G" );
 
-    const auto variants = echidna::variant::normaliseVariantsOnStrand( {var1, var2}, *alignedSequence );
+    const auto variants = wecall::variant::normaliseVariantsOnStrand( {var1, var2}, *alignedSequence );
 
     BOOST_CHECK_EQUAL( variants.size(), 1 );
     BOOST_CHECK( checkVariantInVector( std::vector< varPtr_t >( variants.begin(), variants.end() ),
@@ -278,7 +278,7 @@ BOOST_AUTO_TEST_CASE( testNormalisationCancelsDeletionAndIndel )
     auto var1 = std::make_shared< Variant >( alignedSequence, Region( "1", 6, 8 ), "" );
     auto var2 = std::make_shared< Variant >( alignedSequence, Region( "1", 8, 8 ), "GG" );
 
-    const auto variants = echidna::variant::normaliseVariantsOnStrand( {var1, var2}, *alignedSequence );
+    const auto variants = wecall::variant::normaliseVariantsOnStrand( {var1, var2}, *alignedSequence );
 
     BOOST_CHECK_EQUAL( variants.size(), 0 );
 }
@@ -289,7 +289,7 @@ BOOST_AUTO_TEST_CASE( testNormalisationCancelsDeletionAndIndelToProduceSNPs )
     auto var1 = std::make_shared< Variant >( alignedSequence, Region( "1", 6, 8 ), "" );
     auto var2 = std::make_shared< Variant >( alignedSequence, Region( "1", 8, 8 ), "GG" );
 
-    const auto variants = echidna::variant::normaliseVariantsOnStrand( {var1, var2}, *alignedSequence );
+    const auto variants = wecall::variant::normaliseVariantsOnStrand( {var1, var2}, *alignedSequence );
 
     BOOST_CHECK_EQUAL( variants.size(), 2 );
     BOOST_CHECK( checkVariantInVector( std::vector< varPtr_t >( variants.begin(), variants.end() ),
@@ -457,7 +457,7 @@ BOOST_AUTO_TEST_CASE( testVariantGeneratorMulipleReadsWithNoIndels )
 BOOST_AUTO_TEST_CASE( testVariantGeneratorSingleReadWithDeletionStartingBeforeBlockRegion )
 {
     const auto alignedSequence = std::make_shared< ReferenceSequence >(
-        echidna::caller::Region( "1", 499, 600 ),
+        wecall::caller::Region( "1", 499, 600 ),
         "TAGGGCACAGCCTCACCCAGGAAAGCAGCTGGGGGTCCACTGGGCTCAGGGAAGACCCCCTGCCAGGGAGACCCCAGGCGCCTGAATGGCCACGGGAAGGA" );
 
     int64_t startPos = 500L;
@@ -466,7 +466,7 @@ BOOST_AUTO_TEST_CASE( testVariantGeneratorSingleReadWithDeletionStartingBeforeBl
     mutSeqStr[11 - 2] = 'C';
     mutSeqStr[22 - 2] = 'T';
     mutSeqStr[52 - 2] = 'T';  // Should not find this snp as beyond the region boundary.
-    echidna::utils::BasePairSequence mutSeq = mutSeqStr;
+    wecall::utils::BasePairSequence mutSeq = mutSeqStr;
 
     auto read = std::make_shared< Read >( mutSeqStr, std::string( mutSeqStr.size(), 'Q' ), "-", Cigar( "3D98M" ), 0,
                                           startPos - 1, 0, 100, 200, 200, 0, alignedSequence );
@@ -504,7 +504,7 @@ BOOST_AUTO_TEST_CASE( testVariantGeneratorJoinsSnpWithIndel )
 
     auto mutSeqWithOutIndelsStr = alignedSequence->sequence().str();
     mutSeqWithOutIndelsStr[29] = 'T';  // Acts as a block to left-alignment of cigarFlags::DELETION on right.
-    echidna::utils::BasePairSequence mutSeqWithOutIndels = mutSeqWithOutIndelsStr;
+    wecall::utils::BasePairSequence mutSeqWithOutIndels = mutSeqWithOutIndelsStr;
 
     auto mutSeq = mutSeqWithOutIndels.substr( 7, 25 ) + mutSeqWithOutIndels.substr( 7 + 25 + 1, 65 );
 
@@ -542,7 +542,7 @@ BOOST_AUTO_TEST_CASE( shouldNotCallIndelsAtReadStartEnd )
 {
     std::string varGenRef( 7, 'A' );
     const auto alignedSequence =
-        std::make_shared< ReferenceSequence >( echidna::caller::Region( "1", -1L, 7L ), "A" + varGenRef );
+        std::make_shared< ReferenceSequence >( wecall::caller::Region( "1", -1L, 7L ), "A" + varGenRef );
 
     auto read = std::make_shared< Read >( "T" + std::string( 6, 'A' ) + "TT", std::string( 9, 'Q' ), "",
                                           Cigar( "1I6M2I" ), 0, 0, 0, 0, 100, 200, 200, alignedSequence );

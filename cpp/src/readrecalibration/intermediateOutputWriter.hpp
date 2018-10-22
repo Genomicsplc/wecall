@@ -7,7 +7,7 @@
 
 #include "io/readRange.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace corrector
 {
@@ -30,6 +30,6 @@ namespace corrector
     };
 
 }  // namespace corrector
-}  // namespace echidna
+}  // namespace wecall
 
 #endif  // INTERMEDIATE_OUTPUT_WRITER_HPP

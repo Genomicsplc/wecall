@@ -9,15 +9,15 @@
 #include "variant/type/variant.hpp"
 #include "caller/diploid/diploidAnnotate.hpp"
 
-using echidna::variant::GenotypeVector;
-using echidna::variant::HaplotypeVector;
-using echidna::variant::genotypePtr_t;
-using echidna::variant::varPtr_t;
-using echidna::variant::variantSet_t;
-using echidna::variant::Haplotype;
-using echidna::utils::ReferenceSequence;
-using echidna::caller::Region;
-using echidna::variant::Variant;
+using wecall::variant::GenotypeVector;
+using wecall::variant::HaplotypeVector;
+using wecall::variant::genotypePtr_t;
+using wecall::variant::varPtr_t;
+using wecall::variant::variantSet_t;
+using wecall::variant::Haplotype;
+using wecall::utils::ReferenceSequence;
+using wecall::caller::Region;
+using wecall::variant::Variant;
 
 BOOST_AUTO_TEST_CASE( testConstructsAllPloidy1CombinationsFromHaplotypeVector )
 {
@@ -67,13 +67,13 @@ BOOST_AUTO_TEST_CASE( testGetsCorrectHashForGenotypes )
     const GenotypeVector genotypeVector( ploidy, haplotypeVector, {0, 1, 2, 3}, {} );
 
     BOOST_CHECK_EQUAL( genotypeVector[0]->getVariantNonPhasedHash( haplotypeVector, {snp1, snp2, snp3} ),
-                       echidna::variant::nonPhasedGenotypeHash_t( {0, 0, 0} ) );
+                       wecall::variant::nonPhasedGenotypeHash_t( {0, 0, 0} ) );
     BOOST_CHECK_EQUAL( genotypeVector[1]->getVariantNonPhasedHash( haplotypeVector, {snp1, snp2, snp3} ),
-                       echidna::variant::nonPhasedGenotypeHash_t( {1, 0, 0} ) );
+                       wecall::variant::nonPhasedGenotypeHash_t( {1, 0, 0} ) );
     BOOST_CHECK_EQUAL( genotypeVector[2]->getVariantNonPhasedHash( haplotypeVector, {snp1, snp2, snp3} ),
-                       echidna::variant::nonPhasedGenotypeHash_t( {0, 1, 0} ) );
+                       wecall::variant::nonPhasedGenotypeHash_t( {0, 1, 0} ) );
     BOOST_CHECK_EQUAL( genotypeVector[3]->getVariantNonPhasedHash( haplotypeVector, {snp1, snp2, snp3} ),
-                       echidna::variant::nonPhasedGenotypeHash_t( {1, 0, 1} ) );
+                       wecall::variant::nonPhasedGenotypeHash_t( {1, 0, 1} ) );
 }
 
 BOOST_AUTO_TEST_CASE( testPloidy1GenotypeCombinations )

@@ -1,7 +1,7 @@
 // All content Copyright (C) 2018 Genomics plc
 #include "weCallMapAndReduce.hpp"
 
-namespace echidna
+namespace wecall
 {
 using namespace boost::program_options;
 using namespace io;
@@ -44,7 +44,7 @@ int weCallMapAndReduce::processJob( int argc, char * argv[] )
             std::ifstream configIn( configFileName );
             if ( not configIn.is_open() )
             {
-                throw utils::echidna_exception( "Could not open configuration file: " + configFileName );
+                throw utils::wecall_exception( "Could not open configuration file: " + configFileName );
             }
 
             // Options from the config file are added to those from the command line (no override)

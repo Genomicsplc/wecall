@@ -2,7 +2,7 @@
 import re
 from wecall.bamutils.cigar import Cigar
 from wecall.bamutils.sequence_position import DELETED_BASE, MATCHING_BASE
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 from wecall.genomics.variant import Variant, TYPE_DEL, TYPE_INS, TYPE_SNP, TYPE_TO_STR, TYPE_REF
 
 
@@ -59,7 +59,7 @@ class Sequence(object):
                 ref_index += 1
 
             if ref_char == DELETED_BASE and alt_char == MATCHING_BASE:
-                raise EchidnaException(
+                raise weCallException(
                     "Invalid sequence at ref position {}".format(ref_index))
             elif ref_char == DELETED_BASE and alt_char == DELETED_BASE:
                 continue
@@ -128,7 +128,7 @@ class Sequence(object):
                     var_1.chrom, var_1.pos_from, var_1.ref, var_1.alt + var_2.alt[-1])
                 return None, merged_variant
             else:
-                raise EchidnaException(
+                raise weCallException(
                     "Unexpected variant type: " + TYPE_TO_STR[var_1.type])
 
     def _get_cigar(self):
@@ -148,8 +148,8 @@ class Sequence(object):
     @staticmethod
     def __validate_input(ref, seq):
         if len(seq) != ref.length_with_deletions():
-            raise EchidnaException(
+            raise weCallException(
                 "Sequence has to be of the same length as reference.")
         if not re.match(r'^[ACGTURYKMSWBDHVN\*\.]*\Z', seq):
-            raise EchidnaException(
+            raise weCallException(
                 "Illegal character in sequence {!r}".format(seq))

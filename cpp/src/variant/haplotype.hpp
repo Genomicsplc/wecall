@@ -12,7 +12,7 @@
 #include "utils/logging.hpp"
 #include "utils/interval.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {

@@ -4,7 +4,7 @@
 #include "utils/date.hpp"
 #include "utils/write.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace vcf
 {

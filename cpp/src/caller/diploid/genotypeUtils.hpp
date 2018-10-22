@@ -8,7 +8,7 @@
 #include "utils/matrix.hpp"
 #include "variant/genotype.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {

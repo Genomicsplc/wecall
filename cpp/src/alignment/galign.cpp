@@ -10,7 +10,7 @@
 #include "utils/logging.hpp"
 #include "utils/interval.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace alignment
 {
@@ -71,8 +71,8 @@ namespace alignment
 
     //-----------------------------------------------------------------------------------------
 
-    int GAlign::computeAlignmentPhredScore( const echidna::utils::BasePairSequence & readSeq,
-                                            const echidna::utils::QualitySequence & qual,
+    int GAlign::computeAlignmentPhredScore( const wecall::utils::BasePairSequence & readSeq,
+                                            const wecall::utils::QualitySequence & qual,
                                             const int pos,
                                             char * aln1,
                                             char * aln2 ) const

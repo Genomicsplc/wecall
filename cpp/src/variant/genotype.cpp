@@ -6,7 +6,7 @@
 #include "utils/combinationGenerator.hpp"
 #include "utils/multinomialCoefficients.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {

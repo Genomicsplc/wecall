@@ -3,7 +3,7 @@ from collections import OrderedDict
 from wecall.bamutils.read_sequence import HIGH_QUALITY
 from wecall.bamutils.sequence_bank import SequenceBank
 from wecall.bamutils.sequence_quality import SequenceQuality
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 from wecall.genomics.reference_chromosome import DEFAULT_CHROM, ReferenceChromosome
 
 
@@ -39,7 +39,7 @@ class SampleBank(object):
 
     def add_sample_name(self, sample_name):
         if sample_name in self.__samples:
-            raise EchidnaException(
+            raise weCallException(
                 "Sample {} already exists in the SampleBank.".format(sample_name))
         sequence_bank = SequenceBank(self.reference)
         self.__samples[sample_name] = sequence_bank

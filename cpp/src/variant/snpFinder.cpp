@@ -3,7 +3,7 @@
 #include "variant/type/variant.hpp"
 #include "variant/clustering.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {

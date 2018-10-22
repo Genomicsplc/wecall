@@ -8,17 +8,17 @@
 #include "variant/haplotype.hpp"
 #include "variant/type/variant.hpp"
 
-using namespace echidna::variant;
-using echidna::variant::variantSet_t;
-using echidna::utils::ReferenceSequence;
-using echidna::caller::Region;
-using echidna::variant::HaplotypeVector;
+using namespace wecall::variant;
+using wecall::variant::variantSet_t;
+using wecall::utils::ReferenceSequence;
+using wecall::caller::Region;
+using wecall::variant::HaplotypeVector;
 
 //-------------------------------------------------------------------------------------------------
 
 BOOST_AUTO_TEST_CASE( haploidGenotype )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     const std::string chrom( "1" );
 
@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE( haploidGenotype )
 
 BOOST_AUTO_TEST_CASE( diploidGenotype )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     const std::string chrom( "1" );
 

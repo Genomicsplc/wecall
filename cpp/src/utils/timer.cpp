@@ -6,7 +6,7 @@
 #include "timer.hpp"
 #include "utils/logging.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {

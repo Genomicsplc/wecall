@@ -7,14 +7,14 @@
 
 #include "caller/region.hpp"
 
-using echidna::utils::BasePairSequence;
-using echidna::variant::Breakpoint;
-using echidna::variant::Variant;
-using echidna::variant::BreakpointLocus;
-using echidna::variant::breakpointPtrComp;
-using echidna::variant::breakpointLocusPtrComp;
-using echidna::utils::ReferenceSequence;
-using echidna::caller::Region;
+using wecall::utils::BasePairSequence;
+using wecall::variant::Breakpoint;
+using wecall::variant::Variant;
+using wecall::variant::BreakpointLocus;
+using wecall::variant::breakpointPtrComp;
+using wecall::variant::breakpointLocusPtrComp;
+using wecall::utils::ReferenceSequence;
+using wecall::caller::Region;
 
 BOOST_AUTO_TEST_CASE( testConstructionOfBreakpoint )
 {

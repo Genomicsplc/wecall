@@ -2,7 +2,7 @@
 #include <cassert>
 #include "io/bamFileIterator.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {
@@ -40,7 +40,7 @@ namespace io
     {
         if ( not this->hasReadData() )
         {
-            throw utils::echidna_exception( "Tried to get read data without checking if there were more to get" );
+            throw utils::wecall_exception( "Tried to get read data without checking if there were more to get" );
         }
 
         const uint8_t * rgID = bam_aux_get( m_bamRecordPtr, "RG" );
@@ -54,7 +54,7 @@ namespace io
 
         if ( it == m_samplesByID.end() )
         {
-            throw utils::echidna_exception( "Found read without matching sample name in BAM header!" );
+            throw utils::wecall_exception( "Found read without matching sample name in BAM header!" );
         }
 
         std::string sampleName = it->second;
@@ -80,7 +80,7 @@ namespace io
     {
         if ( not this->hasReadData() )
         {
-            throw utils::echidna_exception( "Tried to get read data without checking if there were more to get" );
+            throw utils::wecall_exception( "Tried to get read data without checking if there were more to get" );
         }
 
         readPtr_t read = std::make_shared< Read >( m_bamRecordPtr, m_refSequence );

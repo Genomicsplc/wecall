@@ -54,7 +54,7 @@ inline std::size_t int64_to_sizet( int64_t v )
 {
     if ( v < 0 )
     {
-        throw echidna::utils::echidna_exception( "Cannot convert int64_t " + std::to_string( v ) + " to size_t." );
+        throw wecall::utils::wecall_exception( "Cannot convert int64_t " + std::to_string( v ) + " to size_t." );
     }
     return static_cast< std::size_t >( v );
 }
@@ -63,7 +63,7 @@ inline std::size_t int32_to_sizet( int32_t v )
 {
     if ( v < 0 )
     {
-        throw echidna::utils::echidna_exception( "Cannot convert int32_t " + std::to_string( v ) + " to size_t." );
+        throw wecall::utils::wecall_exception( "Cannot convert int32_t " + std::to_string( v ) + " to size_t." );
     }
     return static_cast< std::size_t >( v );
 }
@@ -72,7 +72,7 @@ inline std::size_t long_to_sizet( long v )
 {
     if ( v < 0 )
     {
-        throw echidna::utils::echidna_exception( "Cannot convert long " + std::to_string( v ) + " to size_t." );
+        throw wecall::utils::wecall_exception( "Cannot convert long " + std::to_string( v ) + " to size_t." );
     }
     return static_cast< std::size_t >( v );
 }

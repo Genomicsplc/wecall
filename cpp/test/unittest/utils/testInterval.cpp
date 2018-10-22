@@ -4,7 +4,7 @@
 
 #include "utils/interval.hpp"
 
-using echidna::utils::Interval;
+using wecall::utils::Interval;
 
 BOOST_AUTO_TEST_CASE( emptyIntervalsShouldOverlapEachOther )
 {

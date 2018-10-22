@@ -18,7 +18,7 @@
 #include "vcf/field.hpp"
 #include "regionUtils.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {
@@ -184,7 +184,7 @@ namespace caller
             {
                 std::stringstream msg;
                 msg << "<" << paramName << "> not in acceptable range. ";
-                throw utils::echidna_exception( msg.str() );
+                throw utils::wecall_exception( msg.str() );
             }
         }
 
@@ -203,7 +203,7 @@ namespace caller
             }
             else
             {
-                throw utils::echidna_exception( "Missing parameter value for " + name + "." );
+                throw utils::wecall_exception( "Missing parameter value for " + name + "." );
             }
         }
 

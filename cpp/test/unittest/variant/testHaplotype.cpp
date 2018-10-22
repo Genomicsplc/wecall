@@ -7,11 +7,11 @@
 
 #include "variant/type/variant.hpp"
 
-using namespace echidna::variant;
-using echidna::variant::variantSet_t;
-using echidna::caller::Region;
-using echidna::caller::SetRegions;
-using echidna::utils::ReferenceSequence;
+using namespace wecall::variant;
+using wecall::variant::variantSet_t;
+using wecall::caller::Region;
+using wecall::caller::SetRegions;
+using wecall::utils::ReferenceSequence;
 
 BOOST_AUTO_TEST_CASE( testBuildingHaplotypeSequenceWithSubDeletion )
 {
@@ -110,7 +110,7 @@ BOOST_AUTO_TEST_CASE( testIsValidVariantCombinationShouldFailWhenReferenceDoesnt
         std::make_shared< ReferenceSequence >( referenceSequence->subseq( Region( "1", 2, 5 ) ) );
 
     BOOST_CHECK_THROW( isValidVariantCombination( variants.cbegin(), variants.cend(), incompleteReference ),
-                       echidna::utils::echidna_exception );
+                       wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( testIsValidVariantCombinationShouldFailWhenReferenceDoesntCoverSecondVariant )
@@ -124,7 +124,7 @@ BOOST_AUTO_TEST_CASE( testIsValidVariantCombinationShouldFailWhenReferenceDoesnt
         std::make_shared< ReferenceSequence >( referenceSequence->subseq( Region( "1", 0, 2 ) ) );
 
     BOOST_CHECK_THROW( isValidVariantCombination( variants.cbegin(), variants.cend(), incompleteReference ),
-                       echidna::utils::echidna_exception );
+                       wecall::utils::wecall_exception );
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -152,7 +152,7 @@ BOOST_AUTO_TEST_CASE( testSingleSNPHap )
 
 BOOST_AUTO_TEST_CASE( testSingleInsertionHap )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     std::string chrom = "1";
 
@@ -175,7 +175,7 @@ BOOST_AUTO_TEST_CASE( testSingleInsertionHap )
 
 BOOST_AUTO_TEST_CASE( testSingleDeletionHap )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     std::string chrom = "1";
 
@@ -197,7 +197,7 @@ BOOST_AUTO_TEST_CASE( testSingleDeletionHap )
 
 BOOST_AUTO_TEST_CASE( testSingleMNPHap )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     std::string chrom = "1";
 
@@ -224,7 +224,7 @@ BOOST_AUTO_TEST_CASE( testSingleMNPHap )
 
 BOOST_AUTO_TEST_CASE( testMultiSNPHap )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     std::string chrom = "1";
 
@@ -258,7 +258,7 @@ BOOST_AUTO_TEST_CASE( testMultiSNPHap )
 
 BOOST_AUTO_TEST_CASE( testMultiInsertionHap )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     std::string chrom = "1";
 
@@ -284,7 +284,7 @@ BOOST_AUTO_TEST_CASE( testMultiInsertionHap )
 
 BOOST_AUTO_TEST_CASE( testMultiDeletionHap )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     std::string chrom = "1";
 
@@ -344,7 +344,7 @@ BOOST_AUTO_TEST_CASE( testMNPShouldBeContainedInHaplotype )
 
 BOOST_AUTO_TEST_CASE( testAdjacentSnpInsertion )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     std::string chrom = "1";
 
@@ -367,7 +367,7 @@ BOOST_AUTO_TEST_CASE( testAdjacentSnpInsertion )
 
 BOOST_AUTO_TEST_CASE( testAdjacentSnpDeletion )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     std::string chrom = "1";
 
@@ -390,7 +390,7 @@ BOOST_AUTO_TEST_CASE( testAdjacentSnpDeletion )
 
 BOOST_AUTO_TEST_CASE( testInsertionsAtSameLocationShouldRaiseAsInvalidCombination )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     std::string chrom = "20";
 
@@ -408,7 +408,7 @@ BOOST_AUTO_TEST_CASE( testInsertionsAtSameLocationShouldRaiseAsInvalidCombinatio
 
 BOOST_AUTO_TEST_CASE( testInsertionAndDeletionAtSameLocationInHomopolymerRegion )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     std::string chrom = "20";
 
@@ -432,7 +432,7 @@ BOOST_AUTO_TEST_CASE( testInsertionAndDeletionAtSameLocationInHomopolymerRegion 
 
 BOOST_AUTO_TEST_CASE( testHaplotypeConstructionWithSubRegions )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     std::string chrom = "20";
 
@@ -463,7 +463,7 @@ BOOST_AUTO_TEST_CASE( testHaplotypeConstructionWithSubRegions )
 
 BOOST_AUTO_TEST_CASE( testShouldJoinRegionsWhichHaveLargeVariantSpanning )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     std::string chrom = "20";
 
@@ -496,7 +496,7 @@ BOOST_AUTO_TEST_CASE( testShouldJoinRegionsWhichHaveLargeVariantSpanning )
 
 BOOST_AUTO_TEST_CASE( testHaplotypeConstructionShouldFillGapsBetweenSubRegionsAndPadTheSequences )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     std::string chrom = "20";
 
@@ -531,7 +531,7 @@ BOOST_AUTO_TEST_CASE( testHaplotypeConstructionShouldFillGapsBetweenSubRegionsAn
 
 BOOST_AUTO_TEST_CASE( testVarCalledForSNPs )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     std::string chrom = "1";
 
@@ -542,13 +542,13 @@ BOOST_AUTO_TEST_CASE( testVarCalledForSNPs )
     const variantSet_t variants = {var1};
     const Haplotype haplotype( referenceSequence, referenceSequence->region(), variants, 0 );
 
-    BOOST_CHECK_EQUAL( echidna::caller::Call::VAR, haplotype.getCallType( var1 ) );
-    BOOST_CHECK_EQUAL( echidna::caller::Call::REF, haplotype.getCallType( var2 ) );
+    BOOST_CHECK_EQUAL( wecall::caller::Call::VAR, haplotype.getCallType( var1 ) );
+    BOOST_CHECK_EQUAL( wecall::caller::Call::REF, haplotype.getCallType( var2 ) );
 }
 
 BOOST_AUTO_TEST_CASE( testVarCalledForIndels )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     std::string chrom = "1";
 
@@ -560,14 +560,14 @@ BOOST_AUTO_TEST_CASE( testVarCalledForIndels )
     const variantSet_t variants = {var1, var2};
     const Haplotype haplotype( referenceSequence, referenceSequence->region(), variants, 0 );
 
-    BOOST_CHECK_EQUAL( echidna::caller::Call::VAR, haplotype.getCallType( var1 ) );
-    BOOST_CHECK_EQUAL( echidna::caller::Call::VAR, haplotype.getCallType( var2 ) );
-    BOOST_CHECK_EQUAL( echidna::caller::Call::REF, haplotype.getCallType( var3 ) );
+    BOOST_CHECK_EQUAL( wecall::caller::Call::VAR, haplotype.getCallType( var1 ) );
+    BOOST_CHECK_EQUAL( wecall::caller::Call::VAR, haplotype.getCallType( var2 ) );
+    BOOST_CHECK_EQUAL( wecall::caller::Call::REF, haplotype.getCallType( var3 ) );
 }
 
 BOOST_AUTO_TEST_CASE( testVarCalledForOverlappingVariants )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     std::string chrom = "1";
 
@@ -577,11 +577,11 @@ BOOST_AUTO_TEST_CASE( testVarCalledForOverlappingVariants )
 
     const Haplotype haplotype1( refSeq, refSeq->region(), {var1}, 0 );
 
-    BOOST_CHECK_EQUAL( echidna::caller::Call::VAR, haplotype1.getCallType( var1 ) );
-    BOOST_CHECK_EQUAL( echidna::caller::Call::UNKNOWN, haplotype1.getCallType( var2 ) );
+    BOOST_CHECK_EQUAL( wecall::caller::Call::VAR, haplotype1.getCallType( var1 ) );
+    BOOST_CHECK_EQUAL( wecall::caller::Call::UNKNOWN, haplotype1.getCallType( var2 ) );
 
     const Haplotype haplotype2( refSeq, refSeq->region(), {var2}, 0 );
 
-    BOOST_CHECK_EQUAL( echidna::caller::Call::UNKNOWN, haplotype2.getCallType( var1 ) );
-    BOOST_CHECK_EQUAL( echidna::caller::Call::VAR, haplotype2.getCallType( var2 ) );
+    BOOST_CHECK_EQUAL( wecall::caller::Call::UNKNOWN, haplotype2.getCallType( var1 ) );
+    BOOST_CHECK_EQUAL( wecall::caller::Call::VAR, haplotype2.getCallType( var2 ) );
 }

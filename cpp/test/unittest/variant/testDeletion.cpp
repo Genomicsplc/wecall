@@ -5,14 +5,14 @@
 #include <boost/test/unit_test.hpp>
 #include <string>
 
-using echidna::caller::Region;
-using echidna::utils::ReferenceSequence;
-using echidna::variant::Variant;
-using echidna::caller::SetRegions;
+using wecall::caller::Region;
+using wecall::utils::ReferenceSequence;
+using wecall::variant::Variant;
+using wecall::caller::SetRegions;
 
 BOOST_AUTO_TEST_CASE( testDeletion )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     auto referenceSequence = std::make_shared< ReferenceSequence >( Region( "1", 1000001, 1000005 ), "GGCA" );
     varPtr_t theDeletion( new Variant( referenceSequence, referenceSequence->region(), "", false ) );
@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE( testDeletion )
     BOOST_CHECK_EQUAL( theDeletion->end(), 1000005 );
 
     auto expectedPrior = 1e-4 * pow( 0.8, referenceSequence->size() );
-    echidna::variant::setDefaultPriors( {theDeletion} );
+    wecall::variant::setDefaultPriors( {theDeletion} );
 
     BOOST_CHECK_CLOSE( theDeletion->prior(), expectedPrior, 1e-5 );
 }
@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE( testDeletion )
 BOOST_AUTO_TEST_CASE( leftAlignDel )
 {
     // Test left-aligning deletions
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     // Reference genome 37, chrom 1 from 1000000 - 1000099
     //
@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_CASE( leftAlignDel )
 BOOST_AUTO_TEST_CASE( minPosForLeftAlignmentAtSamePosShouldNotAffectWhenNoAlignmentDoneDel )
 {
     // Test left-aligning deletions
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     // Reference genome 37, chrom 1 from 1000000 - 1000099
     //
@@ -119,14 +119,14 @@ BOOST_AUTO_TEST_CASE( minPosForLeftAlignmentAtSamePosShouldNotAffectWhenNoAlignm
     BOOST_CHECK_EQUAL( del->sequenceLengthInRef(), del3->sequenceLengthInRef() );
     BOOST_CHECK_EQUAL( del->sequence(), del3->sequence() );
 
-    echidna::variant::setDefaultPriors( {del, del3} );
+    wecall::variant::setDefaultPriors( {del, del3} );
     BOOST_CHECK_CLOSE( del->prior(), del3->prior(), 1e-5 );
 }
 
 BOOST_AUTO_TEST_CASE( deletionWontLeftAlignWhenBoundaryInsideRepetitiveRegion )
 {
     // Test left-aligning deletions
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     // Reference genome 37, chrom 1 from 1000000 - 1000099
     //
@@ -150,14 +150,14 @@ BOOST_AUTO_TEST_CASE( deletionWontLeftAlignWhenBoundaryInsideRepetitiveRegion )
 
     BOOST_CHECK_EQUAL( del->sequenceLengthInRef(), del3->sequenceLengthInRef() );
     BOOST_CHECK_EQUAL( del->sequence(), del3->sequence() );
-    echidna::variant::setDefaultPriors( {del, del3} );
+    wecall::variant::setDefaultPriors( {del, del3} );
     BOOST_CHECK_CLOSE( del->prior(), del3->prior(), 1e-5 );
 }
 
 BOOST_AUTO_TEST_CASE( deletionWillLeftAlignWhenBoundaryInsideRepetitiveRegion )
 {
     // Test left-aligning deletions
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     const auto refSeq = std::make_shared< ReferenceSequence >(
         Region( "1", 1000000, 1000100 ),
@@ -173,21 +173,21 @@ BOOST_AUTO_TEST_CASE( deletionWillLeftAlignWhenBoundaryInsideRepetitiveRegion )
 
     BOOST_CHECK_EQUAL( del->sequenceLengthInRef(), del3->sequenceLengthInRef() );
     BOOST_CHECK_EQUAL( del->sequence(), del3->sequence() );
-    echidna::variant::setDefaultPriors( {del, del3} );
+    wecall::variant::setDefaultPriors( {del, del3} );
     BOOST_CHECK_CLOSE( del->prior(), del3->prior(), 1e-5 );
 }
 
 BOOST_AUTO_TEST_CASE( deletionWillRightAlignSingleRepeatUnit )
 {
     const auto refSeq = std::make_shared< ReferenceSequence >( Region( "1", 100, 112 ), "AAAAATTTTTAC" );
-    echidna::variant::varPtr_t del = std::make_shared< Variant >( refSeq, Region( "1", 101, 102 ), "" );
+    wecall::variant::varPtr_t del = std::make_shared< Variant >( refSeq, Region( "1", 101, 102 ), "" );
 
     auto del2 = del->getRightAligned( 109 );
 
     BOOST_CHECK_EQUAL( del2->contig(), "1" );
     BOOST_CHECK_EQUAL( del2->start(), 104 );
     BOOST_CHECK_EQUAL( del2->end(), 105 );
-    BOOST_CHECK_EQUAL( del2->refSequence().sequence(), echidna::utils::BasePairSequence( "A" ) );
+    BOOST_CHECK_EQUAL( del2->refSequence().sequence(), wecall::utils::BasePairSequence( "A" ) );
     BOOST_CHECK( not del2->isFullyLeftAligned() );
 
     BOOST_CHECK_EQUAL( del2->getStartEndRegions( del2->start() - 1, del2->end() + 1 ),
@@ -200,14 +200,14 @@ BOOST_AUTO_TEST_CASE( deletionWillRightAlignSingleRepeatUnit )
 BOOST_AUTO_TEST_CASE( deletionWillRightAlignMultiRepeatUnit )
 {
     const auto refSeq = std::make_shared< ReferenceSequence >( Region( "1", 100, 110 ), "ATATATACCC" );
-    echidna::variant::varPtr_t del = std::make_shared< Variant >( refSeq, Region( "1", 101, 103 ), "" );
+    wecall::variant::varPtr_t del = std::make_shared< Variant >( refSeq, Region( "1", 101, 103 ), "" );
 
     auto del2 = del->getRightAligned( 109 );
 
     BOOST_CHECK_EQUAL( del2->contig(), "1" );
     BOOST_CHECK_EQUAL( del2->start(), 105 );
     BOOST_CHECK_EQUAL( del2->end(), 107 );
-    BOOST_CHECK_EQUAL( del2->refSequence().sequence(), echidna::utils::BasePairSequence( "TA" ) );
+    BOOST_CHECK_EQUAL( del2->refSequence().sequence(), wecall::utils::BasePairSequence( "TA" ) );
     BOOST_CHECK( not del2->isFullyLeftAligned() );
 }
 
@@ -216,7 +216,7 @@ BOOST_AUTO_TEST_CASE( deletionWillLeftAlignInComplexRepeatRegion )
     const auto refSeq = std::make_shared< ReferenceSequence >(
         Region( "1", 51, 108 ), "TGATTACAGATTACAGATTACAGATTACAGATTACAGATTACAGATTACAGATTACA" );
 
-    using namespace echidna::variant;
+    using namespace wecall::variant;
     varPtr_t ins( new Variant( refSeq, Region( "1", 101, 108 ), "", false ) );
     //                                    0      1      2      3      4      5      6
     ins = ins->getLeftAligned( 51 );
@@ -228,7 +228,7 @@ BOOST_AUTO_TEST_CASE( deletionWillLeftAlignInComplexRepeatRegionWithAllRefString
     const auto refSeq = std::make_shared< ReferenceSequence >(
         Region( "1", 52, 108 ), "GATTACAGATTACAGATTACAGATTACAGATTACAGATTACAGATTACAGATTACA" );
 
-    using namespace echidna::variant;
+    using namespace wecall::variant;
     varPtr_t del( new Variant( refSeq, Region( "1", 101, 108 ), "", false ) );
     //                                   0      1      2      3      4      5      6
     del = del->getLeftAligned( 52 );
@@ -241,7 +241,7 @@ BOOST_AUTO_TEST_CASE( deletionWillLeftAlignInComplexRepeatRegionWithChangeToSequ
     const auto refSeq = std::make_shared< ReferenceSequence >(
         Region( "1", 50, 108 ), "TAGATTACAGATTACAGATTACAGATTACAGATTACAGATTACAGATTACAGATTACA" );
 
-    using namespace echidna::variant;
+    using namespace wecall::variant;
     varPtr_t ins( new Variant( refSeq, Region( "1", 101, 108 ), "", false ) );
     //                                     0      1      2      3      4      5      6
     const ReferenceSequence refStringBefore = refSeq->subseq( Region( "1", 50, 101 ) );
@@ -255,7 +255,7 @@ BOOST_AUTO_TEST_CASE( deletionWillLeftAlignInComplexRepeatRegionWithChangeToSequ
 {
     const auto refSeq = std::make_shared< ReferenceSequence >(
         Region( "1", 50, 108 ), "CAGATTACAGATTACAGATTACAGATTACAGATTACAGATTACAGATTACAGATTACA" );
-    using namespace echidna::variant;
+    using namespace wecall::variant;
     varPtr_t ins( new Variant( refSeq, Region( "1", 101, 108 ), "", false ) );
     //                                     0      1      2      3      4      5      6
     const ReferenceSequence refStringBefore = refSeq->subseq( Region( "1", 50, 101 ) );

@@ -6,7 +6,7 @@
 #include "stats/functions.hpp"
 #include "vcf/field.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {

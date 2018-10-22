@@ -6,7 +6,7 @@
 #include "variant/type/variant.hpp"
 #include "utils/write.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace vcf
 {

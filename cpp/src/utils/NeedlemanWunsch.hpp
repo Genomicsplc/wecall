@@ -9,7 +9,7 @@
 #include "utils/referenceSequence.hpp"
 #include "variant/type/variant.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {

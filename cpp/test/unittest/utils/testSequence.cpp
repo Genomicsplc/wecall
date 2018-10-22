@@ -4,7 +4,7 @@
 
 #include "utils/sequence.hpp"
 
-using namespace echidna;
+using namespace wecall;
 
 BOOST_AUTO_TEST_CASE( testBasePairSequenceConstructors )
 {
@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE( testBasePairSequenceSubstr )
 
     BOOST_CHECK_EQUAL( seq.substr( 4, 1 ), utils::BasePairSequence() );
 
-    BOOST_CHECK_THROW( seq.substr( -1, 1 ), echidna::utils::echidna_exception );
+    BOOST_CHECK_THROW( seq.substr( -1, 1 ), wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( testBasePairSequenceContains )

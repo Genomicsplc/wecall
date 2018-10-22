@@ -9,7 +9,7 @@
 
 #include "common.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {
@@ -73,9 +73,9 @@ namespace utils
 namespace std
 {
 template <>
-struct hash< echidna::utils::BasePairSequence >
+struct hash< wecall::utils::BasePairSequence >
 {
-    std::size_t operator()( const echidna::utils::BasePairSequence & x ) const
+    std::size_t operator()( const wecall::utils::BasePairSequence & x ) const
     {
         return hash< std::string >()( x.str() );
     }

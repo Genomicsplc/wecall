@@ -19,7 +19,7 @@
 #include "version/version.hpp"
 #include "weCallBase.hpp"
 
-namespace echidna
+namespace wecall
 {
 using namespace boost::program_options;
 using namespace io;

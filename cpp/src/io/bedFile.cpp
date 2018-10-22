@@ -16,7 +16,7 @@
 #include "utils/logging.hpp"
 #include "utils/timer.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {
@@ -94,7 +94,7 @@ namespace io
         }
         else
         {
-            throw utils::echidna_exception( "Malformatted bed file line " + std::to_string( lineNumber ) );
+            throw utils::wecall_exception( "Malformatted bed file line " + std::to_string( lineNumber ) );
         }
     }
 }

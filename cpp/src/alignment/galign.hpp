@@ -8,7 +8,7 @@
 #include "utils/sequence.hpp"
 #include "align.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace alignment
 {

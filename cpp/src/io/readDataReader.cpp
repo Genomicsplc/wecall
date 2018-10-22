@@ -3,7 +3,7 @@
 #include "utils/timer.hpp"
 #include "io/readDataReader.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

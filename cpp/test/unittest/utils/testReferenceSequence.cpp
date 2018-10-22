@@ -6,17 +6,17 @@
 
 #include "utils/referenceSequence.hpp"
 
-using namespace echidna;
-using echidna::utils::ReferenceSequence;
-using echidna::utils::BasePairSequence;
-using echidna::utils::Interval;
-using echidna::caller::Region;
+using namespace wecall;
+using wecall::utils::ReferenceSequence;
+using wecall::utils::BasePairSequence;
+using wecall::utils::Interval;
+using wecall::caller::Region;
 
 BOOST_AUTO_TEST_CASE( testConstructorSanity )
 {
     caller::Region r( "1", utils::Interval( 0, 1 ) );
 
-    BOOST_CHECK_THROW( utils::ReferenceSequence( r, "hoho" ), echidna::utils::echidna_exception );
+    BOOST_CHECK_THROW( utils::ReferenceSequence( r, "hoho" ), wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( testConstructorInsanity )
@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_CASE( testConstructorInsanity )
 BOOST_AUTO_TEST_CASE( testSequenceIsGettableOutable )
 {
     caller::Region r( "1", utils::Interval( 0, 1 ) );
-    const echidna::utils::BasePairSequence seq( "a" );
+    const wecall::utils::BasePairSequence seq( "a" );
     BOOST_CHECK_EQUAL( utils::ReferenceSequence( r, seq ).sequence(), seq );
 }
 
@@ -37,8 +37,8 @@ BOOST_AUTO_TEST_CASE( testSubseq )
 {
     caller::Region r( "1", utils::Interval( 101, 103 ) );
     caller::Region subRegion( "1", utils::Interval( 101, 102 ) );
-    const echidna::utils::BasePairSequence seq( "ab" );
-    const echidna::utils::BasePairSequence expectedSeq( "a" );
+    const wecall::utils::BasePairSequence seq( "ab" );
+    const wecall::utils::BasePairSequence expectedSeq( "a" );
     BOOST_CHECK_EQUAL( utils::ReferenceSequence( r, seq ).subseq( subRegion ).region(), subRegion );
     BOOST_CHECK_EQUAL( utils::ReferenceSequence( r, seq ).subseq( subRegion ).sequence(), expectedSeq );
 }
@@ -47,8 +47,8 @@ BOOST_AUTO_TEST_CASE( testSubseqRange )
 {
     caller::Region r( "1", utils::Interval( 101, 103 ) );
     caller::Region subRegion( "1", utils::Interval( 101, 102 ) );
-    const echidna::utils::BasePairSequence seq( "ab" );
-    const echidna::utils::BasePairSequence expectedSeq( "a" );
+    const wecall::utils::BasePairSequence seq( "ab" );
+    const wecall::utils::BasePairSequence expectedSeq( "a" );
     auto range = utils::ReferenceSequence( r, seq ).subseqRange( subRegion );
     BOOST_CHECK_EQUAL( std::string( range.first, range.second ), expectedSeq.str() );
 }
@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE( testAccessors )
 {
     std::string const contig = "1";
     caller::Region r( contig, utils::Interval( 100, 104 ) );
-    echidna::utils::ReferenceSequence s( r, "ACTG" );
+    wecall::utils::ReferenceSequence s( r, "ACTG" );
 
     BOOST_CHECK_EQUAL( s.size(), 4 );
     BOOST_CHECK_EQUAL( s.start(), 100 );
@@ -68,7 +68,7 @@ BOOST_AUTO_TEST_CASE( testAccessors )
 BOOST_AUTO_TEST_CASE( testGetPaddedReference )
 {
     caller::Region r( "1", utils::Interval( 10, 11 ) );
-    const echidna::utils::BasePairSequence seq( "a" );
+    const wecall::utils::BasePairSequence seq( "a" );
 
     BOOST_CHECK_EQUAL(
         utils::ReferenceSequence( r, "a" ).getPadded( caller::Region( "1", utils::Interval( 8, 14 ) ) ).region(),
@@ -94,15 +94,15 @@ BOOST_AUTO_TEST_CASE( testBasicForwardIterators )
             obtainedSequenceStr[i] = *it;
             ++i;
         }
-        echidna::utils::BasePairSequence obtainedSequence = obtainedSequenceStr;
+        wecall::utils::BasePairSequence obtainedSequence = obtainedSequenceStr;
 
         BOOST_CHECK_EQUAL( obtainedSequence, referenceSequence.sequence() );
     }
 
     BOOST_CHECK_THROW( referenceSequence.getRangeForwardIterators( Interval( 0, 5 ) ),
-                       echidna::utils::echidna_exception );
+                       wecall::utils::wecall_exception );
     BOOST_CHECK_THROW( referenceSequence.getRangeForwardIterators( Interval( 5, 12 ) ),
-                       echidna::utils::echidna_exception );
+                       wecall::utils::wecall_exception );
 
     BOOST_CHECK_EQUAL( *referenceSequence.getRangeForwardIterators( Interval( 1, 5 ) ).first, '0' );
     BOOST_CHECK_EQUAL( *referenceSequence.getRangeForwardIterators( Interval( 1, 5 ) ).second, '4' );
@@ -125,7 +125,7 @@ BOOST_AUTO_TEST_CASE( testBasicForwardIterators )
             obtainedSequenceStr[i] = *it;
             ++i;
         }
-        echidna::utils::BasePairSequence obtainedSequence = obtainedSequenceStr;
+        wecall::utils::BasePairSequence obtainedSequence = obtainedSequenceStr;
         BOOST_CHECK_EQUAL( obtainedSequenceStr, "2345" );
     }
 }
@@ -146,14 +146,14 @@ BOOST_AUTO_TEST_CASE( testBasicReverseIterators )
             obtainedSequenceStr[i] = *it;
             ++i;
         }
-        echidna::utils::BasePairSequence obtainedSequence = obtainedSequenceStr;
+        wecall::utils::BasePairSequence obtainedSequence = obtainedSequenceStr;
         BOOST_CHECK_EQUAL( obtainedSequence, "9876543210" );
     }
 
     BOOST_CHECK_THROW( referenceSequence.getRangeReverseIterators( Interval( 0, 5 ) ),
-                       echidna::utils::echidna_exception );
+                       wecall::utils::wecall_exception );
     BOOST_CHECK_THROW( referenceSequence.getRangeReverseIterators( Interval( 5, 12 ) ),
-                       echidna::utils::echidna_exception );
+                       wecall::utils::wecall_exception );
 
     BOOST_CHECK( referenceSequence.getRangeReverseIterators( Interval( 1, 5 ) ).second == referenceSequence.crend() );
     BOOST_CHECK_EQUAL( *referenceSequence.getRangeReverseIterators( Interval( 1, 5 ) ).first, '3' );
@@ -179,7 +179,7 @@ BOOST_AUTO_TEST_CASE( testBasicReverseIterators )
             obtainedSequenceStr[i] = *it;
             ++i;
         }
-        echidna::utils::BasePairSequence obtainedSequence = obtainedSequenceStr;
+        wecall::utils::BasePairSequence obtainedSequence = obtainedSequenceStr;
         BOOST_CHECK_EQUAL( obtainedSequenceStr, "5432" );
     }
 }

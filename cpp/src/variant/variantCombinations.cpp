@@ -4,7 +4,7 @@
 #include "variant/variantCombinations.hpp"
 #include "io/read.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {

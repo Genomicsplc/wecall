@@ -10,15 +10,15 @@
 #include "vcf/filterDescription.hpp"
 #include "VCFTestUtils.hpp"
 
-using echidna::variant::varPtr_t;
-using echidna::variant::Variant;
-using echidna::caller::Region;
-using echidna::utils::ReferenceSequence;
+using wecall::variant::varPtr_t;
+using wecall::variant::Variant;
+using wecall::caller::Region;
+using wecall::utils::ReferenceSequence;
 
 BOOST_AUTO_TEST_CASE( should_generate_correct_SNP )
 {
     const auto referenceSequence = std::make_shared< ReferenceSequence >( Region( "1", 1, 6 ), "ATCAT" );
-    echidna::vcf::Record rec( "1", 2, {}, "A", {"T"}, 20.0, {}, {}, {} );
+    wecall::vcf::Record rec( "1", 2, {}, "A", {"T"}, 20.0, {}, {}, {} );
     auto variants = rec.getVariants( referenceSequence );
     BOOST_CHECK_EQUAL( variants.size(), 1 );
 
@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_CASE( should_generate_correct_SNP )
 BOOST_AUTO_TEST_CASE( should_generate_correct_MNP )
 {
     const auto referenceSequence = std::make_shared< ReferenceSequence >( Region( "1", 1, 6 ), "ATCAT" );
-    echidna::vcf::Record rec( "1", 2, {}, "ATC", {"TCG"}, 20.0, {}, {}, {} );
+    wecall::vcf::Record rec( "1", 2, {}, "ATC", {"TCG"}, 20.0, {}, {}, {} );
     auto variants = rec.getVariants( referenceSequence );
     BOOST_CHECK_EQUAL( variants.size(), 1 );
 
@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_CASE( should_generate_correct_MNP )
 BOOST_AUTO_TEST_CASE( should_generate_correct_deletion )
 {
     const auto referenceSequence = std::make_shared< ReferenceSequence >( Region( "1", 1, 6 ), "ATCAT" );
-    echidna::vcf::Record rec( "1", 5, {}, "AT", {"A"}, 20.0, {}, {}, {} );
+    wecall::vcf::Record rec( "1", 5, {}, "AT", {"A"}, 20.0, {}, {}, {} );
     auto variants = rec.getVariants( referenceSequence );
     BOOST_CHECK_EQUAL( variants.size(), 1 );
 
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE( should_generate_correct_deletion )
 BOOST_AUTO_TEST_CASE( should_ignore_mal_represented_deletion )
 {
     const auto referenceSequence = std::make_shared< ReferenceSequence >( Region( "1", 1, 6 ), "ATCAT" );
-    echidna::vcf::Record rec( "1", 5, {}, "AT", {"T"}, 20.0, {}, {}, {} );
+    wecall::vcf::Record rec( "1", 5, {}, "AT", {"T"}, 20.0, {}, {}, {} );
     auto variants = rec.getVariants( referenceSequence );
     BOOST_CHECK_EQUAL( variants.size(), 1 );
 
@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE( should_ignore_mal_represented_deletion )
 BOOST_AUTO_TEST_CASE( should_generate_correct_insertion )
 {
     const auto referenceSequence = std::make_shared< ReferenceSequence >( Region( "1", 1, 6 ), "ATCAT" );
-    echidna::vcf::Record rec( "1", 2, {}, "A", {"ATT"}, 20.0, {}, {}, {} );
+    wecall::vcf::Record rec( "1", 2, {}, "A", {"ATT"}, 20.0, {}, {}, {} );
     auto variants = rec.getVariants( referenceSequence );
     BOOST_CHECK_EQUAL( variants.size(), 1 );
 
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE( should_generate_correct_insertion )
 BOOST_AUTO_TEST_CASE( test_should_read_mal_formed_insertion )
 {
     const auto referenceSequence = std::make_shared< ReferenceSequence >( Region( "1", 1, 6 ), "ATCAT" );
-    echidna::vcf::Record rec( "1", 5, {}, "A", {"TA"}, 20.0, {}, {}, {} );
+    wecall::vcf::Record rec( "1", 5, {}, "A", {"TA"}, 20.0, {}, {}, {} );
     auto variants = rec.getVariants( referenceSequence );
     BOOST_REQUIRE_EQUAL( variants.size(), 1 );
 
@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE( test_should_read_mal_formed_insertion )
 BOOST_AUTO_TEST_CASE( should_generate_correct_pair_of_SNPs )
 {
     const auto referenceSequence = std::make_shared< ReferenceSequence >( Region( "1", 1, 6 ), "ATCAT" );
-    echidna::vcf::Record rec( "1", 2, {}, "A", {"T", "G"}, 20.0, {}, {}, {} );
+    wecall::vcf::Record rec( "1", 2, {}, "A", {"T", "G"}, 20.0, {}, {}, {} );
     auto variants = rec.getVariants( referenceSequence );
     BOOST_CHECK_EQUAL( variants.size(), 2 );
 
@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE( should_generate_correct_pair_of_SNPs )
 BOOST_AUTO_TEST_CASE( should_ignore_complex_indel )
 {
     const auto referenceSequence = std::make_shared< ReferenceSequence >( Region( "1", 1, 6 ), "ATCAT" );
-    echidna::vcf::Record rec( "1", 5, {}, "AT", {"ACA"}, 20.0, {}, {}, {} );
+    wecall::vcf::Record rec( "1", 5, {}, "AT", {"ACA"}, 20.0, {}, {}, {} );
     auto variants = rec.getVariants( referenceSequence );
     BOOST_REQUIRE_EQUAL( variants.size(), 1 );
 }

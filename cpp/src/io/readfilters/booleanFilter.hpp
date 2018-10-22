@@ -5,7 +5,7 @@
 #include "io/readfilters/readFilter.hpp"
 #include <functional>
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

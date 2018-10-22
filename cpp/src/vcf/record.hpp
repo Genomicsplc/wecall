@@ -9,7 +9,7 @@
 #include <ostream>
 #include <set>
 
-namespace echidna
+namespace wecall
 {
 namespace vcf
 {

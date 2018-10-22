@@ -1,13 +1,13 @@
 # All content Copyright (C) 2018 Genomics plc
 from unittest import TestCase
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 from wecall.genomics.reference_chromosome import ReferenceChromosome
 
 
 class TestSequenceReference(TestCase):
     def test_should_raise_when_gap_in_reference(self):
         self.assertRaisesRegex(
-            EchidnaException,
+            weCallException,
             "Illegal character in reference sequence \'TA AA\'",
             ReferenceChromosome,
             "TA AA"
@@ -15,7 +15,7 @@ class TestSequenceReference(TestCase):
 
     def test_should_raise_when_unknown_character_in_reference(self):
         self.assertRaisesRegex(
-            EchidnaException,
+            weCallException,
             "Illegal character in reference sequence \'TA&AA\'",
             ReferenceChromosome,
             "TA&AA"
@@ -23,7 +23,7 @@ class TestSequenceReference(TestCase):
 
     def test_should_raise_when_dot_in_reference(self):
         self.assertRaisesRegex(
-            EchidnaException,
+            weCallException,
             "Illegal character in reference sequence \'TA.AA\'",
             ReferenceChromosome,
             "TA.AA"

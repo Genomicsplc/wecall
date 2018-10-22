@@ -5,12 +5,12 @@
 #include "io/readUtils.hpp"
 #include "utils/interval.hpp"
 
-using echidna::io::Read;
-using echidna::caller::Region;
-using echidna::alignment::Cigar;
-using echidna::io::read::minBaseQualityInReadAroundInterval;
-using echidna::utils::Interval;
-using echidna::utils::ReferenceSequence;
+using wecall::io::Read;
+using wecall::caller::Region;
+using wecall::alignment::Cigar;
+using wecall::io::read::minBaseQualityInReadAroundInterval;
+using wecall::utils::Interval;
+using wecall::utils::ReferenceSequence;
 
 std::string createQualityString( const std::vector< phred_t > & qualities )
 {
@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE( shouldFindCorrectBasePairInFlatAlignedRead )
 BOOST_AUTO_TEST_CASE( shouldFindCorrectBasePairInFlatAlignedReadWithPadding )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
     auto testRead = std::make_shared< Read >( std::string( 5, 'A' ), createQualityString( {0, 1, 2, 3, 4} ), "",
                                               Cigar( "5M" ), 0, 0, 0, 0, 0, 0, 0, refSequence );
     const phred_t expectedResult = 1;
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE( shouldFindCorrectBasePairInFlatAlignedReadWithPadding )
 BOOST_AUTO_TEST_CASE( shouldGetValuesFromInsersionsAroundMatch )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 200 ), std::string( 200, 'A' ) );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 200 ), std::string( 200, 'A' ) );
     const Cigar cigar( "1M1I1M1I1M" );
     const auto startPos = 100L;
 

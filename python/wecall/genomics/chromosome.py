@@ -1,5 +1,5 @@
 # All content Copyright (C) 2018 Genomics plc
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 
 # Define a standard ordering for chromosomes. N.B. We always use the naming convention "1",
 # "2", "3" etc for internal use, not "chr1", "chr2", "chr3"
@@ -60,4 +60,4 @@ def get_chromosome_index(chrom):
     try:
         return CHROMOSOME_ORDER[standardise_chromosome(chrom)]
     except KeyError:
-        raise EchidnaException("Invalid chromosome {}".format(chrom))
+        raise weCallException("Invalid chromosome {}".format(chrom))

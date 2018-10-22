@@ -11,11 +11,11 @@
 /// but we should put the license here
 ///
 /// @section Description
-/// Statistical functions for use in Echidna.
+/// Statistical functions for use in weCall.
 
 #include "common.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace stats
 {

@@ -9,11 +9,11 @@
 #include "alignment/cigar.hpp"
 #include "caller/region.hpp"
 
-using namespace echidna::variant;
-using namespace echidna::alignment;
-using namespace echidna::caller;
-using namespace echidna::io;
-using echidna::utils::ReferenceSequence;
+using namespace wecall::variant;
+using namespace wecall::alignment;
+using namespace wecall::caller;
+using namespace wecall::io;
+using wecall::utils::ReferenceSequence;
 
 readPtr_t makeRead( int64_t startPos, int64_t endPos )
 {
@@ -21,7 +21,7 @@ readPtr_t makeRead( int64_t startPos, int64_t endPos )
     const auto referenceSequence = std::make_shared< ReferenceSequence >( Region( "1", startPos - 10, endPos + 10 ),
                                                                           std::string( length + 20, 'A' ) );
 
-    return std::make_shared< Read >( echidna::utils::BasePairSequence( length, 'T' ), std::string( length, 'Q' ), "",
+    return std::make_shared< Read >( wecall::utils::BasePairSequence( length, 'T' ), std::string( length, 'Q' ), "",
                                      Cigar( std::to_string( length ) + std::string( "M" ) ), 0, startPos, 0, 0, 0, 0, 0,
                                      referenceSequence );
 }
@@ -646,9 +646,9 @@ BOOST_AUTO_TEST_CASE( test_use_maximal_read_interval_in_reference )
     auto reference = std::make_shared< ReferenceSequence >( Region( "1", startPos, startPos + 3 ), "AAA" );
 
     auto read1 = makeRead( startPos, startPos + 2 );
-    auto read2 = std::make_shared< Read >( echidna::utils::BasePairSequence( 3, 'T' ), std::string( 3, 'Q' ), "",
+    auto read2 = std::make_shared< Read >( wecall::utils::BasePairSequence( 3, 'T' ), std::string( 3, 'Q' ), "",
                                            Cigar( "1S1M1S" ), 0, startPos + 1, 0, 0, 0, 0, 0, reference );
-    auto read3 = std::make_shared< Read >( echidna::utils::BasePairSequence( 3, 'T' ), std::string( 3, 'Q' ), "",
+    auto read3 = std::make_shared< Read >( wecall::utils::BasePairSequence( 3, 'T' ), std::string( 3, 'Q' ), "",
                                            Cigar( "1I1M1I" ), 0, startPos + 1, 0, 0, 0, 0, 0, reference );
     auto read4 = makeRead( startPos + 1, startPos + 3 );
 

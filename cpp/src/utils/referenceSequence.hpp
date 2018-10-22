@@ -9,7 +9,7 @@
 #include "utils/sequence.hpp"
 #include "caller/region.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {
@@ -52,8 +52,8 @@ namespace utils
 
         std::string toString() const { return m_region.toString() + "\t" + m_sequence.str(); }
 
-        using const_iterator = echidna::utils::BasePairSequence::const_iterator;
-        using const_reverse_iterator = echidna::utils::BasePairSequence::const_reverse_iterator;
+        using const_iterator = wecall::utils::BasePairSequence::const_iterator;
+        using const_reverse_iterator = wecall::utils::BasePairSequence::const_reverse_iterator;
 
         const_iterator cbegin() const { return m_sequence.cbegin(); }
         const_iterator cend() const { return m_sequence.cend(); }

@@ -6,7 +6,7 @@
 
 #include <tabix/tabix.h>
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

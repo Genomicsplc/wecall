@@ -12,6 +12,19 @@ BUILD=target/build
 export WECALL_TEST_RESULTS=results
 export WECALL_BIN=$(BUILD)
 
+help:
+	@echo ""
+	@echo "weCall Makefile."
+	@echo "The following commands are available:"
+	@echo ""
+	@echo "    make                 : Build weCall"
+	@echo "    make test-unit       : Execute unit tests"
+	@echo "    make test-acceptance : Execute acceptance tests"
+	@echo "    make install         : Install the executable"
+	@echo "    make package         : Build DEB, RPM and TGZ packages"
+	@echo "    make clean           : Remove any build artifact"
+	@echo ""
+
 all: vendor wecall
 
 vendor:

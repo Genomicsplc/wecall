@@ -45,7 +45,8 @@ test-unit: vendor wecall
 
 env-wecall:
 	python3 -m venv env-wecall
-	bash -c "source env-wecall/bin/activate  && cd python && pip install ."
+	bash -c "source env-wecall/bin/activate && pip install wheel"
+	bash -c "source env-wecall/bin/activate && cd python && pip install ."
 	bash -c "source env-wecall/bin/activate && cd test-drivers && pip install ."
 
 test-acceptance: wecall env-wecall

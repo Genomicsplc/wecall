@@ -2,7 +2,7 @@
 import os
 import subprocess
 
-ECHIDNA_BIN = os.environ["ECHIDNA_BIN"]
+WECALL_BIN = os.environ["WECALL_BIN"]
 
 
 class TabixIndexer(object):
@@ -21,12 +21,12 @@ class TabixIndexer(object):
 
     def bgzip(self):
         subprocess.call(
-            [os.path.join(ECHIDNA_BIN, "bgzip"), "-f", self.filename])
+            [os.path.join(WECALL_BIN, "bgzip"), "-f", self.filename])
         return self
 
     def index(self):
         self.bgzip()
-        tabix_args = [os.path.join(ECHIDNA_BIN, "tabix"), "-f", ]
+        tabix_args = [os.path.join(WECALL_BIN, "tabix"), "-f", ]
         if self.file_type == "VARINFO":
             tabix_args += ['-s', '1', '-b', '2', '-e', '3']
         elif self.file_type is not None:

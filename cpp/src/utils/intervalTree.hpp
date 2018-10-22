@@ -332,7 +332,7 @@ namespace utils
 
                 else
                 {
-                    ECHIDNA_LOG( DEBUG, "Unable to insert interval= " << newInterval.toString() << " On "
+                    WECALL_LOG( DEBUG, "Unable to insert interval= " << newInterval.toString() << " On "
                                                                       << this->toString() );
                     throw utils::wecall_exception( "Unable to insert interval" );
                 }
@@ -446,7 +446,7 @@ namespace utils
 
                 else
                 {
-                    ECHIDNA_LOG( FATAL, "Error finding overlaps for interval " << queryInterval.toString() << " on "
+                    WECALL_LOG( FATAL, "Error finding overlaps for interval " << queryInterval.toString() << " on "
                                                                                << this->toString() );
                     throw utils::wecall_exception( "Error finding overlaps for interval" );
                 }

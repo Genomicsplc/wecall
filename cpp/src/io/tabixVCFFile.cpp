@@ -32,7 +32,7 @@ namespace io
 
     void TabixVCFFile::readHeader( std::string filename )
     {
-        ECHIDNA_LOG( DEBUG, "Reading vcf file header" );
+        WECALL_LOG( DEBUG, "Reading vcf file header" );
 
         const auto headerLines = m_tabixFile.header();
 
@@ -49,7 +49,7 @@ namespace io
         {
             if ( boost::starts_with( line, "##FILTER" ) )
             {
-                ECHIDNA_LOG( DEBUG, "Found filter " << line );
+                WECALL_LOG( DEBUG, "Found filter " << line );
                 auto filterDesc = parseFilterHeaderLine( line );
                 if ( containsFilterId( m_filterDescs, filterDesc.id ) )
                 {
@@ -59,11 +59,11 @@ namespace io
             }
             else if ( boost::starts_with( line, "##INFO" ) )
             {
-                ECHIDNA_LOG( DEBUG, "VCF 'INFO' fields are not yet parsed. Skipping: " << line );
+                WECALL_LOG( DEBUG, "VCF 'INFO' fields are not yet parsed. Skipping: " << line );
             }
             else if ( boost::starts_with( line, "##FORMAT" ) )
             {
-                ECHIDNA_LOG( DEBUG, "VCF 'FORMAT' fields are not yet parsed. Skipping: " << line );
+                WECALL_LOG( DEBUG, "VCF 'FORMAT' fields are not yet parsed. Skipping: " << line );
             }
             else if ( boost::starts_with( line, "##" ) )
             {
@@ -117,7 +117,7 @@ namespace io
             {
                 if ( not containsFilterId( m_filterDescs, filterId ) and filterId != "PASS" )
                 {
-                    ECHIDNA_LOG( DEBUG, "Filter ID \"" + filterId + "\" was not supplied in the header." );
+                    WECALL_LOG( DEBUG, "Filter ID \"" + filterId + "\" was not supplied in the header." );
                 }
             }
 

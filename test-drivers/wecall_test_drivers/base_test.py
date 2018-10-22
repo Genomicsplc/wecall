@@ -10,7 +10,7 @@ class BaseTest(unittest.TestCase):
 
     def setUp(self):
         self.work_dir = os.path.join(
-            os.environ["ECHIDNA_TEST_RESULTS"],
+            os.environ["WECALL_TEST_RESULTS"],
             *self.id().split("."))
         if os.path.exists(self.work_dir):
             shutil.rmtree(self.work_dir)

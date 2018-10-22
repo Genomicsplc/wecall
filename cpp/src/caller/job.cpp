@@ -101,7 +101,7 @@ namespace caller
 
     void Job::process()
     {
-        ECHIDNA_LOG( DEBUG, "Writing VCF header" );
+        WECALL_LOG( DEBUG, "Writing VCF header" );
 
         std::vector< vcf::FilterDesc > filterDescs = m_variantSoftFilterBank.getFilterDescs();
         filterDescs.emplace_back( vcf::filter::NC_key,
@@ -169,12 +169,12 @@ namespace caller
                 }
                 else
                 {
-                    ECHIDNA_LOG( INFO, "Skipping " << block << " due to no read data." );
+                    WECALL_LOG( INFO, "Skipping " << block << " due to no read data." );
                 }
             }
         }
 
-        ECHIDNA_LOG( INFO, "Job completed successfully." );
+        WECALL_LOG( INFO, "Job completed successfully." );
     }
 
     //-----------------------------------------------------------------------------------------
@@ -254,7 +254,7 @@ namespace caller
                                const std::vector< std::size_t > & ploidyPerSample )
     {
         auto blockRegion = readDataset->region();
-        ECHIDNA_LOG( INFO, "Processing:\t" << blockRegion );
+        WECALL_LOG( INFO, "Processing:\t" << blockRegion );
         // TODO: Calibrate min value below.
         const auto allReads = readDataset->getAllReads( m_filterParams.m_readMappingFilterQ );
 
@@ -273,7 +273,7 @@ namespace caller
             variant::removeClustersNearBlockEnd( blockRegion, clusters, m_privateCallingParams.m_maxClusterDist );
         }
 
-        ECHIDNA_LOG( INFO, "Calling variants:\t" << blockRegion );
+        WECALL_LOG( INFO, "Calling variants:\t" << blockRegion );
 
         if ( clusters.empty() )
         {
@@ -526,7 +526,7 @@ namespace caller
                                       const utils::referenceSequencePtr_t & blockReferenceSequence,
                                       const std::vector< std::size_t > & ploidyPerSample )
     {
-        ECHIDNA_LOG( DEBUG, "Processing: " << cluster.toString() );
+        WECALL_LOG( DEBUG, "Processing: " << cluster.toString() );
 
         if ( m_callingParams.m_recalibrateBaseQs )
         {
@@ -548,7 +548,7 @@ namespace caller
         }
         else
         {
-            ECHIDNA_LOG( DEBUG, "Re-clustering " << cluster.region()
+            WECALL_LOG( DEBUG, "Re-clustering " << cluster.region()
                                                  << " with nVariants: " << cluster.variants().size() );
             const variant::AlignmentHaplotypeGenerator hapGen(
                 cluster.variants(), cluster.readRegions(), regionReads, paddedRefSequence,
@@ -558,12 +558,12 @@ namespace caller
             haplotypes = hapGen.generateHaplotypes();
             if ( haplotypes.size() <= 1 )
             {
-                ECHIDNA_LOG( WARNING, "Skipping region: " << cluster.region() << " with " << cluster.variants().size()
+                WECALL_LOG( WARNING, "Skipping region: " << cluster.region() << " with " << cluster.variants().size()
                                                           << " variants." );
                 return {};
             }
         }
-        ECHIDNA_LOG( DEBUG, "Processing " << haplotypes.size() << " haplotypes" );
+        WECALL_LOG( DEBUG, "Processing " << haplotypes.size() << " haplotypes" );
 
         std::vector< varPtr_t > candidateVariants;
         if ( m_privateCallingParams.m_normalizeVariantCalls )

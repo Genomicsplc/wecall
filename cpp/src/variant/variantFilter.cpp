@@ -34,7 +34,7 @@ namespace variant
         const auto nSupportingReads = varContainer.totalReadsSupportingVariant( varPtr );
         if ( false )
         {
-            ECHIDNA_LOG( SUPER_DEBUG, "var " << varPtr->toString() << " has " << nSupportingReads
+            WECALL_LOG( SUPER_DEBUG, "var " << varPtr->toString() << " has " << nSupportingReads
                                              << " supporting reads" );
         }
         return m_minReads <= nSupportingReads;
@@ -48,7 +48,7 @@ namespace variant
         const auto percentSupportingReads = varContainer.maxReadPercentVariantCoverage( varPtr );
         if ( false )
         {
-            ECHIDNA_LOG( SUPER_DEBUG, "var " << varPtr->toString() << " has max % support of "
+            WECALL_LOG( SUPER_DEBUG, "var " << varPtr->toString() << " has max % support of "
                                              << percentSupportingReads );
         }
         return m_minPerSamplePercentage <= percentSupportingReads;

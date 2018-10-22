@@ -21,7 +21,7 @@ namespace io
     RegionsReads RegionsReads::getSubRegionReads( const caller::SetRegions & subRegions ) const
     {
         const auto subRegionSpan = subRegions.getSpan();
-        ECHIDNA_ASSERT( m_regions.getSpan().contains( subRegionSpan ),
+        WECALL_ASSERT( m_regions.getSpan().contains( subRegionSpan ),
                         "Span of sub regions ( " + subRegions.toString() +
                             " ) required to be contained in m_regions (" + m_regions.toString() + ")" );
 
@@ -158,7 +158,7 @@ namespace io
                                 phred_t minMappingQuality )
         : m_regions( regions ), m_reads( reads ), m_minMappingQuality( minMappingQuality )
     {
-        ECHIDNA_ASSERT( m_regions.allSameContig(), "Current only deal with regions of one contig at a time." );
+        WECALL_ASSERT( m_regions.allSameContig(), "Current only deal with regions of one contig at a time." );
     }
 
     RegionsReads::iterator::iterator( readIt_t current, const RegionsReads * parent )

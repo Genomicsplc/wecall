@@ -43,7 +43,7 @@ namespace variant
             {
                 m_allCombinationsComputed = false;
                 m_variantCombinations.clear();
-                ECHIDNA_LOG( DEBUG, "Too many haplotype combinations." );
+                WECALL_LOG( DEBUG, "Too many haplotype combinations." );
                 return;
             }
 
@@ -101,7 +101,7 @@ namespace variant
         }
         m_variantCombinations.push_back( {} );  // add reference combo.
 
-        ECHIDNA_LOG( DEBUG, "Generated " << m_variantCombinations.size() << " haplotypes." );
+        WECALL_LOG( DEBUG, "Generated " << m_variantCombinations.size() << " haplotypes." );
         if ( false )
         {
             std::stringstream debugMessage;
@@ -116,7 +116,7 @@ namespace variant
                 debugMessage << std::endl
                              << "\t";
             }
-            ECHIDNA_LOG( SUPER_DEBUG, debugMessage.str() );
+            WECALL_LOG( SUPER_DEBUG, debugMessage.str() );
         }
     }
 

@@ -72,7 +72,7 @@ namespace variant
             }
         }
 
-        ECHIDNA_LOG( SUPER_DEBUG, "Could not completely left align variant: " << this->toString() << " on reference "
+        WECALL_LOG( SUPER_DEBUG, "Could not completely left align variant: " << this->toString() << " on reference "
                                                                               << m_refSequence->region()
                                                                               << " with minPos " << minPosition );
 
@@ -118,7 +118,7 @@ namespace variant
             }
         }
 
-        ECHIDNA_LOG( SUPER_DEBUG, "Could not completely right align variant: " << this->toString() << " on reference "
+        WECALL_LOG( SUPER_DEBUG, "Could not completely right align variant: " << this->toString() << " on reference "
                                                                                << m_refSequence->region()
                                                                                << " with maxPos " << maxPosition );
         return caller::Region( m_region.contig(), maxPosition - nRemoved, maxPosition );
@@ -213,8 +213,8 @@ namespace variant
 
     Variant Variant::operator-( const Variant & other ) const
     {
-        ECHIDNA_ASSERT( this->region().contains( other.region() ), "" );
-        ECHIDNA_ASSERT( this->m_altSequence.size() >= other.m_altSequence.size(), "" );
+        WECALL_ASSERT( this->region().contains( other.region() ), "" );
+        WECALL_ASSERT( this->m_altSequence.size() >= other.m_altSequence.size(), "" );
         if ( other.end() == this->end() )
         {
             const auto newSeq = m_altSequence.substr( 0, m_altSequence.size() - other.m_altSequence.size() );
@@ -234,8 +234,8 @@ namespace variant
 
     Variant Variant::operator+( const Variant & other ) const
     {
-        ECHIDNA_ASSERT( m_refSequence->region().contains( other.region() ), "" );
-        ECHIDNA_ASSERT( m_region.end() == other.start(), "Only can join neighbours" );
+        WECALL_ASSERT( m_refSequence->region().contains( other.region() ), "" );
+        WECALL_ASSERT( m_region.end() == other.start(), "Only can join neighbours" );
         Region newRegion = m_region;
         newRegion.combine( other.region() );
         return Variant( m_refSequence, newRegion, m_altSequence + other.m_altSequence );
@@ -243,7 +243,7 @@ namespace variant
 
     varPtr_t Variant::remove( const varPtr_t & other ) const
     {
-        ECHIDNA_ASSERT( this->removable( other ), "Only can remove removable variants" );
+        WECALL_ASSERT( this->removable( other ), "Only can remove removable variants" );
         return ( *this - *other ).getTrimmed();
     }
 

@@ -93,11 +93,11 @@ namespace corrector
             probError += kmerPriorPair.second * ( errorCorrectionParameters.ptrue * probMismatchTrue +
                                                   ( 1 - errorCorrectionParameters.ptrue ) * probMismatchError );
 
-            // ECHIDNA_LOG(SUPER_DEBUG, " Kmer=" << show_string(kmer) << " setPrior=" << kmerPriorPair.second <<
+            // WECALL_LOG(SUPER_DEBUG, " Kmer=" << show_string(kmer) << " setPrior=" << kmerPriorPair.second <<
             //                         " probMismTrue=" << probMismatchTrue << " probMismErr=" << probMismatchError);
         }
 
-        // ECHIDNA_LOG(SUPER_DEBUG, " Final emission probs: True=" << probTrue << " Error=" << probError);
+        // WECALL_LOG(SUPER_DEBUG, " Final emission probs: True=" << probTrue << " Error=" << probError);
 
         m_emissionProbability.first = fastPow( probTrue, oneOverK );
         m_emissionProbability.second = fastPow( probError, oneOverK );

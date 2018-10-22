@@ -29,7 +29,7 @@ namespace assembly
                           const std::size_t length )
                 : m_orginalSequence( *origionalSequence ), m_pos( pos ), m_length( length )
             {
-                ECHIDNA_ASSERT( origionalSequence, "KmerSequence created from temporary object" );
+                WECALL_ASSERT( origionalSequence, "KmerSequence created from temporary object" );
             }
 
             bool operator<( const KmerSequence & other ) const;

@@ -15,7 +15,7 @@ namespace utils
 
     Interval Interval::getIntersect( const Interval & other ) const
     {
-        ECHIDNA_ASSERT( overlaps( other ),
+        WECALL_ASSERT( overlaps( other ),
                         "Cant intersect non-overlapping intervals: " + toString() + " & " + other.toString() );
         return Interval( std::max( m_start, other.m_start ), std::min( m_end, other.m_end ) );
     }

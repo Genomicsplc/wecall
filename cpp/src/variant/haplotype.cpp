@@ -37,7 +37,7 @@ namespace variant
           m_variantsPerRegion(),
           m_referencePadding( referencePadding )
     {
-        ECHIDNA_ASSERT( isValidVariantCombination( variants.cbegin(), variants.cend(), referenceSequence ),
+        WECALL_ASSERT( isValidVariantCombination( variants.cbegin(), variants.cend(), referenceSequence ),
                         "Attempted to form invalid haplotype: " + this->toString() );
 
         for ( const auto & var : m_variants )
@@ -69,8 +69,8 @@ namespace variant
 
         if ( m_paddedSequences.front().size() > 1000 )
         {
-            ECHIDNA_LOG( DEBUG, "Large haplotype constructed of size " << m_paddedSequences.front().size() );
-            ECHIDNA_LOG( DEBUG, "m_startPos = " << m_referenceSequence->start()
+            WECALL_LOG( DEBUG, "Large haplotype constructed of size " << m_paddedSequences.front().size() );
+            WECALL_LOG( DEBUG, "m_startPos = " << m_referenceSequence->start()
                                                 << " and m_endPos = " << m_referenceSequence->end() );
         }
     }
@@ -328,7 +328,7 @@ namespace variant
     HaplotypeVector::HaplotypeVector( caller::SetRegions regions, utils::referenceSequencePtr_t referenceSequence )
         : m_regions( regions ), m_paddedReferenceSequence( referenceSequence )
     {
-        ECHIDNA_ASSERT( m_paddedReferenceSequence->region().contains( m_regions.getSpan() ),
+        WECALL_ASSERT( m_paddedReferenceSequence->region().contains( m_regions.getSpan() ),
                         "Require compatible reference" );
         const auto span = m_regions.getSpan();
         m_referencePadding = int64_to_sizet(

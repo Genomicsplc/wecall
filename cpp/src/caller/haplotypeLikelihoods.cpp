@@ -94,7 +94,7 @@ namespace caller
                 }
                 return debugMessage.str();
             };
-            ECHIDNA_LOG( SUPER_DEBUG, debugFunc() );
+            WECALL_LOG( SUPER_DEBUG, debugFunc() );
         }
 
         return readScores;

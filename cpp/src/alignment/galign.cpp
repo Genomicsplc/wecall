@@ -78,7 +78,7 @@ namespace alignment
                                             char * aln2 ) const
     {
         assert( pos < 100000 );
-        ECHIDNA_ASSERT( qual.size() == readSeq.size(),
+        WECALL_ASSERT( qual.size() == readSeq.size(),
                         "Aligner was called with qual string of the wrong length:" + std::to_string( qual.size() ) +
                             " when it should be " + std::to_string( readSeq.size() ) + " to match the read length" );
 
@@ -88,7 +88,7 @@ namespace alignment
             const auto goodStartPositions =
                 allowableStartPositionsForAlignment( haplotypeLength, readLength, constants::needlemanWunschPadding );
 
-            ECHIDNA_ASSERT( goodStartPositions.contains( pos ), "Aligner provided an invalid position to align to: " +
+            WECALL_ASSERT( goodStartPositions.contains( pos ), "Aligner provided an invalid position to align to: " +
                                                                     std::to_string( pos ) + " not contained in " +
                                                                     goodStartPositions.toString() );
         }

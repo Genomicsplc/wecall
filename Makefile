@@ -1,9 +1,16 @@
+# MAKEFILE
+#
+# @link        https://github.com/genomicsplc/wecall
+# ------------------------------------------------------------------------------
+
+# List special make targets that are not associated with files
+.PHONY: help format clean vendor wecall
+
 PREFIX=/usr/local
-.PHONY: vendor wecall
 BUILD=build
 
-export ECHIDNA_TEST_RESULTS=results
-export ECHIDNA_BIN=$(BUILD)
+export WECALL_TEST_RESULTS=results
+export WECALL_BIN=$(BUILD)
 
 all: vendor wecall
 

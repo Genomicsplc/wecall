@@ -20,7 +20,7 @@ namespace io
           m_shortReadTrim( filterParams.m_shortReadTrim ),
           m_noSimilarReads( filterParams.m_noSimilarReadsFilter )
     {
-        ECHIDNA_LOG( DEBUG, "Initialising read level filters in ReadFiltersManager" );
+        WECALL_LOG( DEBUG, "Initialising read level filters in ReadFiltersManager" );
 
         m_filters.emplace_back( std::make_shared< BooleanFilter >( &Read::isUnMapped, "isUnmapped", true ) );
 

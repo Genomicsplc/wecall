@@ -210,4 +210,4 @@ The output files have been saved at this point and you can access their location
 - Support of the gVCF format.
 - Serialisation into json.
 - Ensure compatibility with global alliance standards.
-- Split out variants into minimal units which can be glued together, e.g. with Haplotype ids. This is to be done in EchiDNA and here a support for this information has to be added.
+- Split out variants into minimal units which can be glued together, e.g. with Haplotype ids. This is to be done in WECALL and here a support for this information has to be added.

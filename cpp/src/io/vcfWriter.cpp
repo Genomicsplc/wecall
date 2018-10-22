@@ -129,7 +129,7 @@ namespace io
             }
             else
             {
-                ECHIDNA_LOG( DEBUG, "Not outputting due to non-canonical bases:\t" << m_contig << "\t" << pos + 1
+                WECALL_LOG( DEBUG, "Not outputting due to non-canonical bases:\t" << m_contig << "\t" << pos + 1
                                                                                    << "\t" << ref << "\t" << alt );
             }
         }

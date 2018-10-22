@@ -124,7 +124,7 @@ namespace variant
                       ++hapIndexPtr2 )
                 {
                     const auto & hap2 = haplotypes[hapIndiciesToUse[hapIndexPtr2]];
-                    ECHIDNA_ASSERT( hap1 != hap2, "Can not form GenotypeVector with an unmerged HaplotypeVector" );
+                    WECALL_ASSERT( hap1 != hap2, "Can not form GenotypeVector with an unmerged HaplotypeVector" );
                 }
             }
 
@@ -167,8 +167,8 @@ namespace variant
     std::set< std::size_t > GenotypeVector::genotypesWithSameNonPhasedRepresentation(
         const std::size_t givenGenotypeIndex ) const
     {
-        ECHIDNA_ASSERT( givenGenotypeIndex < m_genotypes.size(), "Genotype index out-of-range" );
-        ECHIDNA_ASSERT( m_genotypeWithSameNonPhasedRepresentation.find( givenGenotypeIndex ) !=
+        WECALL_ASSERT( givenGenotypeIndex < m_genotypes.size(), "Genotype index out-of-range" );
+        WECALL_ASSERT( m_genotypeWithSameNonPhasedRepresentation.find( givenGenotypeIndex ) !=
                             m_genotypeWithSameNonPhasedRepresentation.end(),
                         "Genotype index not found in non-phased representation map" );
 

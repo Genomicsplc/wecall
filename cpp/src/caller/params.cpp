@@ -100,17 +100,17 @@ namespace caller
 
         void validateReduceParams( const Reduce & reduceParams )
         {
-            ECHIDNA_LOG( INFO, "Validating and reducing params" );
-            ECHIDNA_ERROR( boost::filesystem::exists( reduceParams.inputDir() ),
+            WECALL_LOG( INFO, "Validating and reducing params" );
+            WECALL_ERROR( boost::filesystem::exists( reduceParams.inputDir() ),
                            "Working dir: " + reduceParams.inputDir() + " does not exist" );
-            ECHIDNA_ERROR( boost::filesystem::is_directory( reduceParams.inputDir() ),
+            WECALL_ERROR( boost::filesystem::is_directory( reduceParams.inputDir() ),
                            "Working dir: " + reduceParams.inputDir() + " is not a directory" );
         }
         void validateReduceParamsPreMap( const Reduce & reduceParams )
         {
             if ( boost::filesystem::exists( reduceParams.inputDir() ) )
             {
-                ECHIDNA_ERROR( boost::filesystem::is_empty( reduceParams.inputDir() ),
+                WECALL_ERROR( boost::filesystem::is_empty( reduceParams.inputDir() ),
                                "Working dir: " + reduceParams.inputDir() + " is not empty" );
             }
         }
@@ -125,30 +125,30 @@ namespace caller
               m_maxRefCallSize( getParam< std::size_t >( "maxRefCallSize", optValues ) )
         {
 
-            ECHIDNA_ERROR( ( std::find( allowableOutputFormats.cbegin(), allowableOutputFormats.cend(),
+            WECALL_ERROR( ( std::find( allowableOutputFormats.cbegin(), allowableOutputFormats.cend(),
                                         m_outputFormat ) != allowableOutputFormats.cend() ),
                            std::string( "output file format must be " + displayOptions( allowableOutputFormats ) ) );
 
             for ( auto const & inputDataSource : m_inputDataSources )
             {
-                ECHIDNA_ERROR( boost::filesystem::exists( inputDataSource ),
+                WECALL_ERROR( boost::filesystem::exists( inputDataSource ),
                                "File " + inputDataSource + " does not exist" );
-                ECHIDNA_ERROR( ( boost::filesystem::path( inputDataSource ).extension().string() == ".bam" ),
+                WECALL_ERROR( ( boost::filesystem::path( inputDataSource ).extension().string() == ".bam" ),
                                "File " + inputDataSource + " does not have .bam extension" );
-                ECHIDNA_ERROR( boost::filesystem::exists( inputDataSource + ".bai" ),
+                WECALL_ERROR( boost::filesystem::exists( inputDataSource + ".bai" ),
                                "Index file " + inputDataSource + ".bai does not exist" );
             }
             if ( not overwrite )
             {
-                ECHIDNA_ERROR( not boost::filesystem::exists( m_outputDataSink ),
+                WECALL_ERROR( not boost::filesystem::exists( m_outputDataSink ),
                                m_outputDataSink + " already exists" );
             }
-            ECHIDNA_ERROR( boost::filesystem::exists( m_refFile ), "File " + m_refFile + " does not exist" );
-            ECHIDNA_ERROR( ( boost::filesystem::path( m_refFile ).extension().string() == ".fa" ),
+            WECALL_ERROR( boost::filesystem::exists( m_refFile ), "File " + m_refFile + " does not exist" );
+            WECALL_ERROR( ( boost::filesystem::path( m_refFile ).extension().string() == ".fa" ),
                            "File " + m_refFile + " does not have .fa extension" );
 
             const auto expectedFastaIndexFile = io::fastaIndexFileName( m_refFile );
-            ECHIDNA_ERROR( boost::filesystem::exists( expectedFastaIndexFile ),
+            WECALL_ERROR( boost::filesystem::exists( expectedFastaIndexFile ),
                            "Index file " + expectedFastaIndexFile + " does not exist" );
 
             m_dataRegions = DataRegionsBuilder( getParamList( "regions", optValues ),
@@ -191,13 +191,13 @@ namespace caller
             {
                 if ( boost::filesystem::exists( dir ) )
                 {
-                    ECHIDNA_ERROR( boost::filesystem::is_directory( dir ),
+                    WECALL_ERROR( boost::filesystem::is_directory( dir ),
                                    "Working dir: " + dir + " is not a directory" );
                 }
                 else
                 {
                     bool success = boost::filesystem::create_directory( dir );
-                    ECHIDNA_ERROR( success, "Could not create work directory: " + dir );
+                    WECALL_ERROR( success, "Could not create work directory: " + dir );
                 }
             }
         }
@@ -209,16 +209,16 @@ namespace caller
             validateAndCreateWorkingDir( m_workDir );
 
             boost::format intermediateFileNameFormat( "%05d.vcf" );
-            ECHIDNA_ERROR( ( m_dataRegions.size() < 99999 ),
+            WECALL_ERROR( ( m_dataRegions.size() < 99999 ),
                            constants::weCallString + " called with too many regions. Max=99999" );
 
             for ( std::size_t i = 0; i < m_dataRegions.size(); ++i )
             {
                 boost::filesystem::path outputDataSink = boost::filesystem::path( m_workDir );
                 outputDataSink /= ( intermediateFileNameFormat % i ).str();
-                ECHIDNA_LOG( DEBUG, outputDataSink.string() );
+                WECALL_LOG( DEBUG, outputDataSink.string() );
 
-                ECHIDNA_ERROR( ( not boost::filesystem::exists( outputDataSink ) ),
+                WECALL_ERROR( ( not boost::filesystem::exists( outputDataSink ) ),
                                "output data sink " + outputDataSink.string() + " already exist" );
 
                 vecData.push_back( Data( m_inputDataSources, outputDataSink.string(), m_outputFormat, m_workDir,

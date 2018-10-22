@@ -34,7 +34,7 @@ class FastaFileBuilder(object):
     def index(self):
         tool_runner = ToolRunner()
         tool_runner.start(
-            [os.path.join(os.environ['ECHIDNA_BIN'], "samtools"), "faidx", self.filename])
+            [os.path.join(os.environ['WECALL_BIN'], "samtools"), "faidx", self.filename])
 
         if tool_runner.return_code != 0:
             raise weCallException("")

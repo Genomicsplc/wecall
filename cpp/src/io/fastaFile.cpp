@@ -78,7 +78,7 @@ namespace io
         // Retrieve the IndexTuple pointer corresponding to the specified
         // reference sequence contig.
         const auto it( m_contigMap.find( refName ) );
-        ECHIDNA_ASSERT( it != m_contigMap.end(),
+        WECALL_ASSERT( it != m_contigMap.end(),
                         "Could not find refName: " + refName + " in FastaIndex::getIndexTuple function" );
 
         return it->second;
@@ -121,7 +121,7 @@ namespace io
 
         const auto contigInterval = utils::Interval( 0L, this->m_indexFile.getContigLength( region.contig() ) );
 
-        ECHIDNA_ASSERT( contigInterval.contains( region.interval() ),
+        WECALL_ASSERT( contigInterval.contains( region.interval() ),
                         "Region " + region.toString() + " is not valid as not contained contig" );
 
         const auto nEndOfLineBytesBeforeStart =

@@ -71,7 +71,7 @@ namespace utils
 
     Timer::~Timer()
     {
-        ECHIDNA_LOG( TIMING, m_type << " " << std::to_string( m_duration ) << "us: " << this->format_metadata() );
+        WECALL_LOG( TIMING, m_type << " " << std::to_string( m_duration ) << "us: " << this->format_metadata() );
     }
 
     std::map< std::string, std::string > fileMetaData( std::string filename ) { return {{"file", filename}}; }

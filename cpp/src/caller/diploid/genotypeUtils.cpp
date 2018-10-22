@@ -17,7 +17,7 @@ namespace caller
         {
             std::vector< double > genotypeLikelihoods( genotypes.size() );
             const auto nReads = probReadsGivenHaplotypes.size1();
-            ECHIDNA_ASSERT( nReads > 0, "Only makes sense to compute likelihoods if there is read-data" );
+            WECALL_ASSERT( nReads > 0, "Only makes sense to compute likelihoods if there is read-data" );
 
             for ( std::size_t genotypeIndex = 0; genotypeIndex < genotypes.size(); ++genotypeIndex )
             {
@@ -50,12 +50,12 @@ namespace caller
             if ( false )
             {
                 // print likelihoods of genotypes
-                ECHIDNA_LOG( SUPER_DEBUG, "Genotype likelihoods:-" );
+                WECALL_LOG( SUPER_DEBUG, "Genotype likelihoods:-" );
                 for ( std::size_t genotypeIndex = 0; genotypeIndex < genotypes.size(); ++genotypeIndex )
                 {
                     if ( genotypeLikelihoods[genotypeIndex] > 1e-6 )
                     {
-                        ECHIDNA_LOG( SUPER_DEBUG, std::to_string( genotypeLikelihoods[genotypeIndex] ) + " for " +
+                        WECALL_LOG( SUPER_DEBUG, std::to_string( genotypeLikelihoods[genotypeIndex] ) + " for " +
                                                       genotypes[genotypeIndex]->toString( haplotypes ) );
                     }
                 }

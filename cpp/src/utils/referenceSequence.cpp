@@ -10,14 +10,14 @@ namespace utils
     ReferenceSequence::ReferenceSequence( caller::Region region, wecall::utils::BasePairSequence sequence )
         : m_region( region ), m_sequence( sequence )
     {
-        ECHIDNA_ASSERT( ( static_cast< std::size_t >( m_region.size() ) == m_sequence.size() ),
+        WECALL_ASSERT( ( static_cast< std::size_t >( m_region.size() ) == m_sequence.size() ),
                         "ReferenceSequence requires region size to match sequence size: " +
                             std::to_string( m_region.size() ) + " != " + std::to_string( m_sequence.size() ) );
     }
 
     ReferenceSequence ReferenceSequence::subseq( const caller::Region & region ) const
     {
-        ECHIDNA_ASSERT( m_region.contains( region ),
+        WECALL_ASSERT( m_region.contains( region ),
                         "Cannot get subsequence for region not contained in reference sequence: " + region.toString() +
                             " must be contained " + m_region.toString() );
         return ReferenceSequence( region, m_sequence.substr( distanceFromStart( region.start() ), region.size() ) );
@@ -26,7 +26,7 @@ namespace utils
     std::pair< std::string::const_iterator, std::string::const_iterator > ReferenceSequence::subseqRange(
         const caller::Region & region ) const
     {
-        ECHIDNA_ASSERT( m_region.contains( region ),
+        WECALL_ASSERT( m_region.contains( region ),
                         "Cannot get subsequence for region not contained in reference sequence: " + region.toString() +
                             " must be contained " + m_region.toString() );
 
@@ -37,7 +37,7 @@ namespace utils
     std::pair< ReferenceSequence::const_iterator, ReferenceSequence::const_iterator >
     ReferenceSequence::getRangeForwardIterators( utils::Interval interval ) const
     {
-        ECHIDNA_ASSERT( m_region.interval().contains( interval ),
+        WECALL_ASSERT( m_region.interval().contains( interval ),
                         "Interval " + interval.toString() + " not contained in " + m_region.toString() );
         const auto start = m_sequence.cbegin() + int64_to_sizet( distanceFromStart( interval.start() ) );
         const auto end = start + int64_to_sizet( interval.size() );
@@ -47,7 +47,7 @@ namespace utils
     std::pair< ReferenceSequence::const_reverse_iterator, ReferenceSequence::const_reverse_iterator >
     ReferenceSequence::getRangeReverseIterators( utils::Interval interval ) const
     {
-        ECHIDNA_ASSERT( m_region.interval().contains( interval ),
+        WECALL_ASSERT( m_region.interval().contains( interval ),
                         "Interval " + interval.toString() + " not contained in " + m_region.toString() );
         const auto start = m_sequence.crbegin() + int64_to_sizet( distanceFromEnd( interval.end() ) );
         const auto end = start + int64_to_sizet( interval.size() );
@@ -56,7 +56,7 @@ namespace utils
 
     ReferenceSequence ReferenceSequence::getPadded( const caller::Region & widerRegion ) const
     {
-        ECHIDNA_ASSERT( widerRegion.contains( m_region ),
+        WECALL_ASSERT( widerRegion.contains( m_region ),
                         "Cannot get padded sequence for region not containing original region: " +
                             widerRegion.toString() + " must contain " + m_region.toString() );
 
@@ -72,9 +72,9 @@ namespace utils
                                                             const caller::Region & maximumRefFileRegion,
                                                             const int64_t desiredPadding ) const
     {
-        ECHIDNA_ASSERT( this->region().contains( maximumRefFileRegion ),
+        WECALL_ASSERT( this->region().contains( maximumRefFileRegion ),
                         "Maximal padding region must be contained in reference." );
-        ECHIDNA_ASSERT( maximumRefFileRegion.contains( clusterRegion ),
+        WECALL_ASSERT( maximumRefFileRegion.contains( clusterRegion ),
                         "Maximal cluster region " + maximumRefFileRegion.toString() +
                             " does not contain cluster region " + clusterRegion.toString() );
 

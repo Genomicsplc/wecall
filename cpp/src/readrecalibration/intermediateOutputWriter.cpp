@@ -77,7 +77,7 @@ namespace corrector
 
                 for ( const auto & read : sampleNameReadRange.second )
                 {
-                    // ECHIDNA_LOG(SUPER_DEBUG, "Outputting read with quality: " << read->getQualities());
+                    // WECALL_LOG(SUPER_DEBUG, "Outputting read with quality: " << read->getQualities());
 
                     outputSam << read.getQName() << "\t";
                     outputSam << read.getFlag() << "\t";

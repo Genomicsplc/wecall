@@ -88,7 +88,7 @@ namespace variant
 
     void BreakpointLocus::add( breakpointPtr_t newBp )
     {
-        ECHIDNA_ASSERT(
+        WECALL_ASSERT(
             m_contig == newBp->contig() and m_pos == newBp->pos() and m_isStartLocus == newBp->isStartBreakpoint(),
             "" );
 

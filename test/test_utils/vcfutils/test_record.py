@@ -70,7 +70,7 @@ class TestUtilityFunctionsInRecordModule(unittest.TestCase):
 class RecordTest(unittest.TestCase):
     def setUp(self):
         self.data_dir = os.path.join(os.path.dirname(__file__), "example_data")
-        self.work_dir = os.path.join(os.environ["ECHIDNA_TEST_RESULTS"], *self.id().split("."))
+        self.work_dir = os.path.join(os.environ["WECALL_TEST_RESULTS"], *self.id().split("."))
         try:
             os.makedirs(self.work_dir)
         except OSError:

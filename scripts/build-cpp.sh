@@ -10,7 +10,7 @@ source "$( dirname "${BASH_SOURCE[0]}" )/../activate"
 
 SOURCE_DIR="$PROJECT_HOME/cpp"
 INSTALL_DIR="$PROJECT_HOME"
-TMP_DIR="${ECHIDNA_BUILD}/wecall-release"
+TMP_DIR="${WECALL_BUILD}/wecall-release"
 mkdir -p "$TMP_DIR"
 cd "$TMP_DIR"
 
@@ -41,11 +41,11 @@ fi
 echo "using C++ $CMAKE_CXX_COMPILER"
 echo "using C $CMAKE_C_COMPILER"
 
-# Copy all libs from ${ECHIDNA_BUILD}/dependencies to INSTALL_DIR/lib
+# Copy all libs from ${WECALL_BUILD}/dependencies to INSTALL_DIR/lib
 mkdir -p "$PROJECT_HOME/bin"
 mkdir -p "$PROJECT_HOME/lib"
-cp "$ECHIDNA_BUILD"/dependencies/*/bin/* "$PROJECT_HOME/bin"
-cp "$ECHIDNA_BUILD"/dependencies/*/lib/* "$PROJECT_HOME/lib"
+cp "$WECALL_BUILD"/dependencies/*/bin/* "$PROJECT_HOME/bin"
+cp "$WECALL_BUILD"/dependencies/*/lib/* "$PROJECT_HOME/lib"
 
 echo "Building..."
 cmake -DCMAKE_CXX_COMPILER="$CMAKE_CXX_COMPILER" -DCMAKE_C_COMPILER="$CMAKE_C_COMPILER" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DPLATFORM="$($PROJECT_SCRIPTS/platform)" "$SOURCE_DIR"

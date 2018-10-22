@@ -39,10 +39,10 @@ test-acceptance: wecall env-wecall
 	bash -c " source env-wecall/bin/activate && scripts/run-tests.sh test"
 
 install: vendor wecall
-	$(MAKE) --directory=build install
+	$(MAKE) --directory=$(BUILD) install
 
 package: vendor wecall
-	$(MAKE) --directory=build package
+	$(MAKE) --directory=$(BUILD) package
 
 clean:
 	$(MAKE) --directory=vendor clean

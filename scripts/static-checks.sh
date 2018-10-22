@@ -1,12 +1,12 @@
-#!/bin/bash -ue
+#!/usr/bin/env bash
 # All content Copyright (C) 2018 Genomics plc
+set -e -u -x -o pipefail
 
 # requires: cppcheck
 if ! command -v cppcheck > /dev/null; then
-	echo "Cannot find 'cppcheck', try 'sudo apt-get install cppcheck'."
-	exit 1
+    echo "Cannot find 'cppcheck', try 'sudo apt-get install cppcheck'."
+    exit 1
 fi
-
 
 # reformatting
 if python "$WECALL_SCRIPTS/clang-format-check.py"; then

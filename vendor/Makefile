@@ -1,14 +1,12 @@
-SUBDIRS = samtools tabix
-SUBDIRSCLEAN=$(addsuffix clean,$(SUBDIRS))
+SUBDIRS=samtools tabix
 
 .PHONY: subdirs $(SUBDIRS)
 
 subdirs: $(SUBDIRS)
 
 $(SUBDIRS):
-	$(MAKE) -C $@
+	$(MAKE) --directory=$@
 
-clean: $(SUBDIRSCLEAN)
-
-%clean: %
-	$(MAKE) -C $< clean
+clean:
+	$(MAKE) --directory=samtools clean
+	$(MAKE) --directory=tabix clean

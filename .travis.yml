@@ -26,6 +26,4 @@ matrix:
   include:
     - language: c
       script:
-        - make wecall
-        - ls -l build
-        - make test-unit test-acceptance
+        - make wecall test-unit test-acceptance

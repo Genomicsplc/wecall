@@ -7,7 +7,7 @@
 .PHONY: help format clean vendor wecall
 
 PREFIX=/usr/local
-BUILD=build
+BUILD=target/build
 
 export WECALL_TEST_RESULTS=results
 export WECALL_BIN=$(BUILD)
@@ -15,19 +15,20 @@ export WECALL_BIN=$(BUILD)
 all: vendor wecall
 
 vendor:
-	$(MAKE) -C vendor 
+	$(MAKE) --directory=vendor 
 
 wecall: vendor
-	mkdir -p $(BUILD) && cd $(BUILD) && \
-	cmake -D CMAKE_INSTALL_PREFIX=$(PREFIX) ../cpp
-	$(MAKE) -C $(BUILD)
+	mkdir -p $(BUILD) \
+	&& cd $(BUILD) \
+	&& cmake -D CMAKE_INSTALL_PREFIX=$(PREFIX) ../../cpp
+	$(MAKE) --directory=$(BUILD)
 	cp vendor/samtools/samtools $(BUILD)
 	cp vendor/tabix/tabix $(BUILD)
 	cp vendor/tabix/bgzip $(BUILD)
 
 test-unit: vendor wecall
-	build/unittest
-	build/iotest
+	$(BUILD)/unittest
+	$(BUILD)/iotest
 
 env-wecall:
 	python3 -m venv env-wecall
@@ -39,14 +40,14 @@ test-acceptance: wecall env-wecall
 
 
 install: vendor wecall
-	$(MAKE) -C build install
+	$(MAKE) --directory=build install
 
 package: vendor wecall
-	$(MAKE) -C build package
+	$(MAKE) --directory=build package
 
 clean:
-	$(MAKE) -C vendor clean
-	-rm -rf build
+	$(MAKE) --directory=vendor clean
+	-rm -rf $(BUILD)
 	-rm -f cpp/src/version/version.cpp
 	-rm -f doc/weCall-userguide.aux
 	-rm -f doc/weCall-userguide.out

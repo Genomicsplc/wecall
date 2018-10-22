@@ -4,7 +4,7 @@ set -e -u -x -o pipefail
 
 PROJECT_SCRIPT=$( cd "$(dirname "$0")" && pwd -P)
 PROJECT_HOME="${PROJECT_SCRIPT}/../"
-export WECALL_TEST_RESULTS="${PROJECT_HOME}/test-results"
+export WECALL_TEST_RESULTS="${PROJECT_HOME}/target/test-results"
 export WECALL_BIN="${PROJECT_HOME}/target/build"
 
 mkdir -p "${WECALL_TEST_RESULTS}"

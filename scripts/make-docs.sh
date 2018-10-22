@@ -16,4 +16,3 @@ command -v pdflatex >/dev/null 2>&1 || { echo >&2 "Skipping Document generation 
 cd "$PROJECT_HOME/doc"
 pdflatex -interaction=nonstopmode -halt-on-error -output-directory "${WECALL_BUILD}/" "${PROJECT_HOME}/doc/weCall-userguide.tex"
 pdflatex -interaction=nonstopmode -halt-on-error -output-directory "${WECALL_BUILD}/" "${PROJECT_HOME}/doc/weCall-userguide.tex"
-

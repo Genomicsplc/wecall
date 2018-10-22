@@ -12,6 +12,8 @@ BUILD=target/build
 export WECALL_TEST_RESULTS=results
 export WECALL_BIN=$(BUILD)
 
+all: vendor wecall
+
 help:
 	@echo ""
 	@echo "weCall Makefile."
@@ -24,8 +26,6 @@ help:
 	@echo "    make package         : Build DEB, RPM and TGZ packages"
 	@echo "    make clean           : Remove any build artifact"
 	@echo ""
-
-all: vendor wecall
 
 vendor:
 	$(MAKE) --directory=vendor 

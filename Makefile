@@ -4,7 +4,7 @@
 # ------------------------------------------------------------------------------
 
 # List special make targets that are not associated with files
-.PHONY: help format clean vendor wecall
+.PHONY: help format clean vendor wecall test-unit env-wecall test-acceptance install package clean
 
 PREFIX=/usr/local
 BUILD=target/build
@@ -37,7 +37,6 @@ env-wecall:
 
 test-acceptance: wecall env-wecall
 	bash -c " source env-wecall/bin/activate && scripts/run-tests.sh test"
-
 
 install: vendor wecall
 	$(MAKE) --directory=build install

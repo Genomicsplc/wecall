@@ -453,7 +453,7 @@ add_custom_target(
   doc ALL
   DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/weCall-userguide.pdf
 )
- 
+
 install(TARGETS weCall RUNTIME DESTINATION "bin" LIBRARY DESTINATION "lib")
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/weCall-userguide.pdf DESTINATION "share/doc/genomicsplc/wecall" OPTIONAL)
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../README.md" DESTINATION "share/doc/genomicsplc/wecall" OPTIONAL)

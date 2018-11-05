@@ -9,7 +9,7 @@
 #include <map>
 #include <io/readRange.hpp>
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

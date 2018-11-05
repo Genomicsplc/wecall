@@ -5,21 +5,21 @@
 
 #include "variant/clustering.hpp"
 
-using echidna::variant::variantSet_t;
-using echidna::utils::ReferenceSequence;
-using echidna::caller::Region;
-using echidna::variant::VariantCluster;
-using echidna::variant::Variant;
-using echidna::variant::varPtr_t;
+using wecall::variant::variantSet_t;
+using wecall::utils::ReferenceSequence;
+using wecall::caller::Region;
+using wecall::variant::VariantCluster;
+using wecall::variant::Variant;
+using wecall::variant::varPtr_t;
 
-using namespace echidna::alignment;
-using namespace echidna::io;
-using echidna::utils::ReferenceSequence;
+using namespace wecall::alignment;
+using namespace wecall::io;
+using wecall::utils::ReferenceSequence;
 
 BOOST_AUTO_TEST_CASE( testComputationOfPaddingRegionsForEmptyCluster )
 {
     const Region blockRegion( "1", 0, 100 );
-    BOOST_CHECK_EQUAL( echidna::variant::computeClustersPaddingRegions( blockRegion, {} ).size(), 0 );
+    BOOST_CHECK_EQUAL( wecall::variant::computeClustersPaddingRegions( blockRegion, {} ).size(), 0 );
 }
 
 BOOST_AUTO_TEST_CASE( testComputationOfPaddingRegionsForOneCluster )
@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_CASE( testComputationOfPaddingRegionsForOneCluster )
     std::vector< VariantCluster > clusters;
     clusters.emplace_back( std::vector< varPtr_t >{}, Region( "1", 1, 99 ) );
 
-    const auto regions = echidna::variant::computeClustersPaddingRegions( blockRegion, clusters );
+    const auto regions = wecall::variant::computeClustersPaddingRegions( blockRegion, clusters );
     BOOST_CHECK_EQUAL( regions.size(), 1 );
     BOOST_CHECK_EQUAL( regions.front(), Region( "1", 0, 100 ) );
 }
@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE( testComputationOfPaddingRegionsForManyClusters )
     clusters.emplace_back( std::vector< varPtr_t >{}, Region( "1", 10, 40 ) );
     clusters.emplace_back( std::vector< varPtr_t >{}, Region( "1", 60, 90 ) );
 
-    const auto regions = echidna::variant::computeClustersPaddingRegions( blockRegion, clusters );
+    const auto regions = wecall::variant::computeClustersPaddingRegions( blockRegion, clusters );
     BOOST_REQUIRE_EQUAL( regions.size(), 2 );
     BOOST_CHECK_EQUAL( regions[0], Region( "1", 0, 60 ) );
     BOOST_CHECK_EQUAL( regions[1], Region( "1", 40, 100 ) );
@@ -53,11 +53,11 @@ BOOST_AUTO_TEST_CASE( testStartEndOfVariantClusterSNPAndMNP )
     auto referenceSequence = std::make_shared< ReferenceSequence >( Region( "1", 10, 15 ), "AAAAA" );
     auto mnp = std::make_shared< Variant >( referenceSequence, referenceSequence->region(), "TTTTT" );
     auto snp = std::make_shared< Variant >( referenceSequence, Region( "1", 11, 12 ), "T" );
-    std::vector< echidna::variant::varPtr_t > variants = {mnp, snp};
+    std::vector< wecall::variant::varPtr_t > variants = {mnp, snp};
 
-    std::sort( variants.begin(), variants.end(), echidna::variant::varPtrComp() );
+    std::sort( variants.begin(), variants.end(), wecall::variant::varPtrComp() );
 
-    VariantCluster cluster( variants, echidna::caller::Region( "1", 10, 15 ) );
+    VariantCluster cluster( variants, wecall::caller::Region( "1", 10, 15 ) );
 
     BOOST_CHECK_EQUAL_COLLECTIONS( cluster.variants().begin(), cluster.variants().end(), variants.begin(),
                                    variants.end() );
@@ -71,13 +71,13 @@ BOOST_AUTO_TEST_CASE( testStartEndOfVariantClusterSNPAndDel )
     auto referenceSequence = std::make_shared< ReferenceSequence >( Region( "1", 11, 16 ), "AAAAA" );
     auto del = std::make_shared< Variant >( referenceSequence, Region( "1", 11, 16 ), "" );
     auto snp = std::make_shared< Variant >( referenceSequence, Region( "1", 11, 12 ), "T" );
-    std::vector< echidna::variant::varPtr_t > variants = {del, snp};
+    std::vector< wecall::variant::varPtr_t > variants = {del, snp};
 
-    std::sort( variants.begin(), variants.end(), echidna::variant::varPtrComp() );
+    std::sort( variants.begin(), variants.end(), wecall::variant::varPtrComp() );
 
-    VariantCluster cluster( variants, echidna::caller::Region( "1", 11, 16 ) );
+    VariantCluster cluster( variants, wecall::caller::Region( "1", 11, 16 ) );
 
-    echidna::caller::Call call( del, del->interval(), 100, 1, {{}} );
+    wecall::caller::Call call( del, del->interval(), 100, 1, {{}} );
 
     BOOST_CHECK_EQUAL_COLLECTIONS( cluster.variants().begin(), cluster.variants().end(), variants.begin(),
                                    variants.end() );
@@ -91,11 +91,11 @@ BOOST_AUTO_TEST_CASE( testStartEndOfVariantClusterDelAndMNP )
     auto referenceSequence = std::make_shared< ReferenceSequence >( Region( "1", 10, 13 ), "AAA" );
     auto del = std::make_shared< Variant >( referenceSequence, Region( "1", 11, 13 ), "" );
     auto mnp = std::make_shared< Variant >( referenceSequence, referenceSequence->region(), "TTT" );
-    std::vector< echidna::variant::varPtr_t > variants = {del, mnp};
+    std::vector< wecall::variant::varPtr_t > variants = {del, mnp};
 
-    std::sort( variants.begin(), variants.end(), echidna::variant::varPtrComp() );
+    std::sort( variants.begin(), variants.end(), wecall::variant::varPtrComp() );
 
-    VariantCluster cluster( variants, echidna::caller::Region( "1", 10, 13 ) );
+    VariantCluster cluster( variants, wecall::caller::Region( "1", 10, 13 ) );
 
     BOOST_CHECK_EQUAL_COLLECTIONS( cluster.variants().begin(), cluster.variants().end(), variants.begin(),
                                    variants.end() );
@@ -116,7 +116,7 @@ BOOST_AUTO_TEST_CASE( testVariantClusterGenerationSNPandMNP )
 
     int minClusterDistance = 0;
 
-    auto clusters = echidna::variant::generateVariantClusters( variants, minClusterDistance, Region( "1", 10, 25 ) );
+    auto clusters = wecall::variant::generateVariantClusters( variants, minClusterDistance, Region( "1", 10, 25 ) );
     BOOST_CHECK_EQUAL( clusters.size(), 1 );
     BOOST_CHECK_EQUAL_COLLECTIONS( clusters[0].variants().begin(), clusters[0].variants().end(), variants.begin(),
                                    variants.end() );
@@ -134,7 +134,7 @@ BOOST_AUTO_TEST_CASE( testVariantClusterGenerationSNPandDel )
 
     int minClusterDistance = 0;
 
-    auto clusters = echidna::variant::generateVariantClusters( variants, minClusterDistance, Region( "1", 10, 20 ) );
+    auto clusters = wecall::variant::generateVariantClusters( variants, minClusterDistance, Region( "1", 10, 20 ) );
     BOOST_CHECK_EQUAL( clusters.size(), 1 );
     BOOST_CHECK_EQUAL_COLLECTIONS( clusters[0].variants().begin(), clusters[0].variants().end(), variants.begin(),
                                    variants.end() );
@@ -153,7 +153,7 @@ BOOST_AUTO_TEST_CASE( testVariantClusterGenerationSNPAndMNP )
     int maxClusterSize = 200;
 
     const auto clusters =
-        echidna::variant::generateMergedClusters( variants, minClusterDistance, maxClusterDistance, maxClusterSize,
+        wecall::variant::generateMergedClusters( variants, minClusterDistance, maxClusterDistance, maxClusterSize,
                                                   referenceSequence->region(), referenceSequence, 100, 0 );
     BOOST_CHECK_EQUAL( clusters.size(), 1 );
     BOOST_CHECK_EQUAL_COLLECTIONS( clusters[0].variants().begin(), clusters[0].variants().end(), variants.begin(),
@@ -172,7 +172,7 @@ BOOST_AUTO_TEST_CASE( testVariantClusterGenerationSNPAndDelAndMNP )
     int minClusterDistance = 0;
 
     auto clusters =
-        echidna::variant::generateVariantClusters( variants, minClusterDistance, referenceSequence->region() );
+        wecall::variant::generateVariantClusters( variants, minClusterDistance, referenceSequence->region() );
 
     BOOST_CHECK_EQUAL( clusters.size(), 1 );
     BOOST_CHECK_EQUAL_COLLECTIONS( clusters[0].variants().begin(), clusters[0].variants().end(), variants.begin(),
@@ -182,7 +182,7 @@ BOOST_AUTO_TEST_CASE( testVariantClusterGenerationSNPAndDelAndMNP )
 BOOST_AUTO_TEST_CASE( testVariantsOverlappingAnAlignmentOfIndelGetAddedToSameCluster )
 {
     auto referenceSequence =
-        std::make_shared< ReferenceSequence >( Region( "1", 0, 100 ), echidna::utils::BasePairSequence( 100, 'A' ) );
+        std::make_shared< ReferenceSequence >( Region( "1", 0, 100 ), wecall::utils::BasePairSequence( 100, 'A' ) );
 
     auto snp1 = std::make_shared< Variant >( referenceSequence, Region( "1", 1, 2 ), "T" );
     auto snp2 = std::make_shared< Variant >( referenceSequence, Region( "1", 11, 12 ), "T" );
@@ -196,7 +196,7 @@ BOOST_AUTO_TEST_CASE( testVariantsOverlappingAnAlignmentOfIndelGetAddedToSameClu
     int minClusterDistance = 0;
 
     const auto clusters =
-        echidna::variant::generateVariantClusters( variants, minClusterDistance, referenceSequence->region() );
+        wecall::variant::generateVariantClusters( variants, minClusterDistance, referenceSequence->region() );
 
     BOOST_CHECK_EQUAL( clusters.size(), 1 );
 
@@ -214,7 +214,7 @@ BOOST_AUTO_TEST_CASE( testShouldNotMergeClustersIfVariantCombinationsNotComputed
                              Region( "1", 11, 12 ) );
 
     const auto maxCombinations = 4;
-    const auto mergedClusters = echidna::variant::mergeClusters( {cluster1, cluster2}, maxCombinations, 9, 100 );
+    const auto mergedClusters = wecall::variant::mergeClusters( {cluster1, cluster2}, maxCombinations, 9, 100 );
 
     BOOST_CHECK_EQUAL( mergedClusters.size(), 2 );
 }
@@ -231,7 +231,7 @@ BOOST_AUTO_TEST_CASE( testMergeClusters )
     const auto maxCombinations = 4;
     cluster1.computeVariantCombinations( 5, 40, maxCombinations, reference );
     cluster2.computeVariantCombinations( 5, 40, maxCombinations, reference );
-    const auto mergedClusters = echidna::variant::mergeClusters( {cluster1, cluster2}, maxCombinations, 9, 100 );
+    const auto mergedClusters = wecall::variant::mergeClusters( {cluster1, cluster2}, maxCombinations, 9, 100 );
 
     BOOST_CHECK_EQUAL( mergedClusters.size(), 1 );
 
@@ -250,7 +250,7 @@ BOOST_AUTO_TEST_CASE( testMaxVariantCombinationsGetsTwoClusters )
     const auto maxCombinations = 2;
     cluster1.computeVariantCombinations( 1, 40, maxCombinations, reference );
     cluster2.computeVariantCombinations( 1, 40, maxCombinations, reference );
-    const auto mergedClusters = echidna::variant::mergeClusters( {cluster1, cluster2}, maxCombinations, 9, 100 );
+    const auto mergedClusters = wecall::variant::mergeClusters( {cluster1, cluster2}, maxCombinations, 9, 100 );
 
     BOOST_CHECK_EQUAL( mergedClusters.size(), 2 );
 
@@ -270,7 +270,7 @@ BOOST_AUTO_TEST_CASE( testMaxVariantsDistance )
     const auto maxCombinations = 5;
     cluster1.computeVariantCombinations( 2, 40, maxCombinations, reference );
     cluster2.computeVariantCombinations( 2, 40, maxCombinations, reference );
-    const auto mergedClusters = echidna::variant::mergeClusters( {cluster1, cluster2}, maxCombinations, 8, 100 );
+    const auto mergedClusters = wecall::variant::mergeClusters( {cluster1, cluster2}, maxCombinations, 8, 100 );
 
     BOOST_CHECK_EQUAL( mergedClusters.size(), 2 );
 

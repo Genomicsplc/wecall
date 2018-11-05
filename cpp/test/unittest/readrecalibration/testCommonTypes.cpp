@@ -8,8 +8,8 @@ BOOST_AUTO_TEST_CASE( testPhredToPCache )
 {
     for ( auto i = 0; i < 100; ++i )
     {
-        auto cacheNumber = echidna::corrector::phred_to_p( i );
-        auto computedNumber = echidna::stats::fromPhredQ( i );
+        auto cacheNumber = wecall::corrector::phred_to_p( i );
+        auto computedNumber = wecall::stats::fromPhredQ( i );
         BOOST_CHECK_CLOSE( cacheNumber, computedNumber, 1e-8 );
     }
 }

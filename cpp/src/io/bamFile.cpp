@@ -18,7 +18,7 @@
 #include "boost/filesystem.hpp"
 #include "utils/timer.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {
@@ -37,9 +37,9 @@ namespace io
 
         if ( m_index == nullptr )
         {
-            ECHIDNA_LOG( FATAL, "Could not load index for BAM file "
+            WECALL_LOG( FATAL, "Could not load index for BAM file "
                                     << fileName << ". Check that index file exists and is readable" );
-            throw utils::echidna_exception( "Cannot load BAM index" );
+            throw utils::wecall_exception( "Cannot load BAM index" );
         }
 
         m_samFile = samopen( fileName.c_str(), "rb", nullptr );
@@ -73,7 +73,7 @@ namespace io
         }
         else
         {
-            throw utils::echidna_exception( "Invalid tid value in BamFile::getContigName" );
+            throw utils::wecall_exception( "Invalid tid value in BamFile::getContigName" );
         }
     }
 
@@ -141,14 +141,14 @@ namespace io
 
                 else if ( sampleName.empty() )
                 {
-                    ECHIDNA_LOG( WARNING, "Could not find sample name for read group with id " << theID );
+                    WECALL_LOG( WARNING, "Could not find sample name for read group with id " << theID );
                     samplesByID[theID] = "UNKNOWN_SAMPLE";
                     continue;
                 }
 
                 else
                 {
-                    ECHIDNA_LOG( DEBUG, "Found sample name " << sampleName << " for read group id " << theID );
+                    WECALL_LOG( DEBUG, "Found sample name " << sampleName << " for read group id " << theID );
                     samplesByID[theID] = sampleName;
                 }
             }
@@ -173,7 +173,7 @@ namespace io
     {
         if ( not m_samFile )
         {
-            throw utils::echidna_exception( "Attempted to call 'fetch' on a closed BAM file" );
+            throw utils::wecall_exception( "Attempted to call 'fetch' on a closed BAM file" );
         }
 
         int rtid = 0;
@@ -186,7 +186,7 @@ namespace io
 
         if ( rtid < 0 )
         {
-            ECHIDNA_LOG( WARNING, "Attempted to load an invalid contig \"" + clippedRegion.contig() +
+            WECALL_LOG( WARNING, "Attempted to load an invalid contig \"" + clippedRegion.contig() +
                                       "\" from the BAM file - " +
                                       "Check that the contig names in the reference file match those in the BAM." );
             return nullptr;
@@ -194,9 +194,9 @@ namespace io
 
         if ( rstart > rend )
         {
-            ECHIDNA_LOG( FATAL, "Could not retrieve region " << clippedRegion << " from BAM file " << m_fileName );
-            ECHIDNA_LOG( FATAL, "Check that the contig range in the FASTA file matches that in the BAM" );
-            throw utils::echidna_exception( "Invalid region - BAM file start coordinate > end" );
+            WECALL_LOG( FATAL, "Could not retrieve region " << clippedRegion << " from BAM file " << m_fileName );
+            WECALL_LOG( FATAL, "Check that the contig range in the FASTA file matches that in the BAM" );
+            throw utils::wecall_exception( "Invalid region - BAM file start coordinate > end" );
         }
 
         bam_fetch_iterator_t * bam_fetch_iterator =

@@ -11,7 +11,7 @@
 #include <unordered_map>
 #include <numeric>
 
-namespace echidna
+namespace wecall
 {
 namespace alignment
 {
@@ -40,7 +40,7 @@ namespace alignment
         case cigarFlags::SEQ_MISMATCH:
             return std::make_shared< CigarSequenceMismatch >( length );
         default:
-            throw utils::echidna_exception( "Cigar flag number: " + std::to_string( static_cast< int >( flag ) ) +
+            throw utils::wecall_exception( "Cigar flag number: " + std::to_string( static_cast< int >( flag ) ) +
                                             " not implemented." );
         }
     }
@@ -92,7 +92,7 @@ namespace alignment
             else
                 return rollCigarItem( flag, length );
         default:
-            throw utils::echidna_exception( "Cigar flag number: " + std::to_string( static_cast< int >( flag ) ) +
+            throw utils::wecall_exception( "Cigar flag number: " + std::to_string( static_cast< int >( flag ) ) +
                                             " not implemented." );
         }
     }
@@ -144,13 +144,13 @@ namespace alignment
                 flag = cigarFlags::SEQ_MISMATCH;
                 break;
             default:
-                throw utils::echidna_exception( "Cigar flag type: " + std::string( 1, type ) + " not implemented." );
+                throw utils::wecall_exception( "Cigar flag type: " + std::string( 1, type ) + " not implemented." );
             }
             return roll( flag, length );
         }
         else
         {
-            throw utils::echidna_exception( cigarItemString + " is not a valid cigar item" );
+            throw utils::wecall_exception( cigarItemString + " is not a valid cigar item" );
         }
     }
 
@@ -322,4 +322,4 @@ namespace alignment
     }
 
 }  // namespace alignment
-}  // namespace echidna
+}  // namespace wecall

@@ -1,7 +1,7 @@
 # All content Copyright (C) 2018 Genomics plc
 import os
 import subprocess
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 from wecall.genomics.reference_genome import InMemoryReferenceGenome
 from wecall_test_drivers.tool_runner import ToolRunner
 
@@ -34,9 +34,9 @@ class FastaFileBuilder(object):
     def index(self):
         tool_runner = ToolRunner()
         tool_runner.start(
-            [os.path.join(os.environ['ECHIDNA_BIN'], "samtools"), "faidx", self.filename])
+            [os.path.join(os.environ['WECALL_BIN'], "samtools"), "faidx", self.filename])
 
         if tool_runner.return_code != 0:
-            raise EchidnaException("")
+            raise weCallException("")
         else:
             return self

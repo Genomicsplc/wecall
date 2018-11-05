@@ -13,7 +13,7 @@
 #include <string>
 #include <cstdint>
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

@@ -2,7 +2,7 @@
 #include <string>
 #include "utils/exceptions.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace test
 {
@@ -11,7 +11,7 @@ namespace test
         char * value = std::getenv( variableName );
         if ( value == nullptr )
         {
-            throw utils::echidna_exception( std::string( "Undefined environment variable: " ) + variableName );
+            throw utils::wecall_exception( std::string( "Undefined environment variable: " ) + variableName );
         }
         else
         {

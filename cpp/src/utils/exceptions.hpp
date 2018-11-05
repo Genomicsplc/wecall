@@ -4,14 +4,14 @@
 
 #include <stdexcept>
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {
-    class echidna_exception : public std::runtime_error
+    class wecall_exception : public std::runtime_error
     {
     public:
-        echidna_exception( const std::string & error ) : std::runtime_error( error ) {}
+        wecall_exception( const std::string & error ) : std::runtime_error( error ) {}
     };
 }
 }

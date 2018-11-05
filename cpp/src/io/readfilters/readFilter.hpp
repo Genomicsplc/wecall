@@ -7,7 +7,7 @@
 
 #include <memory>
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

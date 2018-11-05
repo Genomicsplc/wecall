@@ -10,7 +10,7 @@
 #include "utils/NeedlemanWunsch.hpp"
 #include "variant/type/variant.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {

@@ -14,7 +14,7 @@ import tempfile
 class TestWeCallReduceCmdLine(BaseTest):
     def setUp(self):
         BaseTest.setUp(self)
-        self.tool_location = path.join(environ["ECHIDNA_BIN"], "weCall")
+        self.tool_location = path.join(environ["WECALL_BIN"], "weCall")
 
         self.input_directory_location = path.join(self.work_dir, "input_directory")
         self.log_filename = path.join(self.work_dir, "_.log")
@@ -148,7 +148,7 @@ class TestWeCallReduceCmdLine(BaseTest):
 class TestReduce(BaseTest):
     def setUp(self):
         BaseTest.setUp(self)
-        self.tool_location = path.join(environ["ECHIDNA_BIN"], "weCall")
+        self.tool_location = path.join(environ["WECALL_BIN"], "weCall")
         self.intermediate_vcfs_dir = path.join(self.work_dir, "intermediate_vcfs")
         self.final_vcf_location = path.join(self.work_dir, "reduced.vcf")
         self.log_filename = path.join(self.work_dir, "_.log")

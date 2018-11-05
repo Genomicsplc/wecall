@@ -6,33 +6,33 @@
 #include "io/readRange.hpp"
 #include "io/readSummaries.hpp"
 
-using Read = echidna::io::Read;
-using Cigar = echidna::alignment::Cigar;
-using echidna::caller::SetRegions;
-using echidna::caller::Region;
-using echidna::io::RegionsReads;
-using echidna::utils::BasePairSequence;
-using readCoverage_t = echidna::io::readsummaries::readCoverage_t;
+using Read = wecall::io::Read;
+using Cigar = wecall::alignment::Cigar;
+using wecall::caller::SetRegions;
+using wecall::caller::Region;
+using wecall::io::RegionsReads;
+using wecall::utils::BasePairSequence;
+using readCoverage_t = wecall::io::readsummaries::readCoverage_t;
 
 BOOST_AUTO_TEST_CASE( shouldComputeCoverageDelatsFor1Read )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'A' ) );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'A' ) );
 
     const int64_t startPos = 0;
     const auto read1 = std::make_shared< Read >( BasePairSequence( 4, 'A' ), std::string( 4, 'Q' ), "0", Cigar( "4M" ),
                                                  0, startPos, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::io::readIntervalTree_t readContainer( 0, 100 );
+    wecall::io::readIntervalTree_t readContainer( 0, 100 );
     readContainer.insert( read1 );
 
     RegionsReads regionSetReads( Region( "1", 1, 2 ), readContainer.getFullRange(), 0 );
 
-    echidna::io::perSampleRegionsReads_t perSampleReads = {{"sample1", regionSetReads}};
+    wecall::io::perSampleRegionsReads_t perSampleReads = {{"sample1", regionSetReads}};
     Region subRegion = Region( "1", 1, 3 );
 
     const auto readCoverageDeltas =
-        echidna::io::readsummaries::getReadCoverageDeltas( perSampleReads, subRegion, 1, subRegion.size() );
+        wecall::io::readsummaries::getReadCoverageDeltas( perSampleReads, subRegion, 1, subRegion.size() );
 
     BOOST_REQUIRE_EQUAL( readCoverageDeltas.size(), 1 );
     BOOST_REQUIRE_EQUAL( readCoverageDeltas[0].size(), 2 );
@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE( shouldComputeCoverageDelatsFor1Read )
 BOOST_AUTO_TEST_CASE( shouldComputeReadDeltasFor1SampleWith2ReadsSpanningWholeRegion )
 {
     Region region = Region( "1", 0, 5 );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( region, std::string( 5, 'A' ) );
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( region, std::string( 5, 'A' ) );
 
     const int64_t startPos = 0;
     const auto read1 = std::make_shared< Read >( BasePairSequence( 4, 'A' ), std::string( 4, 'Q' ), "0", Cigar( "4M" ),
@@ -52,18 +52,18 @@ BOOST_AUTO_TEST_CASE( shouldComputeReadDeltasFor1SampleWith2ReadsSpanningWholeRe
     const auto read2 = std::make_shared< Read >( BasePairSequence( 4, 'A' ), std::string( 4, 'Q' ), "0", Cigar( "4M" ),
                                                  0, startPos, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::io::readIntervalTree_t readContainer( 0, 100 );
+    wecall::io::readIntervalTree_t readContainer( 0, 100 );
     readContainer.insert( read1 );
     readContainer.insert( read2 );
 
     RegionsReads regionSetReads( region, readContainer.getFullRange(), 0 );
 
-    echidna::io::perSampleRegionsReads_t perSampleReads = {{"sample1", regionSetReads}};
+    wecall::io::perSampleRegionsReads_t perSampleReads = {{"sample1", regionSetReads}};
 
     // expected coverage matrix: {{1, 1, 1, 1, 0}, {1, 1, 1, 1, 0};
 
     const auto readCoverageDeltas =
-        echidna::io::readsummaries::getReadCoverageDeltas( perSampleReads, region, 1, region.size() );
+        wecall::io::readsummaries::getReadCoverageDeltas( perSampleReads, region, 1, region.size() );
 
     BOOST_REQUIRE_EQUAL( readCoverageDeltas.size(), 1 );
     BOOST_REQUIRE_EQUAL( readCoverageDeltas[0].size(), 5 );
@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE( shouldComputeReadDeltasFor1SampleWith2ReadsSpanningWholeRe
 BOOST_AUTO_TEST_CASE( shouldComputeReadDeltasFor2SamplesWith1Read )
 {
     Region region = Region( "1", 0, 5 );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( region, std::string( 5, 'A' ) );
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( region, std::string( 5, 'A' ) );
 
     const int64_t startPos = 0;
     const auto read1 = std::make_shared< Read >( BasePairSequence( 3, 'A' ), std::string( 3, 'Q' ), "0", Cigar( "3M" ),
@@ -86,19 +86,19 @@ BOOST_AUTO_TEST_CASE( shouldComputeReadDeltasFor2SamplesWith1Read )
     const auto read2 = std::make_shared< Read >( BasePairSequence( 4, 'A' ), std::string( 4, 'Q' ), "0", Cigar( "4M" ),
                                                  0, startPos + 1, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::io::readIntervalTree_t readContainer1( 0, 100 );
+    wecall::io::readIntervalTree_t readContainer1( 0, 100 );
     readContainer1.insert( read1 );
 
-    echidna::io::readIntervalTree_t readContainer2( 0, 100 );
+    wecall::io::readIntervalTree_t readContainer2( 0, 100 );
     readContainer2.insert( read2 );
 
     RegionsReads regionSetReads1( Region( "1", 1, 2 ), readContainer1.getFullRange(), 0 );
     RegionsReads regionSetReads2( Region( "1", 1, 2 ), readContainer2.getFullRange(), 0 );
 
-    echidna::io::perSampleRegionsReads_t perSampleReads = {{"sample1", regionSetReads1}, {"sample2", regionSetReads2}};
+    wecall::io::perSampleRegionsReads_t perSampleReads = {{"sample1", regionSetReads1}, {"sample2", regionSetReads2}};
 
     const auto readCoverageDeltas =
-        echidna::io::readsummaries::getReadCoverageDeltas( perSampleReads, region, 2, region.size() );
+        wecall::io::readsummaries::getReadCoverageDeltas( perSampleReads, region, 2, region.size() );
 
     // expected coverage matrix: {{1, 1, 1, 0, 0}, {0, 1, 1, 1, 1};
 
@@ -120,7 +120,7 @@ BOOST_AUTO_TEST_CASE( shouldComputeReadDeltasFor2SamplesWith1Read )
 BOOST_AUTO_TEST_CASE( shouldComputeReadDeltasFor2SamplesWith2Reads )
 {
     Region region = Region( "1", 0, 5 );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( region, std::string( 5, 'A' ) );
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( region, std::string( 5, 'A' ) );
 
     const int64_t startPos = 0;
     const auto read1 = std::make_shared< Read >( BasePairSequence( 3, 'A' ), std::string( 3, 'Q' ), "0", Cigar( "3M" ),
@@ -135,21 +135,21 @@ BOOST_AUTO_TEST_CASE( shouldComputeReadDeltasFor2SamplesWith2Reads )
     const auto read4 = std::make_shared< Read >( BasePairSequence( 4, 'A' ), std::string( 4, 'Q' ), "0", Cigar( "4M" ),
                                                  0, startPos + 1, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::io::readIntervalTree_t readContainer1( 0, 100 );
+    wecall::io::readIntervalTree_t readContainer1( 0, 100 );
     readContainer1.insert( read1 );
     readContainer1.insert( read2 );
 
-    echidna::io::readIntervalTree_t readContainer2( 0, 100 );
+    wecall::io::readIntervalTree_t readContainer2( 0, 100 );
     readContainer2.insert( read3 );
     readContainer2.insert( read4 );
 
     RegionsReads regionSetReads1( Region( "1", 1, 2 ), readContainer1.getFullRange(), 0 );
     RegionsReads regionSetReads2( Region( "1", 1, 2 ), readContainer2.getFullRange(), 0 );
 
-    echidna::io::perSampleRegionsReads_t perSampleReads = {{"sample1", regionSetReads1}, {"sample2", regionSetReads2}};
+    wecall::io::perSampleRegionsReads_t perSampleReads = {{"sample1", regionSetReads1}, {"sample2", regionSetReads2}};
 
     const auto readCoverageDeltas =
-        echidna::io::readsummaries::getReadCoverageDeltas( perSampleReads, region, 2, region.size() );
+        wecall::io::readsummaries::getReadCoverageDeltas( perSampleReads, region, 2, region.size() );
 
     // expected coverage matrix: {{1, 2, 2, 1, 0}, {1, 2, 2, 2, 1};
 
@@ -172,7 +172,7 @@ BOOST_AUTO_TEST_CASE( shouldComputeReadDeltaFor1SampleWith3Reads )
 {
     const auto region = Region( "1", 0, 10 );
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
 
     const int64_t startPos = 0;
     const auto read1 = std::make_shared< Read >( BasePairSequence( 3, 'A' ), std::string( 3, 'Q' ), "0", Cigar( "3M" ),
@@ -184,17 +184,17 @@ BOOST_AUTO_TEST_CASE( shouldComputeReadDeltaFor1SampleWith3Reads )
     const auto read3 = std::make_shared< Read >( BasePairSequence( 5, 'A' ), std::string( 5, 'Q' ), "0", Cigar( "5M" ),
                                                  0, startPos + 5, 0, 0, 0, 0, 0, refSequence );
 
-    echidna::io::readIntervalTree_t readContainer( 0, 100 );
+    wecall::io::readIntervalTree_t readContainer( 0, 100 );
     readContainer.insert( read1 );
     readContainer.insert( read2 );
     readContainer.insert( read3 );
 
     RegionsReads regionSetReads( region, readContainer.getFullRange(), 0 );
 
-    echidna::io::perSampleRegionsReads_t perSampleReads = {{"sample1", regionSetReads}};
+    wecall::io::perSampleRegionsReads_t perSampleReads = {{"sample1", regionSetReads}};
 
     const auto readCoverageDeltas =
-        echidna::io::readsummaries::getReadCoverageDeltas( perSampleReads, region, 1, region.size() );
+        wecall::io::readsummaries::getReadCoverageDeltas( perSampleReads, region, 1, region.size() );
 
     // expected coverage matrix: { {1, 1, 1, 1, 1, 2, 1, 1, 1, 1}};
     std::vector< int64_t > exp_deltas( {1, 0, 0, 0, 0, 1, -1, 0, 0, 0} );
@@ -212,10 +212,10 @@ BOOST_AUTO_TEST_CASE( shouldComputeChunkedCoverageFor1SampleWithAlmostConstantRe
 
     Region region = Region( "1", 0, 5 );
 
-    echidna::io::readsummaries::coverageDeltas_t readDeltas( {{10, 0, 1, 0, 0}} );
+    wecall::io::readsummaries::coverageDeltas_t readDeltas( {{10, 0, 1, 0, 0}} );
 
     std::vector< readCoverage_t > chunkedReferenceCall =
-        echidna::io::readsummaries::getChunkedReferenceCalls( region, 1, region.size(), readDeltas, 0.2 );
+        wecall::io::readsummaries::getChunkedReferenceCalls( region, 1, region.size(), readDeltas, 0.2 );
 
     BOOST_REQUIRE_EQUAL( chunkedReferenceCall.size(), 1 );
     BOOST_CHECK_EQUAL( chunkedReferenceCall[0].region, region );
@@ -231,10 +231,10 @@ BOOST_AUTO_TEST_CASE( shouldComputeChunkedCoverageFor1SampleWithStrongChangesInR
 
     Region region = Region( "1", 0, 5 );
 
-    echidna::io::readsummaries::coverageDeltas_t readDeltas( {{5, 0, 2, 0, 0}} );
+    wecall::io::readsummaries::coverageDeltas_t readDeltas( {{5, 0, 2, 0, 0}} );
 
     std::vector< readCoverage_t > chunkedReferenceCall =
-        echidna::io::readsummaries::getChunkedReferenceCalls( region, 1, region.size(), readDeltas, 0.2 );
+        wecall::io::readsummaries::getChunkedReferenceCalls( region, 1, region.size(), readDeltas, 0.2 );
 
     BOOST_REQUIRE_EQUAL( chunkedReferenceCall.size(), 2 );
     BOOST_CHECK_EQUAL( chunkedReferenceCall[0].region, Region( "1", 0, 2 ) );
@@ -257,10 +257,10 @@ BOOST_AUTO_TEST_CASE( shouldComputeChunkedCoverageFor2SamplesWithAlmostConstantR
 
     Region region = Region( "1", 0, 5 );
 
-    echidna::io::readsummaries::coverageDeltas_t readDeltas( {{10, 0, 1, 0, 0}, {11, 1, 0, -1, 0}} );
+    wecall::io::readsummaries::coverageDeltas_t readDeltas( {{10, 0, 1, 0, 0}, {11, 1, 0, -1, 0}} );
 
     std::vector< readCoverage_t > chunkedReferenceCall =
-        echidna::io::readsummaries::getChunkedReferenceCalls( region, 2, region.size(), readDeltas, 0.2 );
+        wecall::io::readsummaries::getChunkedReferenceCalls( region, 2, region.size(), readDeltas, 0.2 );
 
     BOOST_REQUIRE_EQUAL( chunkedReferenceCall.size(), 1 );
     BOOST_CHECK_EQUAL( chunkedReferenceCall[0].region, region );
@@ -279,10 +279,10 @@ BOOST_AUTO_TEST_CASE( shouldComputeChunkedCoverageFor2SamplesWithStrongChangesIn
     Region region = Region( "1", 0, 5 );
 
     // expected read depth: {{5, 5, 2, 2, 2}, {6, 6, 6, 6, 0}}
-    echidna::io::readsummaries::coverageDeltas_t readDeltas( {{5, 0, -3, 0, 0}, {6, 0, 0, 0, -6}} );
+    wecall::io::readsummaries::coverageDeltas_t readDeltas( {{5, 0, -3, 0, 0}, {6, 0, 0, 0, -6}} );
 
     std::vector< readCoverage_t > chunkedReferenceCall =
-        echidna::io::readsummaries::getChunkedReferenceCalls( region, 2, region.size(), readDeltas, 0.2 );
+        wecall::io::readsummaries::getChunkedReferenceCalls( region, 2, region.size(), readDeltas, 0.2 );
 
     BOOST_REQUIRE_EQUAL( chunkedReferenceCall.size(), 3 );
 

@@ -5,7 +5,7 @@
 #include "caller/callSet.hpp"
 #include "io/readRange.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {

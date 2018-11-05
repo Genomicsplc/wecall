@@ -1,7 +1,7 @@
 # All content Copyright (C) 2018 Genomics plc
 import unittest
 
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 from wecall.vcfutils.record import generate_records
 from wecall.vcfutils.sample_data import SampleData
 from wecall.vcfutils.genotype_call import GenotypeCall
@@ -102,7 +102,7 @@ class TestSampleData(unittest.TestCase):
     def test_should_raise_when_adding_sample_data_to_missing_key(self):
         sample_data = SampleData(['key'], ['sample_name'])
         self.assertRaisesRegex(
-            EchidnaException,
+            weCallException,
             "Missing key missing_key when adding sample data.",
             sample_data.add_sample_data,
             'sample_name',
@@ -113,7 +113,7 @@ class TestSampleData(unittest.TestCase):
     def test_should_raise_when_adding_sample_data_to_missing_sample(self):
         sample_data = SampleData(['key'], ['sample_name'])
         self.assertRaisesRegex(
-            EchidnaException,
+            weCallException,
             "Missing sample name missing_sample_name supplied when adding sample data.",
             sample_data.add_sample_data,
             'missing_sample_name',
@@ -124,7 +124,7 @@ class TestSampleData(unittest.TestCase):
     def test_should_raise_when_adding_wrong_genotype_data(self):
         sample_data = SampleData(['GT'], ['sample_name'])
         self.assertRaisesRegex(
-            EchidnaException,
+            weCallException,
             "Genotype field must be a GenotypeCall.",
             sample_data.add_sample_data,
             'sample_name',

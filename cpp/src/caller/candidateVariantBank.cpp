@@ -6,7 +6,7 @@
 #include "caller/region.hpp"
 #include "candidateVariantBank.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {

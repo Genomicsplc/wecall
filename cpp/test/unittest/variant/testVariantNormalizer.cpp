@@ -5,13 +5,13 @@
 #include "variant/variantNormalizer.hpp"
 #include <boost/optional/optional.hpp>
 
-using echidna::utils::ReferenceSequence;
-using echidna::caller::Region;
-using echidna::utils::BasePairSequence;
-using echidna::variant::VariantNormalizer;
-using echidna::variant::Variant;
-using echidna::variant::variantSet_t;
-using echidna::variant::varPtr_t;
+using wecall::utils::ReferenceSequence;
+using wecall::caller::Region;
+using wecall::utils::BasePairSequence;
+using wecall::variant::VariantNormalizer;
+using wecall::variant::Variant;
+using wecall::variant::variantSet_t;
+using wecall::variant::varPtr_t;
 
 BOOST_AUTO_TEST_CASE( shouldRealWorldWrapper1 )
 {

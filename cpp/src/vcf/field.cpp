@@ -4,7 +4,7 @@
 
 #include <stdexcept>
 
-namespace echidna
+namespace wecall
 {
 namespace vcf
 {
@@ -44,7 +44,7 @@ namespace vcf
     // Keys reused in multiple descriptions.
 
     // INFO fields...
-    // Include in INFO fields the application name and version (e.g. EchiDNA, 1.0)
+    // Include in INFO fields the application name and version (e.g. WECALL, 1.0)
     Field Field::infoFieldFromID( const std::string & ID, const std::string & source, const std::string & version )
     {
         if ( ID == info::PP_key )
@@ -145,7 +145,7 @@ namespace vcf
         }
         else
         {
-            throw utils::echidna_exception( "Invalid field ID: " + ID );
+            throw utils::wecall_exception( "Invalid field ID: " + ID );
         }
     }
 
@@ -211,7 +211,7 @@ namespace vcf
         }
         else
         {
-            throw utils::echidna_exception( "Invalid field ID: " + ID );
+            throw utils::wecall_exception( "Invalid field ID: " + ID );
         }
     }
 

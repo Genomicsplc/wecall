@@ -11,11 +11,11 @@
 #include "utils/date.hpp"
 #include "ioFixture.hpp"
 
-using echidna::variant::Variant;
-using echidna::utils::ReferenceSequence;
-using echidna::caller::Region;
-using echidna::caller::Call;
-using echidna::caller::Annotation;
+using wecall::variant::Variant;
+using wecall::utils::ReferenceSequence;
+using wecall::caller::Region;
+using wecall::caller::Call;
+using wecall::caller::Annotation;
 
 std::string readEntireFileIntoStdString( const std::string & filename )
 {
@@ -25,7 +25,7 @@ std::string readEntireFileIntoStdString( const std::string & filename )
     return sstr.str();
 }
 
-void check_equal_info( const echidna::vcf::Info & expected, const echidna::vcf::Info & parsed )
+void check_equal_info( const wecall::vcf::Info & expected, const wecall::vcf::Info & parsed )
 {
     std::ostringstream info_size_message;
     info_size_message << "Different length info fields (expected " << expected.size() << " elements: [";
@@ -60,15 +60,15 @@ void check_equal_info( const echidna::vcf::Info & expected, const echidna::vcf::
     }
 }
 
-BOOST_FIXTURE_TEST_CASE( testCantWriteHeaderTwice, echidna::test::FastaFileFixture )
+BOOST_FIXTURE_TEST_CASE( testCantWriteHeaderTwice, wecall::test::FastaFileFixture )
 {
     const std::string tempFilename = boost::filesystem::temp_directory_path().generic_string() + "/vcf_test";
-    echidna::io::VCFWriter writer( tempFilename, false, false );
+    wecall::io::VCFWriter writer( tempFilename, false, false );
 
-    echidna::caller::params::Application applicationParams( "Edna", "1.0", "blah", "25-11-1987", "options" );
+    wecall::caller::params::Application applicationParams( "Edna", "1.0", "blah", "25-11-1987", "options" );
     std::vector< std::string > sampleNames{"NA17287", "NA17291"};
-    std::vector< echidna::vcf::FilterDesc > filterDescs{{"SB", "this is a test filter"}};
-    std::vector< echidna::caller::Region > mapContigsToLengths;
+    std::vector< wecall::vcf::FilterDesc > filterDescs{{"SB", "this is a test filter"}};
+    std::vector< wecall::caller::Region > mapContigsToLengths;
     mapContigsToLengths.emplace_back( "2", 1, 20 );
     mapContigsToLengths.emplace_back( "10", 1, 100 );
     mapContigsToLengths.emplace_back( "20", 1, 20 );
@@ -76,62 +76,62 @@ BOOST_FIXTURE_TEST_CASE( testCantWriteHeaderTwice, echidna::test::FastaFileFixtu
 
     BOOST_CHECK_THROW(
         writer.writeHeader( "VCF4.2", applicationParams, refFilename, sampleNames, filterDescs, mapContigsToLengths ),
-        echidna::utils::echidna_exception );
+        wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( compileInfoForSingleVariant )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'G' ) );
-    echidna::variant::varPtr_t variant = std::make_shared< Variant >( refSequence, Region( "1", 1, 2 ), "A" );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'G' ) );
+    wecall::variant::varPtr_t variant = std::make_shared< Variant >( refSequence, Region( "1", 1, 2 ), "A" );
 
     Call call( variant, variant->interval(), 101.0, 1, {{Call::REF, Call::VAR}} );
     call.addAnnotation( Annotation::VC, 22l );
-    echidna::caller::callVector_t calls = {call};
+    wecall::caller::callVector_t calls = {call};
 
-    echidna::vcf::Info processedInfo = echidna::io::VCFWriter::compileInfo( calls.cbegin() );
-    echidna::vcf::Info expectedInfo = {{"VC", {"22"}}};
+    wecall::vcf::Info processedInfo = wecall::io::VCFWriter::compileInfo( calls.cbegin() );
+    wecall::vcf::Info expectedInfo = {{"VC", {"22"}}};
     check_equal_info( expectedInfo, processedInfo );
 }
 
 BOOST_AUTO_TEST_CASE( compileTwoInfoFieldsForSingleVariant )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'G' ) );
-    echidna::variant::varPtr_t variant = std::make_shared< Variant >( refSequence, Region( "1", 1, 2 ), "A" );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'G' ) );
+    wecall::variant::varPtr_t variant = std::make_shared< Variant >( refSequence, Region( "1", 1, 2 ), "A" );
 
     Call call( variant, variant->interval(), 101.0, 1, {{Call::REF, Call::VAR}} );
     call.addAnnotation( Annotation::VC, 22l );
     call.addAnnotation( Annotation::DP, 1l );
-    echidna::caller::callVector_t calls = {call};
+    wecall::caller::callVector_t calls = {call};
 
-    echidna::vcf::Info procesedInfo = echidna::io::VCFWriter::compileInfo( calls.cbegin() );
-    echidna::vcf::Info expectedInfo = {{"VC", {"22"}}, {"DP", {"1"}}};
+    wecall::vcf::Info procesedInfo = wecall::io::VCFWriter::compileInfo( calls.cbegin() );
+    wecall::vcf::Info expectedInfo = {{"VC", {"22"}}, {"DP", {"1"}}};
     check_equal_info( expectedInfo, procesedInfo );
 }
 
-BOOST_FIXTURE_TEST_CASE( idFieldShouldBeWrittenCorrectlyForSNPs, echidna::test::FastaFileFixture )
+BOOST_FIXTURE_TEST_CASE( idFieldShouldBeWrittenCorrectlyForSNPs, wecall::test::FastaFileFixture )
 {
-    using namespace echidna::vcf;
+    using namespace wecall::vcf;
 
     const std::string tempFilename = boost::filesystem::temp_directory_path().generic_string() + "/vcf_test";
-    echidna::io::VCFWriter writer( tempFilename, false, false );
+    wecall::io::VCFWriter writer( tempFilename, false, false );
 
-    echidna::caller::params::Application applicationParams( "Edna", "1.0", "blah", "25-11-1987", "options" );
+    wecall::caller::params::Application applicationParams( "Edna", "1.0", "blah", "25-11-1987", "options" );
     std::vector< std::string > sampleNames{"NA17287", "NA17291"};
-    std::vector< echidna::vcf::FilterDesc > filterDescs{{"REFCALL", ""},
+    std::vector< wecall::vcf::FilterDesc > filterDescs{{"REFCALL", ""},
                                                         {"FOO", "A filter for testing that filter data is written"}};
     writer.writeHeader( "VCF4.2", applicationParams, refFilename, sampleNames, filterDescs, {} );
 
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 60, 65 ), "CGCAG" );
-    echidna::variant::varPtr_t variant = std::make_shared< Variant >( refSequence, Region( "1", 60, 61 ), "A" );
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 60, 65 ), "CGCAG" );
+    wecall::variant::varPtr_t variant = std::make_shared< Variant >( refSequence, Region( "1", 60, 61 ), "A" );
 
     Call call( variant, variant->interval(), 101.0, 1, {{Call::REF, Call::VAR}} );
     call.addAnnotation( Annotation::VC, 22l );
-    echidna::caller::callVector_t calls = {call};
+    wecall::caller::callVector_t calls = {call};
 
     writer.contig( "1" );
-    refFiles.emplace_back( new echidna::io::FastaFile( refFilename ) );
+    refFiles.emplace_back( new wecall::io::FastaFile( refFilename ) );
     writer.writeCallSet( *( refFiles.back() ), calls );
 
     std::string s = readEntireFileIntoStdString( tempFilename );

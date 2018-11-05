@@ -6,7 +6,7 @@
 #include "caller/region.hpp"
 #include "caller/callSet.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace varfilters
 {

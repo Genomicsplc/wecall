@@ -3,7 +3,7 @@
 #include "haplotype.hpp"
 #include "variantCombinations.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {
@@ -19,12 +19,12 @@ namespace variant
 
     void VariantCluster::push_back( const varPtr_t & varPtr, const caller::SetRegions & variantRegions )
     {
-        ECHIDNA_ASSERT( variantRegions.size() > 0, "Variant regions must be non-empty" );
+        WECALL_ASSERT( variantRegions.size() > 0, "Variant regions must be non-empty" );
         const auto span = variantRegions.getSpan();
 
-        ECHIDNA_ASSERT( span.start() <= varPtr->start(),
+        WECALL_ASSERT( span.start() <= varPtr->start(),
                         "Variant start region should be a padding of the chosen representation start pos." );
-        ECHIDNA_ASSERT( span.end() >= varPtr->end(),
+        WECALL_ASSERT( span.end() >= varPtr->end(),
                         "Variant end region should be a padding of the chosen representation end pos." );
         const auto varZeroStart = std::min( span.start(), varPtr->zeroIndexedVcfPosition() );
         if ( m_variants.empty() )
@@ -67,7 +67,7 @@ namespace variant
 
     VariantCluster & VariantCluster::operator+=( const VariantCluster & rhs )
     {
-        ECHIDNA_ASSERT( this->region().end() <= rhs.region().start(), "Clusters should be in correct order." );
+        WECALL_ASSERT( this->region().end() <= rhs.region().start(), "Clusters should be in correct order." );
 
         this->m_variants.insert( this->m_variants.end(), rhs.m_variants.begin(), rhs.m_variants.end() );
         for ( const auto & region : rhs.m_variantRegions )
@@ -164,7 +164,7 @@ namespace variant
                                                            const int64_t minDistance,
                                                            const caller::Region & region )
     {
-        ECHIDNA_LOG( DEBUG, "Generating variant clusters for: " + region.toString() );
+        WECALL_LOG( DEBUG, "Generating variant clusters for: " + region.toString() );
         /// Create and return a vector of VariantCluster s. Each VariantCluster is made up
         /// of variants which are either all at the same position, or all overlap, or are within
         /// a specified distance of each other.
@@ -207,10 +207,10 @@ namespace variant
             clusters.push_back( current );
         }
 
-        ECHIDNA_LOG( DEBUG, "Generated  " << clusters.size() << " clusters." );
+        WECALL_LOG( DEBUG, "Generated  " << clusters.size() << " clusters." );
 
         const auto paddedClusterRegs = variant::computeClustersPaddingRegions( region, clusters );
-        ECHIDNA_ASSERT( paddedClusterRegs.size() == clusters.size(), "" );
+        WECALL_ASSERT( paddedClusterRegs.size() == clusters.size(), "" );
         for ( std::size_t clusterIndex = 0; clusterIndex < clusters.size(); ++clusterIndex )
         {
             clusters[clusterIndex].setPaddedRegion( paddedClusterRegs[clusterIndex] );
@@ -226,7 +226,7 @@ namespace variant
         while ( clusters.size() > 1 and blockRegion.end() - clusters.back().region().end() <= maxClusterDist )
         {
             actualEndBlock = clusters.back().region().start();
-            ECHIDNA_LOG( DEBUG, "Cluster " << clusters.back().toString() << " will be considered in next block." );
+            WECALL_LOG( DEBUG, "Cluster " << clusters.back().toString() << " will be considered in next block." );
             clusters.pop_back();
         }
 

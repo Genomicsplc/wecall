@@ -11,7 +11,7 @@ class TestCmdLineOptions(BaseTest):
     def setUp(self):
         BaseTest.setUp(self)
 
-        self.we_call = os.path.join(os.environ["ECHIDNA_BIN"], "weCall")
+        self.we_call = os.path.join(os.environ["WECALL_BIN"], "weCall")
         self.bam_filename = os.path.join(self.work_dir, "input.bam")
         self.bam_index_filename = self.bam_filename + ".bai"
         self.ref_filename = os.path.join(self.work_dir, "refFile.fa")
@@ -43,7 +43,7 @@ class TestCmdLineOptions(BaseTest):
         self.__build_default_fasta_file()
 
         p = subprocess.Popen(
-            [os.path.join(os.environ["ECHIDNA_BIN"], "weCall"), "--inp", "input/path"],
+            [os.path.join(os.environ["WECALL_BIN"], "weCall"), "--inp", "input/path"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE
         )

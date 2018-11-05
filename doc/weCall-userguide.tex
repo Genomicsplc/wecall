@@ -69,7 +69,7 @@ aboveskip=-10pt,belowskip=0pt,
 \newcommand{\companyname}{\textbf{GENOMICS plc}}
 \newcommand{\wecallproduct}{\textbf{weCall}}
 \newcommand{\wecallappname}{weCall}
-\newcommand{\wecallversion}{\textbf{2.0.0}}
+\newcommand{\wecallversion}{\textbf{2.0.1}}
 \newcommand{\wecalltarball}{weCall-{\wecallversion}-Linux-x86\_64}
 \newcommand{\wecallbranding}{{\wecallproduct} {\wecallversion}}
 \lstset{%
@@ -152,14 +152,14 @@ To install {\wecallproduct}, you will need to build the {\wecallproduct} code an
 \begin{enumerate}
     \item Ensure you have cmake, ncurses, boost and zlib installed.
     \item Clone the \wecallproduct repository. Withing the repository type \verb|make install|. This will add {\wecallproduct} and the unit test tools (unittest, iotest) to \verb|/usr/bin/local|. The installation directory can be set by modifying the \verb|PREFIX| variable in the Makefile.
-    \item The user documentation can be created with the \verb|make| default target. The user documentation will be generated in the folder \verb|build/doc/weCall-userguide.pdf| of the repository.
+    \item The user documentation can be created with the \verb|make| default target. The user documentation will be generated in the folder \verb|target/build/doc/weCall-userguide.pdf| of the repository.
 \end{enumerate}
 
 To test if the installation has succeeded, invoke the application help facility:
 \begin{lstlisting}
     weCall -h
 \end{lstlisting}
-For detailed information on how to use \wecallproduct, please refer to the user guide (build/doc/weCall-userguide.pdf).
+For detailed information on how to use \wecallproduct, please refer to the user guide (target/build/doc/weCall-userguide.pdf).
 
 Further, you can run the unit and acceptance test suite:
 \begin{itemize}

@@ -10,36 +10,36 @@
 #include "io/readIntervalTree.hpp"
 #include "io/readRange.hpp"
 
-using echidna::io::Read;
-using echidna::alignment::Cigar;
-using echidna::caller::SetRegions;
-using echidna::caller::Region;
-using echidna::caller::Call;
-using echidna::caller::callVector_t;
-using echidna::io::RegionsReads;
-using echidna::io::ReadDataset;
-using echidna::utils::BasePairSequence;
-using echidna::variant::Variant;
-using echidna::variant::variantSet_t;
-using echidna::caller::Annotation;
+using wecall::io::Read;
+using wecall::alignment::Cigar;
+using wecall::caller::SetRegions;
+using wecall::caller::Region;
+using wecall::caller::Call;
+using wecall::caller::callVector_t;
+using wecall::io::RegionsReads;
+using wecall::io::ReadDataset;
+using wecall::utils::BasePairSequence;
+using wecall::variant::Variant;
+using wecall::variant::variantSet_t;
+using wecall::caller::Annotation;
 
 // ---------------------------------------------------------------------------------------------------------------
 // test: generateVariantSetsFromCalls
 
 BOOST_AUTO_TEST_CASE( shouldGenerateVariantSetFromCallsForEmptyCase )
 {
-    const auto variantSet1 = echidna::caller::generateVariantSetsFromCalls( {}, 0, 0 );
+    const auto variantSet1 = wecall::caller::generateVariantSetsFromCalls( {}, 0, 0 );
     BOOST_REQUIRE_EQUAL( variantSet1.size(), 0 );
 }
 
 BOOST_AUTO_TEST_CASE( shouldGenerateVariantSetFromCallsForSimpleCase )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'A' ) );
-    echidna::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'A' ) );
+    wecall::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
     Call call1( variant1, variant1->interval(), 10, 1, {{Call::REF, Call::VAR}} );
 
-    const auto variantSets = echidna::caller::generateVariantSetsFromCalls( {call1}, 0, 2 );
+    const auto variantSets = wecall::caller::generateVariantSetsFromCalls( {call1}, 0, 2 );
 
     BOOST_REQUIRE_EQUAL( variantSets.size(), 2 );
     BOOST_REQUIRE_EQUAL( variantSets[0].size(), 0 );
@@ -50,16 +50,16 @@ BOOST_AUTO_TEST_CASE( shouldGenerateVariantSetFromCallsForSimpleCase )
 BOOST_AUTO_TEST_CASE( shouldGenerateVariantSetFromCallsForOneSample )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'A' ) );
-    echidna::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
-    echidna::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 3, 4 ), "T" );
-    echidna::variant::varPtr_t variant3 = std::make_shared< Variant >( refSequence, Region( "1", 4, 5 ), "G" );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'A' ) );
+    wecall::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
+    wecall::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 3, 4 ), "T" );
+    wecall::variant::varPtr_t variant3 = std::make_shared< Variant >( refSequence, Region( "1", 4, 5 ), "G" );
     Call call1( variant1, variant1->interval(), 10, 1, {{Call::REF, Call::VAR}} );
     Call call2( variant2, variant2->interval(), 10, 1, {{Call::VAR, Call::VAR}} );
     Call call3( variant3, variant3->interval(), 10, 1, {{Call::VAR, Call::REF}} );
 
     const auto ploidy = 2;
-    const auto variantSets = echidna::caller::generateVariantSetsFromCalls( {call1, call2, call3}, 0, ploidy );
+    const auto variantSets = wecall::caller::generateVariantSetsFromCalls( {call1, call2, call3}, 0, ploidy );
 
     BOOST_REQUIRE_EQUAL( variantSets.size(), ploidy );
     BOOST_REQUIRE_EQUAL( variantSets[0].size(), 2 );
@@ -74,14 +74,14 @@ BOOST_AUTO_TEST_CASE( shouldGenerateVariantSetFromCallsForOneSample )
 BOOST_AUTO_TEST_CASE( shouldGenerateVariantSetFromCallsForTwoSamples )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'A' ) );
-    echidna::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
-    echidna::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 3, 4 ), "T" );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'A' ) );
+    wecall::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
+    wecall::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 3, 4 ), "T" );
     Call call1( variant1, variant1->interval(), 10, 2, {{Call::REF, Call::REF}, {Call::REF, Call::VAR}} );
     Call call2( variant2, variant1->interval(), 10, 2, {{Call::VAR, Call::VAR}, {Call::VAR, Call::REF}} );
 
     const auto ploidy = 2;
-    const auto variantSetsSample1 = echidna::caller::generateVariantSetsFromCalls( {call1, call2}, 0, ploidy );
+    const auto variantSetsSample1 = wecall::caller::generateVariantSetsFromCalls( {call1, call2}, 0, ploidy );
 
     BOOST_REQUIRE_EQUAL( variantSetsSample1.size(), ploidy );
     BOOST_REQUIRE_EQUAL( variantSetsSample1[0].size(), 1 );
@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_CASE( shouldGenerateVariantSetFromCallsForTwoSamples )
     BOOST_REQUIRE_EQUAL( variantSetsSample1[1].size(), 1 );
     BOOST_CHECK_EQUAL( *( variantSetsSample1[1].cbegin() ), variant2 );
 
-    const auto variantSetsSample2 = echidna::caller::generateVariantSetsFromCalls( {call1, call2}, 1, ploidy );
+    const auto variantSetsSample2 = wecall::caller::generateVariantSetsFromCalls( {call1, call2}, 1, ploidy );
 
     BOOST_REQUIRE_EQUAL( variantSetsSample2.size(), 2 );
     BOOST_REQUIRE_EQUAL( variantSetsSample2[0].size(), 1 );
@@ -101,13 +101,13 @@ BOOST_AUTO_TEST_CASE( shouldGenerateVariantSetFromCallsForTwoSamples )
 BOOST_AUTO_TEST_CASE( shouldGenerateVariantSetFromCallsForHaploid )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'A' ) );
-    echidna::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'A' ) );
+    wecall::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
 
     Call call1( variant1, variant1->interval(), 10, 1, {{Call::VAR}} );
 
     const auto ploidy = 1;
-    const auto variantSetsSample1 = echidna::caller::generateVariantSetsFromCalls( {call1}, 0, ploidy );
+    const auto variantSetsSample1 = wecall::caller::generateVariantSetsFromCalls( {call1}, 0, ploidy );
 
     BOOST_REQUIRE_EQUAL( variantSetsSample1.size(), ploidy );
     BOOST_REQUIRE_EQUAL( variantSetsSample1[0].size(), 1 );
@@ -117,16 +117,16 @@ BOOST_AUTO_TEST_CASE( shouldGenerateVariantSetFromCallsForHaploid )
 BOOST_AUTO_TEST_CASE( shouldGenerateVariantSetFromCallsForTriploid )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'A' ) );
-    echidna::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
-    echidna::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 3, 4 ), "T" );
-    echidna::variant::varPtr_t variant3 = std::make_shared< Variant >( refSequence, Region( "1", 4, 5 ), "G" );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'A' ) );
+    wecall::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
+    wecall::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 3, 4 ), "T" );
+    wecall::variant::varPtr_t variant3 = std::make_shared< Variant >( refSequence, Region( "1", 4, 5 ), "G" );
     Call call1( variant1, variant1->interval(), 10, 1, {{Call::REF, Call::VAR, Call::VAR}} );
     Call call2( variant2, variant2->interval(), 10, 1, {{Call::VAR, Call::VAR, Call::REF}} );
     Call call3( variant3, variant3->interval(), 10, 1, {{Call::VAR, Call::REF, Call::REF}} );
 
     const auto ploidy = 3;
-    const auto variantSets = echidna::caller::generateVariantSetsFromCalls( {call1, call2, call3}, 0, ploidy );
+    const auto variantSets = wecall::caller::generateVariantSetsFromCalls( {call1, call2, call3}, 0, ploidy );
 
     BOOST_REQUIRE_EQUAL( variantSets.size(), ploidy );
     BOOST_REQUIRE_EQUAL( variantSets[0].size(), 2 );
@@ -147,21 +147,21 @@ BOOST_AUTO_TEST_CASE( shouldGenerateVariantSetFromCallsForTriploid )
 BOOST_AUTO_TEST_CASE( shouldGenerateHaplotypesForClustersWithHetVariants )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'A' ) );
-    echidna::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
-    echidna::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 3, 4 ), "T" );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'A' ) );
+    wecall::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
+    wecall::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 3, 4 ), "T" );
 
     // het variants1 (REF, VAR)
-    std::vector< echidna::variant::variantSet_t > variantsCluster1;
+    std::vector< wecall::variant::variantSet_t > variantsCluster1;
     variantsCluster1.push_back( {} );
     variantsCluster1.push_back( {variant1} );
 
     // het variants2 (VAR, REF)
-    std::vector< echidna::variant::variantSet_t > variantsCluster2;
+    std::vector< wecall::variant::variantSet_t > variantsCluster2;
     variantsCluster2.push_back( {variant2} );
     variantsCluster2.push_back( {} );
 
-    auto haplotypes = echidna::caller::generateHaplotypesFromPhasedClusters( variantsCluster1, variantsCluster2, 2,
+    auto haplotypes = wecall::caller::generateHaplotypesFromPhasedClusters( variantsCluster1, variantsCluster2, 2,
                                                                              refSequence, refSequence->region() );
 
     BOOST_REQUIRE_EQUAL( haplotypes.size(), 4 );
@@ -190,21 +190,21 @@ BOOST_AUTO_TEST_CASE( shouldGenerateHaplotypesForClustersWithHetVariants )
 BOOST_AUTO_TEST_CASE( shouldGenerateHaplotypesForClustersWithMixedVariants )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'A' ) );
-    echidna::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
-    echidna::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 3, 4 ), "T" );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'A' ) );
+    wecall::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
+    wecall::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 3, 4 ), "T" );
 
     // hom variants1
-    std::vector< echidna::variant::variantSet_t > variantsCluster1;
+    std::vector< wecall::variant::variantSet_t > variantsCluster1;
     variantsCluster1.push_back( {variant1} );
     variantsCluster1.push_back( {variant1} );
 
     // het variant2
-    std::vector< echidna::variant::variantSet_t > variantsCluster2;
+    std::vector< wecall::variant::variantSet_t > variantsCluster2;
     variantsCluster2.push_back( {variant2} );
     variantsCluster2.push_back( {} );
 
-    auto haplotypes = echidna::caller::generateHaplotypesFromPhasedClusters( variantsCluster1, variantsCluster2, 2,
+    auto haplotypes = wecall::caller::generateHaplotypesFromPhasedClusters( variantsCluster1, variantsCluster2, 2,
                                                                              refSequence, refSequence->region() );
 
     BOOST_REQUIRE_EQUAL( haplotypes.size(), 2 );
@@ -223,21 +223,21 @@ BOOST_AUTO_TEST_CASE( shouldGenerateHaplotypesForClustersWithMixedVariants )
 BOOST_AUTO_TEST_CASE( shouldGenerateHaplotypesForClustersWithHomVariants )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'A' ) );
-    echidna::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
-    echidna::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 3, 4 ), "T" );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'A' ) );
+    wecall::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
+    wecall::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 3, 4 ), "T" );
 
     // hom variants1
-    std::vector< echidna::variant::variantSet_t > variantsCluster1;
+    std::vector< wecall::variant::variantSet_t > variantsCluster1;
     variantsCluster1.push_back( {variant1} );
     variantsCluster1.push_back( {variant1} );
 
     // hom variant2
-    std::vector< echidna::variant::variantSet_t > variantsCluster2;
+    std::vector< wecall::variant::variantSet_t > variantsCluster2;
     variantsCluster2.push_back( {variant2} );
     variantsCluster2.push_back( {variant2} );
 
-    auto haplotypes = echidna::caller::generateHaplotypesFromPhasedClusters( variantsCluster1, variantsCluster2, 2,
+    auto haplotypes = wecall::caller::generateHaplotypesFromPhasedClusters( variantsCluster1, variantsCluster2, 2,
                                                                              refSequence, refSequence->region() );
 
     BOOST_REQUIRE_EQUAL( haplotypes.size(), 1 );
@@ -251,12 +251,12 @@ BOOST_AUTO_TEST_CASE( shouldGenerateHaplotypesForClustersWithHomVariants )
 BOOST_AUTO_TEST_CASE( shouldGenerateHaplotypesForClustersWithMultipleVariants )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
 
-    echidna::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
-    echidna::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 3, 4 ), "T" );
-    echidna::variant::varPtr_t variant3 = std::make_shared< Variant >( refSequence, Region( "1", 5, 6 ), "G" );
-    echidna::variant::varPtr_t variant4 = std::make_shared< Variant >( refSequence, Region( "1", 7, 8 ), "C" );
+    wecall::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
+    wecall::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 3, 4 ), "T" );
+    wecall::variant::varPtr_t variant3 = std::make_shared< Variant >( refSequence, Region( "1", 5, 6 ), "G" );
+    wecall::variant::varPtr_t variant4 = std::make_shared< Variant >( refSequence, Region( "1", 7, 8 ), "C" );
 
     Call call1( variant1, variant1->interval(), 100, 1, {{Call::REF, Call::VAR}} );
     Call call2( variant2, variant2->interval(), 100, 1, {{Call::VAR, Call::VAR}} );
@@ -264,16 +264,16 @@ BOOST_AUTO_TEST_CASE( shouldGenerateHaplotypesForClustersWithMultipleVariants )
     Call call4( variant4, variant4->interval(), 100, 1, {{Call::VAR, Call::REF}} );
 
     // het variants1, hom variant2
-    std::vector< echidna::variant::variantSet_t > variantsCluster1;
+    std::vector< wecall::variant::variantSet_t > variantsCluster1;
     variantsCluster1.push_back( {variant2} );
     variantsCluster1.push_back( {variant1, variant2} );
 
     // het variant3, het variant4
-    std::vector< echidna::variant::variantSet_t > variantsCluster2;
+    std::vector< wecall::variant::variantSet_t > variantsCluster2;
     variantsCluster2.push_back( {variant4} );
     variantsCluster2.push_back( {variant3} );
 
-    auto haplotypes = echidna::caller::generateHaplotypesFromPhasedClusters( variantsCluster1, variantsCluster2, 2,
+    auto haplotypes = wecall::caller::generateHaplotypesFromPhasedClusters( variantsCluster1, variantsCluster2, 2,
                                                                              refSequence, refSequence->region() );
 
     BOOST_REQUIRE_EQUAL( haplotypes.size(), 4 );
@@ -302,19 +302,19 @@ BOOST_AUTO_TEST_CASE( shouldGenerateHaplotypesForClustersWithMultipleVariants )
 BOOST_AUTO_TEST_CASE( shouldGenerateHaplotypesForHaploid )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'A' ) );
-    echidna::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
-    echidna::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 3, 4 ), "T" );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'A' ) );
+    wecall::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
+    wecall::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 3, 4 ), "T" );
 
     // variants1
-    std::vector< echidna::variant::variantSet_t > variantsCluster1;
+    std::vector< wecall::variant::variantSet_t > variantsCluster1;
     variantsCluster1.push_back( {variant1} );
 
     // variant2
-    std::vector< echidna::variant::variantSet_t > variantsCluster2;
+    std::vector< wecall::variant::variantSet_t > variantsCluster2;
     variantsCluster2.push_back( {variant2} );
 
-    auto haplotypes = echidna::caller::generateHaplotypesFromPhasedClusters( variantsCluster1, variantsCluster2, 1,
+    auto haplotypes = wecall::caller::generateHaplotypesFromPhasedClusters( variantsCluster1, variantsCluster2, 1,
                                                                              refSequence, refSequence->region() );
 
     BOOST_REQUIRE_EQUAL( haplotypes.size(), 1 );
@@ -328,23 +328,23 @@ BOOST_AUTO_TEST_CASE( shouldGenerateHaplotypesForHaploid )
 BOOST_AUTO_TEST_CASE( shouldGenerateHaplotypesForClustersWithHetVariantsForTriploid )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'A' ) );
-    echidna::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
-    echidna::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 3, 4 ), "T" );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 5 ), std::string( 5, 'A' ) );
+    wecall::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
+    wecall::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 3, 4 ), "T" );
 
     // 0/0/1 variants1
-    std::vector< echidna::variant::variantSet_t > variantsCluster1;
+    std::vector< wecall::variant::variantSet_t > variantsCluster1;
     variantsCluster1.push_back( {} );
     variantsCluster1.push_back( {} );
     variantsCluster1.push_back( {variant1} );
 
     // 0/1/1 variant2
-    std::vector< echidna::variant::variantSet_t > variantsCluster2;
+    std::vector< wecall::variant::variantSet_t > variantsCluster2;
     variantsCluster2.push_back( {} );
     variantsCluster2.push_back( {variant2} );
     variantsCluster2.push_back( {variant2} );
 
-    auto haplotypes = echidna::caller::generateHaplotypesFromPhasedClusters( variantsCluster1, variantsCluster2, 3,
+    auto haplotypes = wecall::caller::generateHaplotypesFromPhasedClusters( variantsCluster1, variantsCluster2, 3,
                                                                              refSequence, refSequence->region() );
 
     BOOST_REQUIRE_EQUAL( haplotypes.size(), 4 );
@@ -376,32 +376,32 @@ BOOST_AUTO_TEST_CASE( shouldGenerateHaplotypesForClustersWithHetVariantsForTripl
 BOOST_AUTO_TEST_CASE( shouldAllignCallsForGenotypeWithHetVariantsOnSameRead )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
 
-    echidna::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
-    echidna::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 6, 7 ), "T" );
+    wecall::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
+    wecall::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 6, 7 ), "T" );
 
     const int64_t phaseId = 101;
     Call call2( variant2, variant2->interval(), 100, 1, {{Call::VAR, Call::REF}} );
     call2.samples[0].addAnnotation( Annotation::PS, phaseId + 1 );
 
     // het variants1 (REF, VAR)
-    std::vector< echidna::variant::variantSet_t > variantsCluster1;
+    std::vector< wecall::variant::variantSet_t > variantsCluster1;
     variantsCluster1.push_back( {} );
     variantsCluster1.push_back( {variant1} );
 
-    echidna::variant::HaplotypeVector combinedHaplotypes( refSequence->region(), refSequence );
+    wecall::variant::HaplotypeVector combinedHaplotypes( refSequence->region(), refSequence );
     combinedHaplotypes.push_back( {}, 2 );
     combinedHaplotypes.push_back( {variant2}, 3 );
     combinedHaplotypes.push_back( {variant1}, 0 );
     combinedHaplotypes.push_back( {variant1, variant2}, 1 );
 
     // calling 1x haplotype0 aqnd 1x haplotype3
-    auto genotype = echidna::variant::Genotype( echidna::variant::haplotypeAndCount_t{{0, 1}, {3, 1}} );
-    echidna::variant::genotypePtr_t genotypePtr = std::make_shared< echidna::variant::Genotype >( genotype );
+    auto genotype = wecall::variant::Genotype( wecall::variant::haplotypeAndCount_t{{0, 1}, {3, 1}} );
+    wecall::variant::genotypePtr_t genotypePtr = std::make_shared< wecall::variant::Genotype >( genotype );
 
     callVector_t calls = {call2};
-    echidna::caller::alignPhasingOfCallsBasedOnGenotypeAndMergedHaplotypes( genotypePtr, 2, 0, phaseId,
+    wecall::caller::alignPhasingOfCallsBasedOnGenotypeAndMergedHaplotypes( genotypePtr, 2, 0, phaseId,
                                                                             combinedHaplotypes, false, calls );
 
     BOOST_REQUIRE_EQUAL( calls.size(), 1 );
@@ -415,32 +415,32 @@ BOOST_AUTO_TEST_CASE( shouldAllignCallsForGenotypeWithHetVariantsOnSameRead )
 BOOST_AUTO_TEST_CASE( shouldAllignCallsForGenotypeWithHetVariantsOnDifferentRead )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
 
-    echidna::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
-    echidna::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 6, 7 ), "T" );
+    wecall::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
+    wecall::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 6, 7 ), "T" );
 
     const int64_t phaseId = 101;
     Call call2( variant2, variant2->interval(), 100, 1, {{Call::REF, Call::VAR}} );
     call2.samples[0].addAnnotation( Annotation::PS, phaseId + 1 );
 
     // het variants1 (REF, VAR)
-    std::vector< echidna::variant::variantSet_t > variantsCluster1;
+    std::vector< wecall::variant::variantSet_t > variantsCluster1;
     variantsCluster1.push_back( {} );
     variantsCluster1.push_back( {variant1} );
 
-    echidna::variant::HaplotypeVector combinedHaplotypes( refSequence->region(), refSequence );
+    wecall::variant::HaplotypeVector combinedHaplotypes( refSequence->region(), refSequence );
     combinedHaplotypes.push_back( {}, 0 );
     combinedHaplotypes.push_back( {variant2}, 1 );
     combinedHaplotypes.push_back( {variant1}, 2 );
     combinedHaplotypes.push_back( {variant1, variant2}, 3 );
 
     // calling 1x haplotype1 aqnd 1x haplotype2
-    auto genotype = echidna::variant::Genotype( echidna::variant::haplotypeAndCount_t{{1, 1}, {2, 1}} );
-    echidna::variant::genotypePtr_t genotypePtr = std::make_shared< echidna::variant::Genotype >( genotype );
+    auto genotype = wecall::variant::Genotype( wecall::variant::haplotypeAndCount_t{{1, 1}, {2, 1}} );
+    wecall::variant::genotypePtr_t genotypePtr = std::make_shared< wecall::variant::Genotype >( genotype );
 
     callVector_t calls = {call2};
-    echidna::caller::alignPhasingOfCallsBasedOnGenotypeAndMergedHaplotypes( genotypePtr, 2, 0, phaseId,
+    wecall::caller::alignPhasingOfCallsBasedOnGenotypeAndMergedHaplotypes( genotypePtr, 2, 0, phaseId,
                                                                             combinedHaplotypes, false, calls );
 
     BOOST_REQUIRE_EQUAL( calls.size(), 1 );
@@ -454,30 +454,30 @@ BOOST_AUTO_TEST_CASE( shouldAllignCallsForGenotypeWithHetVariantsOnDifferentRead
 BOOST_AUTO_TEST_CASE( shouldAllignCallsForGenotypeWithHomVariant )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
 
-    echidna::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
-    echidna::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 6, 7 ), "T" );
+    wecall::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
+    wecall::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 6, 7 ), "T" );
 
     const int64_t phaseId = 101;
     Call call2( variant2, variant2->interval(), 100, 1, {{Call::VAR, Call::VAR}} );
     call2.samples[0].addAnnotation( Annotation::PS, phaseId + 1 );
 
     // het variants1 (REF, VAR)
-    std::vector< echidna::variant::variantSet_t > variantsCluster1;
+    std::vector< wecall::variant::variantSet_t > variantsCluster1;
     variantsCluster1.push_back( {} );
     variantsCluster1.push_back( {variant1} );
 
-    echidna::variant::HaplotypeVector combinedHaplotypes( refSequence->region(), refSequence );
+    wecall::variant::HaplotypeVector combinedHaplotypes( refSequence->region(), refSequence );
     combinedHaplotypes.push_back( {variant2}, 0 );
     combinedHaplotypes.push_back( {variant1, variant2}, 2 );
 
     // calling 1x haplotype0 aqnd 1x haplotype1
-    auto genotype = echidna::variant::Genotype( echidna::variant::haplotypeAndCount_t{{0, 1}, {1, 1}} );
-    echidna::variant::genotypePtr_t genotypePtr = std::make_shared< echidna::variant::Genotype >( genotype );
+    auto genotype = wecall::variant::Genotype( wecall::variant::haplotypeAndCount_t{{0, 1}, {1, 1}} );
+    wecall::variant::genotypePtr_t genotypePtr = std::make_shared< wecall::variant::Genotype >( genotype );
 
     callVector_t calls = {call2};
-    echidna::caller::alignPhasingOfCallsBasedOnGenotypeAndMergedHaplotypes( genotypePtr, 2, 0, phaseId,
+    wecall::caller::alignPhasingOfCallsBasedOnGenotypeAndMergedHaplotypes( genotypePtr, 2, 0, phaseId,
                                                                             combinedHaplotypes, true, calls );
 
     BOOST_REQUIRE_EQUAL( calls.size(), 1 );
@@ -491,10 +491,10 @@ BOOST_AUTO_TEST_CASE( shouldAllignCallsForGenotypeWithHomVariant )
 BOOST_AUTO_TEST_CASE( shouldAllignCallsForGenotypeForVariantsOnSameReadForSecondSample )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
 
-    echidna::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
-    echidna::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 6, 7 ), "T" );
+    wecall::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
+    wecall::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 6, 7 ), "T" );
 
     const int64_t phaseId = 101;
     Call call2( variant2, variant2->interval(), 100, 2, {{Call::VAR, Call::VAR}, {Call::VAR, Call::REF}} );
@@ -502,22 +502,22 @@ BOOST_AUTO_TEST_CASE( shouldAllignCallsForGenotypeForVariantsOnSameReadForSecond
     call2.samples[sampleIndex].addAnnotation( Annotation::PS, phaseId + 1 );
 
     // het variants1 (REF, VAR) for sample 2
-    std::vector< echidna::variant::variantSet_t > variantsCluster1;
+    std::vector< wecall::variant::variantSet_t > variantsCluster1;
     variantsCluster1.push_back( {} );
     variantsCluster1.push_back( {variant1} );
 
-    echidna::variant::HaplotypeVector combinedHaplotypes( refSequence->region(), refSequence );
+    wecall::variant::HaplotypeVector combinedHaplotypes( refSequence->region(), refSequence );
     combinedHaplotypes.push_back( {}, 2 );
     combinedHaplotypes.push_back( {variant2}, 3 );
     combinedHaplotypes.push_back( {variant1}, 0 );
     combinedHaplotypes.push_back( {variant1, variant2}, 1 );
 
     // calling 1x haplotype0 aqnd 1x haplotype3
-    const auto genotype = echidna::variant::Genotype( echidna::variant::haplotypeAndCount_t{{0, 1}, {3, 1}} );
-    echidna::variant::genotypePtr_t genotypePtr = std::make_shared< echidna::variant::Genotype >( genotype );
+    const auto genotype = wecall::variant::Genotype( wecall::variant::haplotypeAndCount_t{{0, 1}, {3, 1}} );
+    wecall::variant::genotypePtr_t genotypePtr = std::make_shared< wecall::variant::Genotype >( genotype );
 
     callVector_t calls = {call2};
-    echidna::caller::alignPhasingOfCallsBasedOnGenotypeAndMergedHaplotypes( genotypePtr, 2, sampleIndex, phaseId,
+    wecall::caller::alignPhasingOfCallsBasedOnGenotypeAndMergedHaplotypes( genotypePtr, 2, sampleIndex, phaseId,
                                                                             combinedHaplotypes, false, calls );
 
     BOOST_REQUIRE_EQUAL( calls.size(), 1 );
@@ -541,7 +541,7 @@ BOOST_AUTO_TEST_CASE( shouldAlignPhaseSetsOfClustersForVariantOnDifferentRead )
     // generate overlapping reads
     // reads need to be at least kmerLength and reference sequence needs to be sufficiently long for padding
     Region region = Region( "1", 0, 30 );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( region, reference );
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( region, reference );
 
     const int64_t startPos = 10;
     const uint8_t mapQual = 10;
@@ -552,29 +552,29 @@ BOOST_AUTO_TEST_CASE( shouldAlignPhaseSetsOfClustersForVariantOnDifferentRead )
         std::make_shared< Read >( BasePairSequence( "CAATGAAC" ), std::string( 8, 'Q' ), "0", Cigar( "8M" ), 0,
                                   startPos, 0, mapQual, 0, 0, 0, refSequence, "read2" );
 
-    echidna::io::readIntervalTree_t readContainer( 0, 100 );
+    wecall::io::readIntervalTree_t readContainer( 0, 100 );
     readContainer.insert( read1 );
     readContainer.insert( read2 );
 
     RegionsReads regionSetReads( region, readContainer.getFullRange(), 0 );
 
     auto sampleName = "sample1";
-    echidna::io::perSampleRegionsReads_t overlappingReads = {{sampleName, regionSetReads}};
+    wecall::io::perSampleRegionsReads_t overlappingReads = {{sampleName, regionSetReads}};
 
     // generate call vector for previous cluster
-    echidna::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 11, 12 ), "C" );
+    wecall::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 11, 12 ), "C" );
     Call call1( variant1, variant1->interval(), 100, 1, {{Call::REF, Call::VAR}} );
     const int64_t phaseId = 101;
     call1.samples[0].addAnnotation( Annotation::PS, phaseId );
 
     // generate call vector for current cluster
-    echidna::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 13, 14 ), "T" );
+    wecall::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 13, 14 ), "T" );
     Call call2( variant2, variant2->interval(), 100, 1, {{Call::REF, Call::VAR}} );
     call2.samples[0].addAnnotation( Annotation::PS, phaseId + 1 );
 
     // align phase sets
     callVector_t alignedCalls = {call2};
-    echidna::caller::alignPhasingForSample( alignedCalls, {call1}, 2, 0, sampleName, refSequence, overlappingReads,
+    wecall::caller::alignPhasingForSample( alignedCalls, {call1}, 2, 0, sampleName, refSequence, overlappingReads,
                                             Region( "1", 10, 12 ), refSequence->region() );
 
     BOOST_REQUIRE_EQUAL( alignedCalls.size(), 1 );
@@ -595,7 +595,7 @@ BOOST_AUTO_TEST_CASE( shouldAllignPhaseSetsOfClustersForVariantOnSameRead )
     // generate overlapping reads
     // reads need to be at least kmerLength and reference sequence needs to be sufficiently long for padding
     Region region = Region( "1", 0, 30 );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( region, reference );
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( region, reference );
 
     const int64_t startPos = 10;
     const uint8_t mapQual = 10;
@@ -606,29 +606,29 @@ BOOST_AUTO_TEST_CASE( shouldAllignPhaseSetsOfClustersForVariantOnSameRead )
         std::make_shared< Read >( BasePairSequence( "CAAGGAAC" ), std::string( 8, 'Q' ), "0", Cigar( "8M" ), 0,
                                   startPos, 0, mapQual, 0, 0, 0, refSequence, "read2" );
 
-    echidna::io::readIntervalTree_t readContainer( 0, 100 );
+    wecall::io::readIntervalTree_t readContainer( 0, 100 );
     readContainer.insert( read1 );
     readContainer.insert( read2 );
 
     RegionsReads regionSetReads( region, readContainer.getFullRange(), 0 );
 
     auto sampleName = "sample1";
-    echidna::io::perSampleRegionsReads_t overlappingReads = {{sampleName, regionSetReads}};
+    wecall::io::perSampleRegionsReads_t overlappingReads = {{sampleName, regionSetReads}};
 
     // generate call vector for previous cluster
-    echidna::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 11, 12 ), "C" );
+    wecall::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 11, 12 ), "C" );
     Call call1( variant1, variant1->interval(), 100, 1, {{Call::REF, Call::VAR}} );
     const int64_t phaseId = 101;
     call1.samples[0].addAnnotation( Annotation::PS, phaseId );
 
     // generate call vector for current cluster
-    echidna::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 13, 14 ), "T" );
+    wecall::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 13, 14 ), "T" );
     Call call2( variant2, variant2->interval(), 100, 1, {{Call::VAR, Call::REF}} );
     call2.samples[0].addAnnotation( Annotation::PS, phaseId + 1 );
 
     // align phase sets
     callVector_t alignedCalls = {call2};
-    echidna::caller::alignPhasingForSample( alignedCalls, {call1}, 2, 0, sampleName, refSequence, overlappingReads,
+    wecall::caller::alignPhasingForSample( alignedCalls, {call1}, 2, 0, sampleName, refSequence, overlappingReads,
                                             Region( "1", 10, 12 ), refSequence->region() );
 
     BOOST_REQUIRE_EQUAL( alignedCalls.size(), 1 );
@@ -649,7 +649,7 @@ BOOST_AUTO_TEST_CASE( shouldAllignPhaseSetsOfClustersForMultipleVariants )
     // generate overlapping reads
     // reads need to be at least kmerLength and reference sequence needs to be sufficiently long for padding
     Region region = Region( "1", 0, 30 );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( region, reference );
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( region, reference );
 
     const int64_t startPos = 10;
     const uint8_t mapQual = 10;
@@ -660,18 +660,18 @@ BOOST_AUTO_TEST_CASE( shouldAllignPhaseSetsOfClustersForMultipleVariants )
         std::make_shared< Read >( BasePairSequence( "CTGCCATGCACTGC" ), std::string( 14, 'Q' ), "0", Cigar( "14M" ), 0,
                                   startPos, 0, mapQual, 0, 0, 0, refSequence, "read2" );
 
-    echidna::io::readIntervalTree_t readContainer( 0, 100 );
+    wecall::io::readIntervalTree_t readContainer( 0, 100 );
     readContainer.insert( read1 );
     readContainer.insert( read2 );
 
     RegionsReads regionSetReads( region, readContainer.getFullRange(), 0 );
 
     auto sampleName = "sample1";
-    echidna::io::perSampleRegionsReads_t overlappingReads = {{sampleName, regionSetReads}};
+    wecall::io::perSampleRegionsReads_t overlappingReads = {{sampleName, regionSetReads}};
 
     // generate call vector for previous cluster
-    echidna::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 11, 12 ), "C" );
-    echidna::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 13, 14 ), "T" );
+    wecall::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 11, 12 ), "C" );
+    wecall::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 13, 14 ), "T" );
     Call call1( variant1, variant1->interval(), 100, 1, {{Call::REF, Call::VAR}} );
     Call call2( variant2, variant2->interval(), 100, 1, {{Call::VAR, Call::VAR}} );
     const int64_t phaseId = 101;
@@ -679,8 +679,8 @@ BOOST_AUTO_TEST_CASE( shouldAllignPhaseSetsOfClustersForMultipleVariants )
     call2.samples[0].addAnnotation( Annotation::PS, phaseId );
 
     // generate call vector for current cluster
-    echidna::variant::varPtr_t variant3 = std::make_shared< Variant >( refSequence, Region( "1", 15, 16 ), "C" );
-    echidna::variant::varPtr_t variant4 = std::make_shared< Variant >( refSequence, Region( "1", 17, 18 ), "A" );
+    wecall::variant::varPtr_t variant3 = std::make_shared< Variant >( refSequence, Region( "1", 15, 16 ), "C" );
+    wecall::variant::varPtr_t variant4 = std::make_shared< Variant >( refSequence, Region( "1", 17, 18 ), "A" );
     Call call3( variant3, variant3->interval(), 100, 1, {{Call::REF, Call::VAR}} );
     Call call4( variant4, variant4->interval(), 100, 1, {{Call::VAR, Call::REF}} );
     call3.samples[0].addAnnotation( Annotation::PS, phaseId + 1 );
@@ -688,7 +688,7 @@ BOOST_AUTO_TEST_CASE( shouldAllignPhaseSetsOfClustersForMultipleVariants )
 
     // align phase sets
     callVector_t alignedCalls = {call3, call4};
-    echidna::caller::alignPhasingForSample( alignedCalls, {call1, call2}, 2, 0, sampleName, refSequence,
+    wecall::caller::alignPhasingForSample( alignedCalls, {call1, call2}, 2, 0, sampleName, refSequence,
                                             overlappingReads, Region( "1", 10, 14 ), refSequence->region() );
 
     BOOST_REQUIRE_EQUAL( alignedCalls.size(), 2 );
@@ -718,7 +718,7 @@ BOOST_AUTO_TEST_CASE( shouldAllignPhaseSetsOfClustersForOneSample )
     // generate overlapping reads
     // reads need to be at least kmerLength and reference sequence needs to be sufficiently long for padding
     Region region = Region( "1", 0, 30 );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( region, reference );
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( region, reference );
 
     const int64_t startPos = 10;
     const uint8_t mapQual = 10;
@@ -729,29 +729,29 @@ BOOST_AUTO_TEST_CASE( shouldAllignPhaseSetsOfClustersForOneSample )
         std::make_shared< Read >( BasePairSequence( "CAATGAAC" ), std::string( 8, 'Q' ), "0", Cigar( "8M" ), 0,
                                   startPos, 0, mapQual, 0, 0, 0, refSequence, "read2" );
 
-    echidna::io::readIntervalTree_t readContainer( 0, 100 );
+    wecall::io::readIntervalTree_t readContainer( 0, 100 );
     readContainer.insert( read1 );
     readContainer.insert( read2 );
 
     RegionsReads regionSetReads( region, readContainer.getFullRange(), 0 );
 
     std::vector< std::string > samples = {"sample1"};
-    echidna::io::perSampleRegionsReads_t overlappingReads = {{samples.front(), regionSetReads}};
+    wecall::io::perSampleRegionsReads_t overlappingReads = {{samples.front(), regionSetReads}};
 
     // generate call vector for previous cluster
-    echidna::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 11, 12 ), "C" );
+    wecall::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 11, 12 ), "C" );
     Call call1( variant1, variant1->interval(), 100, 1, {{Call::REF, Call::VAR}} );
     const int64_t phaseId = 101;
     call1.samples[0].addAnnotation( Annotation::PS, phaseId );
 
     // generate call vector for current cluster
-    echidna::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 13, 14 ), "T" );
+    wecall::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 13, 14 ), "T" );
     Call call2( variant2, variant2->interval(), 100, 1, {{Call::REF, Call::VAR}} );
     call2.samples[0].addAnnotation( Annotation::PS, phaseId + 1 );
 
     // align phase sets
     callVector_t alignedCalls = {call2};
-    echidna::caller::alignPhasingBetweenClusters( alignedCalls, {call1}, Region( "1", 13, 15 ), Region( "1", 10, 12 ),
+    wecall::caller::alignPhasingBetweenClusters( alignedCalls, {call1}, Region( "1", 13, 15 ), Region( "1", 10, 12 ),
                                                   region, refSequence, {2}, overlappingReads, samples );
 
     BOOST_REQUIRE_EQUAL( alignedCalls.size(), 1 );
@@ -772,7 +772,7 @@ BOOST_AUTO_TEST_CASE( shouldNotAllignPhaseSetsOfClustersForOneSampleWithoutOverl
     // generate overlapping reads
     // reads need to be at least kmerLength and reference sequence needs to be sufficiently long for padding
     Region region = Region( "1", 0, 30 );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( region, reference );
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( region, reference );
 
     const uint8_t mapQual = 10;
     auto read1 = std::make_shared< Read >( BasePairSequence( "GCGTCCTG" ), std::string( 8, 'Q' ), "0", Cigar( "8M" ), 0,
@@ -780,29 +780,29 @@ BOOST_AUTO_TEST_CASE( shouldNotAllignPhaseSetsOfClustersForOneSampleWithoutOverl
     const auto read2 = std::make_shared< Read >( BasePairSequence( "GCGTGAAG" ), std::string( 8, 'Q' ), "0",
                                                  Cigar( "8M" ), 0, 19, 0, mapQual, 0, 0, 0, refSequence, "read2" );
 
-    echidna::io::readIntervalTree_t readContainer( 0, 100 );
+    wecall::io::readIntervalTree_t readContainer( 0, 100 );
     readContainer.insert( read1 );
     readContainer.insert( read2 );
 
     RegionsReads regionSetReads( region, readContainer.getFullRange(), 0 );
 
     std::vector< std::string > samples = {"sample1"};
-    echidna::io::perSampleRegionsReads_t overlappingReads = {{samples.front(), regionSetReads}};
+    wecall::io::perSampleRegionsReads_t overlappingReads = {{samples.front(), regionSetReads}};
 
     // generate call vector for previous cluster
-    echidna::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
+    wecall::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 2, 3 ), "C" );
     Call call1( variant1, variant1->interval(), 100, 1, {{Call::REF, Call::VAR}} );
     const int64_t phaseId = 101;
     call1.samples[0].addAnnotation( Annotation::PS, phaseId );
 
     // generate call vector for current cluster
-    echidna::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 19, 20 ), "T" );
+    wecall::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 19, 20 ), "T" );
     Call call2( variant2, variant2->interval(), 100, 1, {{Call::REF, Call::VAR}} );
     call2.samples[0].addAnnotation( Annotation::PS, phaseId + 1 );
 
     // align phase sets
     callVector_t alignedCalls = {call2};
-    echidna::caller::alignPhasingBetweenClusters( alignedCalls, {call1}, Region( "1", 14, 25 ), Region( "1", 0, 10 ),
+    wecall::caller::alignPhasingBetweenClusters( alignedCalls, {call1}, Region( "1", 14, 25 ), Region( "1", 0, 10 ),
                                                   region, refSequence, {2}, overlappingReads, samples );
 
     BOOST_REQUIRE_EQUAL( alignedCalls.size(), 1 );
@@ -823,7 +823,7 @@ BOOST_AUTO_TEST_CASE( shouldAllignPhaseSetsOfClustersForOneSampleWithOverlapping
     // generate overlapping reads
     // reads need to be at least kmerLength and reference sequence needs to be sufficiently long for padding
     Region region = Region( "1", 0, 30 );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( region, reference );
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( region, reference );
 
     const int64_t startPos = 10;
     const uint8_t mapQual = 10;
@@ -835,24 +835,24 @@ BOOST_AUTO_TEST_CASE( shouldAllignPhaseSetsOfClustersForOneSampleWithOverlapping
         std::make_shared< Read >( BasePairSequence( "CAAAGAAC" ), std::string( 8, 'Q' ), "0", Cigar( "8M" ), 0,
                                   startPos, 0, mapQual, 0, 0, 0, refSequence, "read2" );
 
-    echidna::io::readIntervalTree_t readContainer( 0, 100 );
+    wecall::io::readIntervalTree_t readContainer( 0, 100 );
     readContainer.insert( read1 );
     readContainer.insert( read2 );
 
     RegionsReads regionSetReads( region, readContainer.getFullRange(), 0 );
 
     std::vector< std::string > samples = {"sample1"};
-    echidna::io::perSampleRegionsReads_t overlappingReads = {{samples.front(), regionSetReads}};
+    wecall::io::perSampleRegionsReads_t overlappingReads = {{samples.front(), regionSetReads}};
 
     // generate call vector for previous cluster
-    echidna::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 11, 12 ), "C" );
+    wecall::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 11, 12 ), "C" );
     Call call1( variant1, variant1->interval(), 100, 1, {{Call::REF, Call::VAR}} );
     const int64_t phaseId = 101;
     call1.samples[0].addAnnotation( Annotation::PS, phaseId );
 
     // generate call vector for current cluster
-    echidna::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 13, 14 ), "T" );
-    echidna::variant::varPtr_t variant3 = std::make_shared< Variant >( refSequence, Region( "1", 13, 14 ), "A" );
+    wecall::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 13, 14 ), "T" );
+    wecall::variant::varPtr_t variant3 = std::make_shared< Variant >( refSequence, Region( "1", 13, 14 ), "A" );
     Call call2( variant2, variant2->interval(), 100, 1, {{Call::VAR, Call::UNKNOWN}} );
     Call call3( variant3, variant3->interval(), 100, 1, {{Call::UNKNOWN, Call::VAR}} );
     call2.samples[0].addAnnotation( Annotation::PS, phaseId + 1 );
@@ -860,7 +860,7 @@ BOOST_AUTO_TEST_CASE( shouldAllignPhaseSetsOfClustersForOneSampleWithOverlapping
 
     // align phase sets
     callVector_t alignedCalls = {call2, call3};
-    echidna::caller::alignPhasingBetweenClusters( alignedCalls, {call1}, Region( "1", 13, 15 ), Region( "1", 10, 12 ),
+    wecall::caller::alignPhasingBetweenClusters( alignedCalls, {call1}, Region( "1", 13, 15 ), Region( "1", 10, 12 ),
                                                   region, refSequence, {2}, overlappingReads, samples );
 
     BOOST_REQUIRE_EQUAL( alignedCalls.size(), 2 );
@@ -889,7 +889,7 @@ BOOST_AUTO_TEST_CASE( shouldAllignPhaseSetsOfClustersForTwoSamplesWithOverlappin
     // generate overlapping reads
     // reads need to be at least kmerLength and reference sequence needs to be sufficiently long for padding
     Region region = Region( "1", 0, 30 );
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( region, reference );
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( region, reference );
 
     const int64_t startPos = 10;
     const uint8_t mapQual = 10;
@@ -909,7 +909,7 @@ BOOST_AUTO_TEST_CASE( shouldAllignPhaseSetsOfClustersForTwoSamplesWithOverlappin
         std::make_shared< Read >( BasePairSequence( "CAATGAAC" ), std::string( 8, 'Q' ), "0", Cigar( "8M" ), 0,
                                   startPos, 0, mapQual, 0, 0, 0, refSequence, "read4" );
 
-    echidna::io::readIntervalTree_t readContainer( 0, 100 );
+    wecall::io::readIntervalTree_t readContainer( 0, 100 );
     readContainer.insert( read1 );
     readContainer.insert( read2 );
     readContainer.insert( read3 );
@@ -920,19 +920,19 @@ BOOST_AUTO_TEST_CASE( shouldAllignPhaseSetsOfClustersForTwoSamplesWithOverlappin
     RegionsReads regionSetReads( region, readContainer.getFullRange(), 0 );
 
     std::vector< std::string > samples = {"sample1", "sample2"};
-    echidna::io::perSampleRegionsReads_t overlappingReads = {{samples[0], regionSetReads},
+    wecall::io::perSampleRegionsReads_t overlappingReads = {{samples[0], regionSetReads},
                                                              {samples[1], regionSetReads}};
 
     // generate call vector for previous cluster
-    echidna::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 11, 12 ), "C" );
+    wecall::variant::varPtr_t variant1 = std::make_shared< Variant >( refSequence, Region( "1", 11, 12 ), "C" );
     Call call1( variant1, variant1->interval(), 100, nSamples, {{Call::REF, Call::VAR}, {Call::REF, Call::VAR}} );
     const int64_t phaseId = 101;
     call1.samples[0].addAnnotation( Annotation::PS, phaseId );
     call1.samples[1].addAnnotation( Annotation::PS, phaseId );
 
     // generate call vector for current cluster
-    echidna::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 13, 14 ), "A" );
-    echidna::variant::varPtr_t variant3 = std::make_shared< Variant >( refSequence, Region( "1", 13, 14 ), "T" );
+    wecall::variant::varPtr_t variant2 = std::make_shared< Variant >( refSequence, Region( "1", 13, 14 ), "A" );
+    wecall::variant::varPtr_t variant3 = std::make_shared< Variant >( refSequence, Region( "1", 13, 14 ), "T" );
     Call call2( variant2, variant2->interval(), 100, nSamples, {{Call::VAR, Call::VAR}, {Call::VAR, Call::UNKNOWN}} );
     Call call3( variant3, variant3->interval(), 100, nSamples,
                 {{Call::UNKNOWN, Call::UNKNOWN}, {Call::UNKNOWN, Call::VAR}} );
@@ -943,7 +943,7 @@ BOOST_AUTO_TEST_CASE( shouldAllignPhaseSetsOfClustersForTwoSamplesWithOverlappin
 
     // align phase sets
     callVector_t alignedCalls = {call2, call3};
-    echidna::caller::alignPhasingBetweenClusters( alignedCalls, {call1}, Region( "1", 13, 15 ), Region( "1", 10, 12 ),
+    wecall::caller::alignPhasingBetweenClusters( alignedCalls, {call1}, Region( "1", 13, 15 ), Region( "1", 10, 12 ),
                                                   region, refSequence, {2, 2}, overlappingReads, samples );
     // var2 calls (1/1 for sample1, ./1 for sample2)
     BOOST_REQUIRE_EQUAL( alignedCalls.size(), 2 );

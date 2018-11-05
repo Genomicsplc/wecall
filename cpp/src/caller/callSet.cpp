@@ -1,7 +1,7 @@
 // All content Copyright (C) 2018 Genomics plc
 #include "caller/callSet.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {

@@ -1,7 +1,7 @@
 // All content Copyright (C) 2018 Genomics plc
 #include "caller/alignPhasing.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {
@@ -212,7 +212,7 @@ namespace caller
         }
         else
         {
-            ECHIDNA_LOG( SUPER_DEBUG, "No genotype data or unexpected number of genotypes: num=" +
+            WECALL_LOG( SUPER_DEBUG, "No genotype data or unexpected number of genotypes: num=" +
                                           std::to_string( genotypes.size() ) + " " + combinedRegion.toString() );
         }
     }

@@ -11,7 +11,7 @@
 #include "caller/region.hpp"
 #include "common.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {
@@ -40,6 +40,6 @@ namespace variant
     using variantGenerationDataPtr_t = std::shared_ptr< const VariantGenerationData >;
 
 }  // namespace variant
-}  // namespace echidna
+}  // namespace wecall
 
 #endif  // VARIANT_GENERATION_DATA_HPP

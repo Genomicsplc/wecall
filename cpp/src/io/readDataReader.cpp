@@ -3,7 +3,7 @@
 #include "utils/timer.hpp"
 #include "io/readDataReader.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {
@@ -14,7 +14,7 @@ namespace io
     {
         for ( const std::string & sourceName : dataSources )
         {
-            ECHIDNA_LOG( DEBUG, "Adding data source " << sourceName << " to read dataset" );
+            WECALL_LOG( DEBUG, "Adding data source " << sourceName << " to read dataset" );
             addDataSource( std::make_shared< BamFile >( sourceName ) );
         }
     }
@@ -29,13 +29,13 @@ namespace io
         {
             if ( std::find( m_samples.begin(), m_samples.end(), sampleName ) == m_samples.end() )
             {
-                ECHIDNA_LOG( DEBUG, "Found sample " << sampleName << " in input data" );
+                WECALL_LOG( DEBUG, "Found sample " << sampleName << " in input data" );
                 m_samples.push_back( sampleName );
             }
 
             else
             {
-                ECHIDNA_LOG( WARNING, "Found duplicate sample " << sampleName << " in input data" );
+                WECALL_LOG( WARNING, "Found duplicate sample " << sampleName << " in input data" );
             }
         }
     }
@@ -113,14 +113,14 @@ namespace io
             // Couldn't manage a single bite - skip block and log a WARNING.
             m_curPos = std::min( blockEnd, m_curPos + m_reader->m_biteSize );
             blockEnd = m_curPos;
-            ECHIDNA_LOG( WARNING, "Skipping region " << caller::Region( m_region.contig(), blockStart, m_curPos )
+            WECALL_LOG( WARNING, "Skipping region " << caller::Region( m_region.contig(), blockStart, m_curPos )
                                                      << " due to exceptionally high coverage" );
         }
         else if ( m_curPos < blockEnd )
         {
             // Couldn't finish the whole meal - redefine block and log this INFO.
             blockEnd = m_curPos;
-            ECHIDNA_LOG( DEBUG, "Reducing block size due to high coverage in this region" );
+            WECALL_LOG( DEBUG, "Reducing block size due to high coverage in this region" );
         }
 
         dataset->updateRegionEnd( blockEnd );
@@ -170,7 +170,7 @@ namespace io
 
     void ReadDataReader::BlockIterator::chopCurrentBlock( int64_t prematureBlockEnd )
     {
-        ECHIDNA_LOG( DEBUG, "Chopping current block at position: " << prematureBlockEnd
+        WECALL_LOG( DEBUG, "Chopping current block at position: " << prematureBlockEnd
                                                                    << " to avoid breaking up a cluster of variants" );
         m_curPos = prematureBlockEnd;
     }

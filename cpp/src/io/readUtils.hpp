@@ -5,7 +5,7 @@
 #include "common.hpp"
 #include "io/read.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

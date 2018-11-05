@@ -4,7 +4,7 @@
 #include <stack>
 #include "utils/interval.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {
@@ -219,7 +219,7 @@ namespace utils
         }
         if ( allVariantCombinations.size() > 1 )
         {
-            ECHIDNA_LOG( DEBUG, "Warning: while normalizing variants we found "
+            WECALL_LOG( DEBUG, "Warning: while normalizing variants we found "
                                     << allVariantCombinations.size() << " possible normalizations" << std::endl );
         }
 

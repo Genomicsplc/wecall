@@ -12,7 +12,7 @@
 #include <iostream>
 #include <unordered_set>
 
-namespace echidna
+namespace wecall
 {
 namespace varfilters
 {

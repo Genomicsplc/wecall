@@ -23,7 +23,7 @@
 #include "caller/haplotypeLikelihoods.hpp"
 #include "caller/metadata.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {
@@ -147,7 +147,7 @@ namespace caller
                 calls.insert( calls.end(), chunkedRefCalls.begin(), chunkedRefCalls.end() );
             }
 
-            ECHIDNA_LOG( DEBUG, "Called " << calls.size() << " variants" );
+            WECALL_LOG( DEBUG, "Called " << calls.size() << " variants" );
             return calls;
         }
 
@@ -179,10 +179,10 @@ namespace caller
             if ( false )
             {
                 // print haplotype frequencies (frequency of haplotype in population estimated from read data)
-                ECHIDNA_LOG( SUPER_DEBUG, "Haplotype frequencies for " + sample + ":-" );
+                WECALL_LOG( SUPER_DEBUG, "Haplotype frequencies for " + sample + ":-" );
                 for ( std::size_t haplotypeIndex = 0; haplotypeIndex < haplotypeFrequencies.size(); ++haplotypeIndex )
                 {
-                    ECHIDNA_LOG( SUPER_DEBUG, std::to_string( haplotypeFrequencies[haplotypeIndex] ) + " for " +
+                    WECALL_LOG( SUPER_DEBUG, std::to_string( haplotypeFrequencies[haplotypeIndex] ) + " for " +
                                                   mergedHaplotypes[haplotypeIndex].toString() );
                 }
             }
@@ -213,7 +213,7 @@ namespace caller
 
                 genotypeMetadata = annotate::computeGenotypeMetaData( indexOfMax, genotypes, genotypeLikelihoods );
 
-                ECHIDNA_LOG( SUPER_DEBUG, "Called genotype for " << sample << ":- "
+                WECALL_LOG( SUPER_DEBUG, "Called genotype for " << sample << ":- "
                                                                  << calledGenotype->toString( mergedHaplotypes ) );
             }
             else

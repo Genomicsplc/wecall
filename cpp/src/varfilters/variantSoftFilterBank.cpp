@@ -1,7 +1,7 @@
 // All content Copyright (C) 2018 Genomics plc
 #include "variantSoftFilterBank.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace varfilters
 {
@@ -48,7 +48,7 @@ namespace varfilters
             }
             else
             {
-                throw utils::echidna_exception( "Invalid variant filter ID: " + filterID );
+                throw utils::wecall_exception( "Invalid variant filter ID: " + filterID );
             }
         }
     }

@@ -12,7 +12,7 @@
 #include "readrecalibration/errorCorrectionParameters.hpp"
 #include "readrecalibration/commonTypes.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace corrector
 {
@@ -20,7 +20,7 @@ namespace corrector
     {
 
     public:
-        SiteKmerDistribution( echidna::utils::BasePairSequence paddedKmer );
+        SiteKmerDistribution( wecall::utils::BasePairSequence paddedKmer );
 
         std::size_t size() const { return m_kmerCount.size(); }
 
@@ -69,6 +69,6 @@ namespace corrector
         std::vector< ErrorCountData > m_errorCountData = {{0, 0}, {0, 0}};
     };
 }  // namespace corrector
-}  // namespace echidna
+}  // namespace wecall
 
 #endif

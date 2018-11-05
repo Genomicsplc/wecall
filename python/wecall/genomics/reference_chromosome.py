@@ -1,7 +1,7 @@
 # All content Copyright (C) 2018 Genomics plc
 from wecall.utils.interval import ChromInterval
 import re
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 from wecall.genomics.chromosome import standardise_chromosome
 
 
@@ -43,5 +43,5 @@ class ReferenceChromosome(object):
 
     def __validate_ref_seq(self, ref_seq):
         if not re.match(r'^[ACGTURYKMSWBDHVN\*]*\Z', ref_seq):
-            raise EchidnaException(
+            raise weCallException(
                 "Illegal character in reference sequence {!r}".format(ref_seq))

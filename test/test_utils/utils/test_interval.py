@@ -1,5 +1,5 @@
 # All content Copyright (C) 2018 Genomics plc
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 from wecall.utils import interval
 import unittest
 from wecall.utils.interval import read_chrom_intervals, read_chrom_interval, read_interval, ChromInterval, \
@@ -585,7 +585,7 @@ class TestReadInterval(unittest.TestCase):
 
     def test_should_fail_if_end_is_less_or_equal_to_start(self):
         interval_rep = "100-100"
-        self.assertRaises(EchidnaException, read_interval, interval_rep)
+        self.assertRaises(weCallException, read_interval, interval_rep)
 
     def test_should_parse_correctly_formatted_string(self):
         interval_rep = "10-100"

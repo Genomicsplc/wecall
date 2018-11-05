@@ -10,19 +10,19 @@
 #include "alignment/cigar.hpp"
 #include "caller/region.hpp"
 
-using echidna::variant::SNPFinder;
-using echidna::variant::varPtr_t;
-using echidna::variant::Variant;
-using echidna::alignment::offsetsPtr_t;
-using echidna::alignment::Offsets;
-using echidna::variant::VariantGenerationData;
-using echidna::alignment::Cigar;
-using echidna::caller::Region;
-using echidna::utils::ReferenceSequence;
+using wecall::variant::SNPFinder;
+using wecall::variant::varPtr_t;
+using wecall::variant::Variant;
+using wecall::alignment::offsetsPtr_t;
+using wecall::alignment::Offsets;
+using wecall::variant::VariantGenerationData;
+using wecall::alignment::Cigar;
+using wecall::caller::Region;
+using wecall::utils::ReferenceSequence;
 
 //-------------------------------------------------------------------------------------------------
 
-echidna::io::Read constructHighQualMatchReadWithSeqForSNPTesting( std::string seq, char baseQual = 60 )
+wecall::io::Read constructHighQualMatchReadWithSeqForSNPTesting( std::string seq, char baseQual = 60 )
 {
     std::size_t seqLen = seq.length();
     std::string qual( seqLen, baseQual );
@@ -30,7 +30,7 @@ echidna::io::Read constructHighQualMatchReadWithSeqForSNPTesting( std::string se
     const auto referenceSequence = std::make_shared< ReferenceSequence >(
         Region( "1", startPos, startPos + seqLen + 20 ), std::string( seqLen + 20, 'A' ) );
 
-    return echidna::io::Read( seq, qual, "testId", Cigar( std::to_string( seqLen ) + "M" ), 0, startPos, 0, 0, 0, 0, 0,
+    return wecall::io::Read( seq, qual, "testId", Cigar( std::to_string( seqLen ) + "M" ), 0, startPos, 0, 0, 0, 0, 0,
                               referenceSequence );
 }
 

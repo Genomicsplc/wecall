@@ -11,7 +11,7 @@
 
 #include <string>
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

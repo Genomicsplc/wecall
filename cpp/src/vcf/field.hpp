@@ -8,7 +8,7 @@
 
 #include "common.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace vcf
 {
@@ -120,7 +120,7 @@ namespace vcf
         /// @param number Together with cardinality, maps to VCF INFO/FORMAT Number attribute.
         /// @param type Field data type.
         /// @param description Field description.
-        /// @param source Field source (typically EchiDNA). Only written onto INFO output
+        /// @param source Field source (typically WECALL). Only written onto INFO output
         /// @param version Field version. Only written onto INFO output
         Field( std::string id,
                Cardinality cardinality,

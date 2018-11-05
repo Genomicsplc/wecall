@@ -17,7 +17,7 @@
 #include <map>
 #include <set>
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

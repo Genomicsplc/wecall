@@ -2,11 +2,11 @@
 #include "readrecalibration/siteKmerDistribution.hpp"
 #include <cassert>
 
-namespace echidna
+namespace wecall
 {
 namespace corrector
 {
-    SiteKmerDistribution::SiteKmerDistribution( echidna::utils::BasePairSequence paddedKmer )
+    SiteKmerDistribution::SiteKmerDistribution( wecall::utils::BasePairSequence paddedKmer )
     {
         assert( paddedKmer.size() == kmerSize + 2 * padding );
 

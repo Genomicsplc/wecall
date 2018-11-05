@@ -10,13 +10,13 @@
 
 #include "utils/sequence.hpp"
 
-namespace echidna
+namespace wecall
 {
 
 namespace assembly
 {
-    /// A somwhat bloated class that represents a graph of k-mers (short DNA sequences). This is mainly meant
-    /// for use in Echidna for assembling haplotypes from read data.
+    /// A somewhat bloated class that represents a graph of k-mers (short DNA sequences). This is mainly meant
+    /// for use in weCall for assembling haplotypes from read data.
     const std::map< char, std::size_t > initCounts = {{'A', 0}, {'T', 0}, {'C', 0}, {'G', 0}};
 
     class Node

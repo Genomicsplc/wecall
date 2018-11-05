@@ -78,7 +78,7 @@ class VariantCallerWrapper(object):
 
     def run(self):
         cmd = [
-            os.path.join(os.environ["ECHIDNA_BIN"], "weCall"),
+            os.path.join(os.environ["WECALL_BIN"], "weCall"),
             "--output={}".format(self.output_vcf),
             "--logFilename={}".format(self.log_filename),
             "--config={}".format(self.wecall_config.filename)

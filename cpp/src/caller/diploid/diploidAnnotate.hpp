@@ -11,7 +11,7 @@
 #include "io/readRange.hpp"
 #include "caller/metadata.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {
@@ -50,6 +50,6 @@ namespace caller
 
     }  // namespace annotate
 }  // namespace caller
-}  // namespace echidna
+}  // namespace wecall
 
 #endif

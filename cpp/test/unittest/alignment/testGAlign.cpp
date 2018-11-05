@@ -10,18 +10,18 @@ BOOST_AUTO_TEST_CASE( testGAlignWithHighGapOpeningPenalties3BaseReference )
 {
     std::string padding = "NNNNNNNN";
     std::string haplotype = "ATGN";
-    const echidna::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
-    const echidna::alignment::localGapOpenPenalties_t localGapOpen( haplotypeSequence.size(),
+    const wecall::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
+    const wecall::alignment::localGapOpenPenalties_t localGapOpen( haplotypeSequence.size(),
                                                                     std::numeric_limits< int8_t >::max() );
 
-    echidna::utils::QualitySequence qual = {10, 10, 10};
+    wecall::utils::QualitySequence qual = {10, 10, 10};
 
     const short gapExtend = 1;
     const short nucleotidePrior = 4;
 
-    const echidna::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
+    const wecall::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
 
-    BOOST_CHECK_THROW( align.computeAlignmentPhredScore( "ATG", qual, 7 ), echidna::utils::echidna_exception );
+    BOOST_CHECK_THROW( align.computeAlignmentPhredScore( "ATG", qual, 7 ), wecall::utils::wecall_exception );
 
     char * aln1 = new char[30];
     char * aln2 = new char[30];
@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE( testGAlignWithHighGapOpeningPenalties3BaseReference )
     BOOST_CHECK_EQUAL( "ATG", aln1 );
     BOOST_CHECK_EQUAL( "ATG", aln2 );
 
-    BOOST_CHECK_THROW( align.computeAlignmentPhredScore( "ATG", {10, 10, 10}, 10 ), echidna::utils::echidna_exception );
+    BOOST_CHECK_THROW( align.computeAlignmentPhredScore( "ATG", {10, 10, 10}, 10 ), wecall::utils::wecall_exception );
 
     delete[] aln1;
     delete[] aln2;
@@ -46,14 +46,14 @@ BOOST_AUTO_TEST_CASE( testGAlignScoreIsNotAffectedByExtraMatchingBases )
 {
     std::string padding = "NNNNNNNN";
     std::string haplotype = "ATAT";
-    const echidna::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
-    const echidna::alignment::localGapOpenPenalties_t localGapOpen( haplotypeSequence.size(),
+    const wecall::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
+    const wecall::alignment::localGapOpenPenalties_t localGapOpen( haplotypeSequence.size(),
                                                                     std::numeric_limits< int8_t >::max() );
 
     const short gapExtend = 1;
     const short nucleotidePrior = 4;
 
-    const echidna::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
+    const wecall::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
 
     char * aln1 = new char[30];
     char * aln2 = new char[30];
@@ -82,15 +82,15 @@ BOOST_AUTO_TEST_CASE( testGAlignWithHighGapOpeningPenaltiesSNPAtoT )
     std::string padding = "NNNNNNNN";
     std::string haplotype = "ATG";
     std::string read = "TTG";
-    const echidna::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
-    const echidna::alignment::localGapOpenPenalties_t localGapOpen( haplotypeSequence.size(),
+    const wecall::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
+    const wecall::alignment::localGapOpenPenalties_t localGapOpen( haplotypeSequence.size(),
                                                                     std::numeric_limits< int8_t >::max() );
 
     const short gapExtend = 1;
     const short nucleotidePrior = 4;
     const short mismatchBaseThreshold = 3 * nucleotidePrior;
 
-    const echidna::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
+    const wecall::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
 
     char * aln1 = new char[30];
     char * aln2 = new char[30];
@@ -124,15 +124,15 @@ BOOST_AUTO_TEST_CASE( testGAlignWithHighGapOpeningPenaltiesSNPAtoC )
     std::string padding = "NNNNNNNN";
     std::string haplotype = "ATG";
     std::string read = "CTG";
-    const echidna::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
-    const echidna::alignment::localGapOpenPenalties_t localGapOpen( haplotypeSequence.size(),
+    const wecall::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
+    const wecall::alignment::localGapOpenPenalties_t localGapOpen( haplotypeSequence.size(),
                                                                     std::numeric_limits< int8_t >::max() );
 
     const short gapExtend = 1;
     const short nucleotidePrior = 4;
     const short mismatchBaseThreshold = 3 * nucleotidePrior;
 
-    const echidna::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
+    const wecall::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
 
     char * aln1 = new char[30];
     char * aln2 = new char[30];
@@ -166,8 +166,8 @@ BOOST_AUTO_TEST_CASE( testGAlignWithHighGapOpeningPenaltiesSNPAtoG )
     std::string padding = "NNNNNNNN";
     std::string haplotype = "ATC";
     std::string read = "GTC";
-    const echidna::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
-    const echidna::alignment::localGapOpenPenalties_t localGapOpen( haplotypeSequence.size(),
+    const wecall::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
+    const wecall::alignment::localGapOpenPenalties_t localGapOpen( haplotypeSequence.size(),
                                                                     std::numeric_limits< int8_t >::max() );
 
     const short gapExtend = 1;
@@ -176,7 +176,7 @@ BOOST_AUTO_TEST_CASE( testGAlignWithHighGapOpeningPenaltiesSNPAtoG )
 
     const std::vector< std::size_t > goodPositions = {padding.size()};
 
-    const echidna::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
+    const wecall::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
 
     char * aln1 = new char[30];
     char * aln2 = new char[30];
@@ -216,19 +216,19 @@ BOOST_AUTO_TEST_CASE( testGAlignWithNormalGapOpeningPenaltiesSingleBaseDeletion 
     std::string padding = "NNNNNNNN";
     std::string haplotype = "ACTCGAGATCGTAACG";
     std::string read = "ACTCGAGTCGTAACG";
-    const echidna::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
+    const wecall::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
 
-    const echidna::alignment::errorModel_t errorModel = {
+    const wecall::alignment::errorModel_t errorModel = {
         45, 42, 41, 39, 37, 32, 28, 23, 20, 19, 17, 16, 15, 14, 13, 12, 11, 11, 10, 9, 9, 8, 8, 7, 7,
         7,  6,  6,  6,  5,  5,  5,  4,  4,  4,  3,  3,  3,  3,  2,  2,  2,  2,  2,  1, 1, 1, 1, 1};
-    const auto localGapOpen = echidna::alignment::computeGapOpen( haplotypeSequence, errorModel );
+    const auto localGapOpen = wecall::alignment::computeGapOpen( haplotypeSequence, errorModel );
 
-    echidna::utils::QualitySequence qual = std::string( read.size(), 10 );
+    wecall::utils::QualitySequence qual = std::string( read.size(), 10 );
 
     const short gapExtend = 1;
     const short nucleotidePrior = 4;
 
-    const echidna::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
+    const wecall::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
 
     char * aln1 = new char[30];
     char * aln2 = new char[30];
@@ -246,19 +246,19 @@ BOOST_AUTO_TEST_CASE( testGAlignWithNormalGapOpeningPenaltiesSingleBaseInsertion
     std::string padding = "NNNNNNNN";
     std::string haplotype = "NACTCGAGTCGTAACG";
     std::string read = "ACTCGAGATCGTAACG";
-    const echidna::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
+    const wecall::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
 
-    const echidna::alignment::errorModel_t errorModel = {
+    const wecall::alignment::errorModel_t errorModel = {
         45, 42, 41, 39, 37, 32, 28, 23, 20, 19, 17, 16, 15, 14, 13, 12, 11, 11, 10, 9, 9, 8, 8, 7, 7,
         7,  6,  6,  6,  5,  5,  5,  4,  4,  4,  3,  3,  3,  3,  2,  2,  2,  2,  2,  1, 1, 1, 1, 1};
-    const auto localGapOpen = echidna::alignment::computeGapOpen( haplotypeSequence, errorModel );
+    const auto localGapOpen = wecall::alignment::computeGapOpen( haplotypeSequence, errorModel );
 
-    echidna::utils::QualitySequence qual = std::string( read.size(), 10 );
+    wecall::utils::QualitySequence qual = std::string( read.size(), 10 );
 
     const short gapExtend = 1;
     const short nucleotidePrior = 4;
 
-    const echidna::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
+    const wecall::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
 
     char * aln1 = new char[30];
     char * aln2 = new char[30];
@@ -276,19 +276,19 @@ BOOST_AUTO_TEST_CASE( testGAlignWithNormalGapOpeningPenaltiesMultibaseDeletion )
     std::string padding = "NNNNNNNN";
     std::string haplotype = "ATACTCGAGAGCGTATCGTAACG";
     std::string read = "ATACTCGAGTCGTAACG";
-    const echidna::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
+    const wecall::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
 
-    const echidna::alignment::errorModel_t errorModel = {
+    const wecall::alignment::errorModel_t errorModel = {
         45, 42, 41, 39, 37, 32, 28, 23, 20, 19, 17, 16, 15, 14, 13, 12, 11, 11, 10, 9, 9, 8, 8, 7, 7,
         7,  6,  6,  6,  5,  5,  5,  4,  4,  4,  3,  3,  3,  3,  2,  2,  2,  2,  2,  1, 1, 1, 1, 1};
-    const auto localGapOpen = echidna::alignment::computeGapOpen( haplotypeSequence, errorModel );
+    const auto localGapOpen = wecall::alignment::computeGapOpen( haplotypeSequence, errorModel );
 
-    echidna::utils::QualitySequence qual = std::string( read.size(), 10 );
+    wecall::utils::QualitySequence qual = std::string( read.size(), 10 );
 
     const short gapExtend = 1;
     const short nucleotidePrior = 4;
 
-    const echidna::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
+    const wecall::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
 
     char * aln1 = new char[30];
     char * aln2 = new char[30];
@@ -308,19 +308,19 @@ BOOST_AUTO_TEST_CASE( testGAlignWithNormalGapOpeningPenaltiesMultibaseInsertion 
     std::string padding = "NNNNNNNN";
     std::string haplotype = "ATACTCGAGTCGTAACGATACTG";
     std::string read = "ATACTCGAGAGCGTATCGTAACG";
-    const echidna::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
+    const wecall::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
 
-    const echidna::alignment::errorModel_t errorModel = {
+    const wecall::alignment::errorModel_t errorModel = {
         45, 42, 41, 39, 37, 32, 28, 23, 20, 19, 17, 16, 15, 14, 13, 12, 11, 11, 10, 9, 9, 8, 8, 7, 7,
         7,  6,  6,  6,  5,  5,  5,  4,  4,  4,  3,  3,  3,  3,  2,  2,  2,  2,  2,  1, 1, 1, 1, 1};
-    const auto localGapOpen = echidna::alignment::computeGapOpen( haplotypeSequence, errorModel );
+    const auto localGapOpen = wecall::alignment::computeGapOpen( haplotypeSequence, errorModel );
 
-    echidna::utils::QualitySequence qual = std::string( read.size(), 10 );
+    wecall::utils::QualitySequence qual = std::string( read.size(), 10 );
 
     const short gapExtend = 1;
     const short nucleotidePrior = 4;
 
-    const echidna::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
+    const wecall::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
 
     char * aln1 = new char[30];
     char * aln2 = new char[30];
@@ -337,15 +337,15 @@ BOOST_AUTO_TEST_CASE( testGAlignWithNormalGapOpeningPenaltiesMultibaseInsertion 
 
 BOOST_AUTO_TEST_CASE( testComputeGapOpenSymmetry )
 {
-    echidna::utils::BasePairSequence basePairSequence( "TTAAATAAAAAAATAAAAAAATAAATT" );
+    wecall::utils::BasePairSequence basePairSequence( "TTAAATAAAAAAATAAAAAAATAAATT" );
 
-    const echidna::alignment::errorModel_t errorModel = {
+    const wecall::alignment::errorModel_t errorModel = {
         45, 42, 41, 39, 37, 32, 28, 23, 20, 19, 17, 16, 15, 14, 13, 12, 11, 11, 10, 9, 9, 8, 8, 7, 7,
         7,  6,  6,  6,  5,  5,  5,  4,  4,  4,  3,  3,  3,  3,  2,  2,  2,  2,  2,  1, 1, 1, 1, 1};
 
-    const auto result = echidna::alignment::computeGapOpen( basePairSequence, errorModel );
+    const auto result = wecall::alignment::computeGapOpen( basePairSequence, errorModel );
 
-    const echidna::alignment::localGapOpenPenalties_t referenceResult = {
+    const wecall::alignment::localGapOpenPenalties_t referenceResult = {
         42, 45, 41, 42, 45, 45, 28, 32, 37, 39, 41, 42, 45, 45, 28, 32, 37, 39, 41, 42, 45, 45, 41, 42, 45, 42, 45};
 
     BOOST_REQUIRE_EQUAL( referenceResult.size(), result.size() );
@@ -360,22 +360,22 @@ BOOST_AUTO_TEST_CASE( testGAlignWithVaryingPos )
     std::string padding = "NNNNNNNN";
     std::string noG = "AAAAAAAAAA";
     std::string haplotype = noG + "G" + noG;
-    const echidna::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
-    const echidna::alignment::localGapOpenPenalties_t localGapOpen( haplotypeSequence.size(),
+    const wecall::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
+    const wecall::alignment::localGapOpenPenalties_t localGapOpen( haplotypeSequence.size(),
                                                                     std::numeric_limits< int8_t >::max() );
 
-    echidna::utils::QualitySequence qual = {10};
+    wecall::utils::QualitySequence qual = {10};
 
     const short gapExtend = 1;
     const short nucleotidePrior = 4;
 
-    const echidna::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
+    const wecall::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
 
     const int paddingLength = padding.size();
     const int noGLength = noG.size();
 
     BOOST_CHECK_THROW( align.computeAlignmentPhredScore( "G", qual, paddingLength - 1 ),
-                       echidna::utils::echidna_exception );
+                       wecall::utils::wecall_exception );
 
     char * aln1 = new char[30];
     char * aln2 = new char[30];
@@ -405,7 +405,7 @@ BOOST_AUTO_TEST_CASE( testGAlignWithVaryingPos )
     }
 
     BOOST_CHECK_THROW( align.computeAlignmentPhredScore( "G", qual, 2 * noGLength + paddingLength + 1 ),
-                       echidna::utils::echidna_exception );
+                       wecall::utils::wecall_exception );
 
     delete[] aln1;
     delete[] aln2;
@@ -416,19 +416,19 @@ BOOST_AUTO_TEST_CASE( testGAlignNucleotidePrior )
     std::string padding = "NNNNNNNN";
     std::string haplotype = "N";
     std::string read = "A";
-    const echidna::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
+    const wecall::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
 
-    const echidna::alignment::errorModel_t errorModel = {
+    const wecall::alignment::errorModel_t errorModel = {
         45, 42, 41, 39, 37, 32, 28, 23, 20, 19, 17, 16, 15, 14, 13, 12, 11, 11, 10, 9, 9, 8, 8, 7, 7,
         7,  6,  6,  6,  5,  5,  5,  4,  4,  4,  3,  3,  3,  3,  2,  2,  2,  2,  2,  1, 1, 1, 1, 1};
-    const auto localGapOpen = echidna::alignment::computeGapOpen( haplotypeSequence, errorModel );
+    const auto localGapOpen = wecall::alignment::computeGapOpen( haplotypeSequence, errorModel );
 
-    echidna::utils::QualitySequence qual = {10};
+    wecall::utils::QualitySequence qual = {10};
 
     const short gapExtend = 1;
     const short nucleotidePrior = 4;
 
-    const echidna::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
+    const wecall::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
 
     char * aln1 = new char[30];
     char * aln2 = new char[30];
@@ -444,16 +444,16 @@ BOOST_AUTO_TEST_CASE( testGAlignNucleotidePrior )
 BOOST_AUTO_TEST_CASE( testGAlignWithEmptySequence )
 {
     std::string padding = "NNNNNNNN";
-    const echidna::utils::BasePairSequence haplotypeSequence = padding + "ATG" + padding;
-    const echidna::alignment::localGapOpenPenalties_t localGapOpen( haplotypeSequence.size(),
+    const wecall::utils::BasePairSequence haplotypeSequence = padding + "ATG" + padding;
+    const wecall::alignment::localGapOpenPenalties_t localGapOpen( haplotypeSequence.size(),
                                                                     std::numeric_limits< int8_t >::max() );
 
-    echidna::utils::QualitySequence qual = {};
+    wecall::utils::QualitySequence qual = {};
 
     const short gapExtend = 1;
     const short nucleotidePrior = 4;
 
-    const echidna::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
+    const wecall::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
 
     BOOST_CHECK_EQUAL( align.computeAlignmentPhredScore( "", qual, 8 ), 0 );
 }
@@ -463,23 +463,23 @@ BOOST_AUTO_TEST_CASE( testGAlignWithWrongQualLength )
     std::string padding = "NNNNNNNN";
     std::string haplotype = "ATG";
     std::string read = "ATG";
-    const echidna::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
-    const echidna::alignment::localGapOpenPenalties_t localGapOpen( haplotypeSequence.size(),
+    const wecall::utils::BasePairSequence haplotypeSequence = padding + haplotype + padding;
+    const wecall::alignment::localGapOpenPenalties_t localGapOpen( haplotypeSequence.size(),
                                                                     std::numeric_limits< int8_t >::max() );
 
-    echidna::utils::QualitySequence qual = std::string( read.size() - 1, 10 );
+    wecall::utils::QualitySequence qual = std::string( read.size() - 1, 10 );
     ;
 
     const short gapExtend = 1;
     const short nucleotidePrior = 4;
 
-    const echidna::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
+    const wecall::alignment::GAlign align( haplotypeSequence, gapExtend, nucleotidePrior, localGapOpen );
 
     char * aln1 = new char[30];
     char * aln2 = new char[30];
 
     BOOST_CHECK_THROW( align.computeAlignmentPhredScore( read, qual, 8, aln1, aln2 ),
-                       echidna::utils::echidna_exception );
+                       wecall::utils::wecall_exception );
 
     delete[] aln1;
     delete[] aln2;

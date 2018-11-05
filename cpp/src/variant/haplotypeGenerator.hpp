@@ -9,7 +9,7 @@
 #include "io/readRange.hpp"
 #include "io/fastaFile.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {

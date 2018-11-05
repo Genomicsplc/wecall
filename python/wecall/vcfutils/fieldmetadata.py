@@ -4,7 +4,7 @@
 import logging
 from math import factorial
 
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 from wecall.vcfutils.stringutils import from_vcf_str
 
 logger = logging.getLogger(__name__)
@@ -39,7 +39,7 @@ def _parse_flag(value):
             # For strict VCF parsing configure parser to throw on log warnings.
             # TODO: Work out how to configure logger to do this.
             logging.warning("Invalid flag {}".format(value))
-            raise EchidnaException("Invalid flag {}".format(value))
+            raise weCallException("Invalid flag {}".format(value))
 
 
 def make_optional(cls, default):

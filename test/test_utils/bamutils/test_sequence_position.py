@@ -1,5 +1,5 @@
 # All content Copyright (C) 2018 Genomics plc
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 import unittest
 from wecall.bamutils.sequence_position import SequencePosition
 
@@ -15,49 +15,49 @@ class TestSequencePosition(unittest.TestCase):
 
     def test_should_fail_at_quality_inside_gap(self):
         self.assertRaisesRegex(
-            EchidnaException,
+            weCallException,
             "Cannot assign base quality inside a gap.",
             SequencePosition, "A", " ", "2"
         )
 
     def test_should_fail_at_missing_ref_char(self):
         self.assertRaisesRegex(
-            EchidnaException,
+            weCallException,
             "Missing reference character.",
             SequencePosition, " ", "A", " "
         )
 
     def test_should_fail_at_empty_ref_char(self):
         self.assertRaisesRegex(
-            EchidnaException,
+            weCallException,
             "All characters at sequence position has to be of length 1.",
             SequencePosition, "", "C", "2"
         )
 
     def test_should_fail_at_empty_seq_char(self):
         self.assertRaisesRegex(
-            EchidnaException,
+            weCallException,
             "All characters at sequence position has to be of length 1.",
             SequencePosition, "A", "", "2"
         )
 
     def test_should_fail_at_empty_qual_char(self):
         self.assertRaisesRegex(
-            EchidnaException,
+            weCallException,
             "All characters at sequence position has to be of length 1.",
             SequencePosition, "A", "C", ""
         )
 
     def test_should_fail_at_too_log_seq_char(self):
         self.assertRaisesRegex(
-            EchidnaException,
+            weCallException,
             "All characters at sequence position has to be of length 1.",
             SequencePosition, "A", "CT", " "
         )
 
     def test_should_fail_at_qual_assignment_to_deleted_base(self):
         self.assertRaisesRegex(
-            EchidnaException,
+            weCallException,
             "Cannot assign base quality to a deleted base.",
             SequencePosition, "A", "*", "2"
         )

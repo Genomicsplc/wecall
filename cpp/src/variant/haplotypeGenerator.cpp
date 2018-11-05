@@ -9,7 +9,7 @@
 #include "variant/haplotypeRanker.hpp"
 #include "variant/type/variant.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {
@@ -31,8 +31,8 @@ namespace variant
 
     std::vector< variantSet_t > AlignmentHaplotypeGenerator::bestVariantCombos( const VariantCluster & cluster ) const
     {
-        ECHIDNA_LOG( DEBUG, "AlignmentHaplotypeGenerator::bestVariantCombos for " << cluster.toString() );
-        ECHIDNA_ASSERT( cluster.allCombinationsComputed(), "This step requires all combinations to be computed" );
+        WECALL_LOG( DEBUG, "AlignmentHaplotypeGenerator::bestVariantCombos for " << cluster.toString() );
+        WECALL_ASSERT( cluster.allCombinationsComputed(), "This step requires all combinations to be computed" );
 
         const auto clusterReads = io::reduceRegionSet( m_readsPerSample, cluster.readRegions() );
         HaplotypeVector haplotypes( cluster.readRegions(), m_referenceSequence );
@@ -59,7 +59,7 @@ namespace variant
     {
         HaplotypeVector haplotypes( m_regions, m_referenceSequence );
 
-        ECHIDNA_LOG( DEBUG, "AlignmentHaplotypeGenerator::generateRawHaplotypes for " << m_regions );
+        WECALL_LOG( DEBUG, "AlignmentHaplotypeGenerator::generateRawHaplotypes for " << m_regions );
         const auto region = m_regions.getSpan();
 
         variantSet_t setVariants( m_vars.cbegin(), m_vars.cend() );
@@ -125,8 +125,8 @@ namespace variant
         haplotypes.sort();
         haplotypes.merge();
 
-        ECHIDNA_LOG( DEBUG, "Generated " << haplotypes.size() << " haplotypes." );
-        ECHIDNA_LOG( SUPER_DEBUG, "Generated haplotype candidates:-" << std::endl
+        WECALL_LOG( DEBUG, "Generated " << haplotypes.size() << " haplotypes." );
+        WECALL_LOG( SUPER_DEBUG, "Generated haplotype candidates:-" << std::endl
                                                                      << haplotypes.toString() );
         return haplotypes;
     }

@@ -3,7 +3,7 @@
 #define _COMBINATION_GENERATOR_H_
 #include <vector>
 
-namespace echidna
+namespace wecall
 {
 class CombinationIterator
 {

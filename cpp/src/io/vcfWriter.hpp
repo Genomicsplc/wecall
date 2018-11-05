@@ -16,7 +16,7 @@
 
 #include <fstream>
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

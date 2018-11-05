@@ -7,14 +7,14 @@
 #include "utils/flatten.hpp"
 #include "ioTest/io/ioFixture.hpp"
 
-using echidna::caller::Region;
-using echidna::utils::Interval;
-using echidna::caller::parseRegionString;
+using wecall::caller::Region;
+using wecall::utils::Interval;
+using wecall::caller::parseRegionString;
 
-BOOST_FIXTURE_TEST_CASE( shouldExtractCorrectRegionsWhenNoneSuppliedOnCmdLine, echidna::test::FastaIndexFileFixture )
+BOOST_FIXTURE_TEST_CASE( shouldExtractCorrectRegionsWhenNoneSuppliedOnCmdLine, wecall::test::FastaIndexFileFixture )
 {
-    auto actualRegions = echidna::utils::functional::flatten(
-        echidna::caller::DataRegionsBuilder( {}, echidna::io::FastaIndex( indexFilename ) ).build() );
+    auto actualRegions = wecall::utils::functional::flatten(
+        wecall::caller::DataRegionsBuilder( {}, wecall::io::FastaIndex( indexFilename ) ).build() );
 
     // manual checks
     BOOST_CHECK_EQUAL( actualRegions.size(), 25 );
@@ -30,10 +30,10 @@ BOOST_FIXTURE_TEST_CASE( shouldExtractCorrectRegionsWhenNoneSuppliedOnCmdLine, e
                                    actualRegions.end() );
 }
 
-BOOST_FIXTURE_TEST_CASE( shlouldExtractCorrectRegionsFromAList, echidna::test::FastaIndexFileFixture )
+BOOST_FIXTURE_TEST_CASE( shlouldExtractCorrectRegionsFromAList, wecall::test::FastaIndexFileFixture )
 {
-    auto actualRegions = echidna::utils::functional::flatten(
-        echidna::caller::DataRegionsBuilder( {"1:2-3", "2:100-200"}, echidna::io::FastaIndex( indexFilename ) )
+    auto actualRegions = wecall::utils::functional::flatten(
+        wecall::caller::DataRegionsBuilder( {"1:2-3", "2:100-200"}, wecall::io::FastaIndex( indexFilename ) )
             .build() );
     std::vector< Region > expectedRegions = {Region( "1", 2, 3 ), Region( "2", 100, 200 )};
 

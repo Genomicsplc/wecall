@@ -18,7 +18,7 @@
 #include "vcf/field.hpp"
 #include "regionUtils.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {
@@ -184,7 +184,7 @@ namespace caller
             {
                 std::stringstream msg;
                 msg << "<" << paramName << "> not in acceptable range. ";
-                throw utils::echidna_exception( msg.str() );
+                throw utils::wecall_exception( msg.str() );
             }
         }
 
@@ -203,7 +203,7 @@ namespace caller
             }
             else
             {
-                throw utils::echidna_exception( "Missing parameter value for " + name + "." );
+                throw utils::wecall_exception( "Missing parameter value for " + name + "." );
             }
         }
 
@@ -320,16 +320,16 @@ namespace caller
             {
                 if ( this->genotypingMode() )
                 {
-                    //                    ECHIDNA_ERROR( ( not m_outputRefCalls ),
+                    //                    WECALL_ERROR( ( not m_outputRefCalls ),
                     //                                   "Genotyping is incompatible with outputting reference calls."
                     //                                   );
 
-                    ECHIDNA_ERROR( boost::filesystem::exists( this->m_genotypeAllelesFile ),
+                    WECALL_ERROR( boost::filesystem::exists( this->m_genotypeAllelesFile ),
                                    "Genotype file " + this->m_genotypeAllelesFile + " does not exist" );
-                    ECHIDNA_ERROR(
+                    WECALL_ERROR(
                         ( boost::filesystem::path( this->m_genotypeAllelesFile ).extension().string() == ".gz" ),
                         "File " + this->m_genotypeAllelesFile + " does not have .gz extension" );
-                    ECHIDNA_ERROR( boost::filesystem::exists( this->m_genotypeAllelesFile + ".tbi" ),
+                    WECALL_ERROR( boost::filesystem::exists( this->m_genotypeAllelesFile + ".tbi" ),
                                    "Genotype index file " + this->m_genotypeAllelesFile + ".tbi does not exist" );
                 }
             }
@@ -487,7 +487,7 @@ namespace caller
                         unrecognisedFilterIDs.push_back( varFilterID );
                     }
                 }
-                ECHIDNA_ERROR( unrecognisedFilterIDs.empty(),
+                WECALL_ERROR( unrecognisedFilterIDs.empty(),
                                "Could not find filter ID(s): " + displayOptions( unrecognisedFilterIDs ) );
             }
 

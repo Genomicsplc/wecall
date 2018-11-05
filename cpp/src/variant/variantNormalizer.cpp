@@ -4,7 +4,7 @@
 #include <stack>
 #include "utils/interval.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {
@@ -49,7 +49,7 @@ namespace variant
         const std::size_t matrixSize = ( region.size() + 1 ) * ( altString.size() + 1 );
         if ( matrixSize > m_maxMatrixSize )
         {
-            ECHIDNA_LOG( DEBUG, "Skipping normalization because the matrix has size "
+            WECALL_LOG( DEBUG, "Skipping normalization because the matrix has size "
                                     << region.size() + 1 << "x" << altString.size() + 1 << " = " << matrixSize
                                     << ", which is greater than the threshold of " << m_maxMatrixSize );
             if ( unnormalizedVariants.is_initialized() )

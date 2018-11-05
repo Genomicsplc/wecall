@@ -6,7 +6,7 @@
 #include <map>
 #include <memory>
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {

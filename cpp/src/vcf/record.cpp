@@ -6,7 +6,7 @@
 #include "variant/type/variant.hpp"
 #include "utils/write.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace vcf
 {
@@ -47,7 +47,7 @@ namespace vcf
                 const auto trimmed = var->getTrimmed();
                 if ( var->sequence() != trimmed->sequence() and m_ref.size() > 1 and alt.size() > 1 )
                 {
-                    ECHIDNA_LOG( WARNING, "Trimming input variant from: " + var->toString() + " to " +
+                    WECALL_LOG( WARNING, "Trimming input variant from: " + var->toString() + " to " +
                                               trimmed->toString() + "." );
                 }
 
@@ -55,7 +55,7 @@ namespace vcf
             }
             else
             {
-                ECHIDNA_LOG( WARNING, "Ignoring record at: " << var->region() << "due to incompatible reference." );
+                WECALL_LOG( WARNING, "Ignoring record at: " << var->region() << "due to incompatible reference." );
             }
         }
         return variants;

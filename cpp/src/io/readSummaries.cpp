@@ -3,7 +3,7 @@
 #include "caller/diploid/referenceCalling.hpp"
 #include <numeric>
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

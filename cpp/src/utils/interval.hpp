@@ -6,7 +6,7 @@
 #include <vector>
 #include "utils/logging.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {
@@ -18,7 +18,7 @@ namespace utils
         /// Construct an interval from left and right bounds.
         Interval( int64_t _left, int64_t _right ) : m_start( _left ), m_end( _right )
         {
-            ECHIDNA_ASSERT( m_start <= m_end, this->toString() + " is not valid (half-open) interval" );
+            WECALL_ASSERT( m_start <= m_end, this->toString() + " is not valid (half-open) interval" );
         }
 
         /// @return The centre of the interval. Takes floor in integral types.

@@ -5,7 +5,7 @@
 #include <boost/program_options.hpp>
 #include <string>
 
-namespace echidna
+namespace wecall
 {
 class weCallBase
 {

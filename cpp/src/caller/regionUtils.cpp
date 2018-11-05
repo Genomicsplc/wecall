@@ -15,7 +15,7 @@
 #include "io/fastaFile.hpp"
 #include "io/bedFile.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {
@@ -27,10 +27,10 @@ namespace caller
 
         if ( not std::is_sorted( regions.begin(), regions.end(), RegionComp( m_fastaIndexFile ) ) )
         {
-            ECHIDNA_LOG( WARNING, "Regions specified are not in order. Sorting them by contig:start-end." );
+            WECALL_LOG( WARNING, "Regions specified are not in order. Sorting them by contig:start-end." );
 
             std::sort( regions.begin(), regions.end(), RegionComp( m_fastaIndexFile ) );
-            ECHIDNA_LOG( SUPER_DEBUG,
+            WECALL_LOG( SUPER_DEBUG,
                          "Regions sorted to: " + boost::algorithm::join( getRegionStrings( regions ), "," ) );
         }
 
@@ -74,7 +74,7 @@ namespace caller
 
         if ( not badContigs.empty() )
         {
-            ECHIDNA_LOG( WARNING, "Contig(s) " + boost::algorithm::join( badContigs, "," ) +
+            WECALL_LOG( WARNING, "Contig(s) " + boost::algorithm::join( badContigs, "," ) +
                                       " are not contained in reference." );
         }
 
@@ -94,7 +94,7 @@ namespace caller
             std::transform( m_inputRegionStrings.begin(), m_inputRegionStrings.end(),
                             std::back_inserter( areStringsBedFiles ), this->isBedFile );
 
-            using echidna::utils::functional::identity;
+            using wecall::utils::functional::identity;
 
             if ( std::all_of(areStringsBedFiles.begin(), areStringsBedFiles.end(), identity< bool >))
             {
@@ -106,7 +106,7 @@ namespace caller
             }
             else
             {
-                throw utils::echidna_exception( "Can not have mixture of BED files and region strings" );
+                throw utils::wecall_exception( "Can not have mixture of BED files and region strings" );
             }
         }
         return regions;
@@ -122,7 +122,7 @@ namespace caller
             regions.emplace_back( contigName, contigs.at( contigName ) );
         }
 
-        ECHIDNA_ASSERT( std::is_sorted( regions.begin(), regions.end(), RegionComp( m_fastaIndexFile ) ),
+        WECALL_ASSERT( std::is_sorted( regions.begin(), regions.end(), RegionComp( m_fastaIndexFile ) ),
                         "standard contigs in FastaFile not sorted" );
 
         return regions;
@@ -213,7 +213,7 @@ namespace caller
         }
         else
         {
-            throw utils::echidna_exception( "Invalid region specification format: " + regionString +
+            throw utils::wecall_exception( "Invalid region specification format: " + regionString +
                                             ". Expecting: chrom or chrom:start-end" );
         }
     }
@@ -231,10 +231,10 @@ namespace caller
             return region.contig() == contig;
         };
 
-        ECHIDNA_ASSERT( std::all_of( regions.begin(), regions.end(), sameContig ),
+        WECALL_ASSERT( std::all_of( regions.begin(), regions.end(), sameContig ),
                         "Can not merge regions on different contigs" );
 
-        ECHIDNA_ASSERT( std::is_sorted( regions.begin(), regions.end(), RegionIntervalComp() ),
+        WECALL_ASSERT( std::is_sorted( regions.begin(), regions.end(), RegionIntervalComp() ),
                         "Merge Regions requires sorted regions" );
 
         std::vector< Region > output = {regions.front()};

@@ -3,7 +3,7 @@
 
 #include "utils/logging.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {
@@ -13,7 +13,7 @@ namespace utils
         Type median( const std::vector< Type > & values )
         {
             std::vector< Type > vecTypes = values;
-            ECHIDNA_ASSERT( not vecTypes.empty(), "Median cannot be computed of empty list" );
+            WECALL_ASSERT( not vecTypes.empty(), "Median cannot be computed of empty list" );
 
             std::size_t middleIdx = vecTypes.size() / 2;
 

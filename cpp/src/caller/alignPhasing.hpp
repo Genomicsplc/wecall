@@ -11,7 +11,7 @@
 #ifndef WECALL_ALIGNPHASING_H
 #define WECALL_ALIGNPHASING_H
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {

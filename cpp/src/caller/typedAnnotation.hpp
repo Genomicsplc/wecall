@@ -12,7 +12,7 @@
 
 #include "caller/annotation.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {

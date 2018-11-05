@@ -11,7 +11,7 @@
 
 #include "readrecalibration/siteKmerDistribution.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace corrector
 {
@@ -49,6 +49,6 @@ namespace corrector
         std::vector< SiteKmerDistribution > m_kmerDistribution;
     };
 }  // namespace corrector
-}  // namespace echidna
+}  // namespace wecall
 
 #endif

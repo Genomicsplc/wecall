@@ -20,7 +20,7 @@ struct shouldRaiseOnINFOHeaderType;
 struct shouldRaiseOnInvalidVCFFilterHeader;
 struct shouldRaiseOnFORMATHeaderType;
 
-namespace echidna
+namespace wecall
 {
 namespace vcf
 {

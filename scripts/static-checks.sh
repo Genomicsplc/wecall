@@ -1,15 +1,15 @@
-#!/bin/bash -ue
+#!/usr/bin/env bash
 # All content Copyright (C) 2018 Genomics plc
+set -e -u -x -o pipefail
 
 # requires: cppcheck
 if ! command -v cppcheck > /dev/null; then
-	echo "Cannot find 'cppcheck', try 'sudo apt-get install cppcheck'."
-	exit 1
+    echo "Cannot find 'cppcheck', try 'sudo apt-get install cppcheck'."
+    exit 1
 fi
 
-
 # reformatting
-if python "$ECHIDNA_SCRIPTS/clang-format-check.py"; then
+if python "$WECALL_SCRIPTS/clang-format-check.py"; then
     echo -e "\x1b[1;32mReformatting check passed.\x1b[0m"
 else
     echo -e "\x1b[1;31mReformatting check failed.\x1b[0m"
@@ -21,8 +21,8 @@ fi
 CPPCOPTS=(-j "$(nproc)" --force --quiet --inline-suppr -UDEBUG --language=c++)
 CPPCENABLES='--enable=warning,style,performance,portability,information,missingInclude'
 CPPCSUPPRESSIONS=(--suppress=*:*/dependencies/samtools/include/*)
-CPPCINCLUDES=(-I${ECHIDNA_CPP_SOURCE} -I${ECHIDNA_BUILD}/dependencies/samtools/include)
-cppcheck ${CPPCOPTS[*]} "$CPPCENABLES" ${CPPCSUPPRESSIONS[*]} ${CPPCINCLUDES[*]} ${ECHIDNA_CPP} 2>&1 | python ${ECHIDNA_SCRIPTS}/count-errors.py
+CPPCINCLUDES=(-I${WECALL_CPP_SOURCE} -I${WECALL_BUILD}/dependencies/samtools/include)
+cppcheck ${CPPCOPTS[*]} "$CPPCENABLES" ${CPPCSUPPRESSIONS[*]} ${CPPCINCLUDES[*]} ${WECALL_CPP} 2>&1 | python ${WECALL_SCRIPTS}/count-errors.py
 ERR=$?
 
 if [ 0 -eq $ERR ]; then

@@ -7,7 +7,7 @@
 #include "utils/median.hpp"
 #include "io/readUtils.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {

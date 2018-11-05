@@ -16,14 +16,14 @@
 #include "utils/logging.hpp"
 #include "utils/timer.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {
     BedFile::BedFile( std::string fileName )
         : m_filename( fileName ), m_timer( std::make_shared< utils::Timer >( "IO", utils::fileMetaData( fileName ) ) )
     {
-        ECHIDNA_ASSERT( boost::filesystem::exists( m_filename ), "BED file " + m_filename + " does not exist" );
+        WECALL_ASSERT( boost::filesystem::exists( m_filename ), "BED file " + m_filename + " does not exist" );
     }
 
     caller::regions_t BedFile::getRegions() const
@@ -94,7 +94,7 @@ namespace io
         }
         else
         {
-            throw utils::echidna_exception( "Malformatted bed file line " + std::to_string( lineNumber ) );
+            throw utils::wecall_exception( "Malformatted bed file line " + std::to_string( lineNumber ) );
         }
     }
 }

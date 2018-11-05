@@ -10,18 +10,18 @@
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 
-using namespace echidna::alignment;
-using echidna::utils::ReferenceSequence;
-using echidna::caller::Region;
-using echidna::variant::Variant;
-using echidna::variant::varPtr_t;
-using echidna::variant::VariantContainer;
+using namespace wecall::alignment;
+using wecall::utils::ReferenceSequence;
+using wecall::caller::Region;
+using wecall::variant::Variant;
+using wecall::variant::varPtr_t;
+using wecall::variant::VariantContainer;
 
-echidna::io::readPtr_t make_read()
+wecall::io::readPtr_t make_read()
 {
-    auto refSequence = std::make_shared< echidna::utils::ReferenceSequence >( echidna::caller::Region( "1", 0, 100 ),
+    auto refSequence = std::make_shared< wecall::utils::ReferenceSequence >( wecall::caller::Region( "1", 0, 100 ),
                                                                               std::string( 100, 'A' ) );
-    return std::make_shared< echidna::io::Read >( "EDWARD", "ADRIAN", "", echidna::alignment::Cigar( "6M" ), 0, 0, 0, 0,
+    return std::make_shared< wecall::io::Read >( "EDWARD", "ADRIAN", "", wecall::alignment::Cigar( "6M" ), 0, 0, 0, 0,
                                                   0, 0, 0, refSequence );
 }
 
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE( testRaisesIfNonSequentialVariantsAdded )
     auto read = make_read();
 
     BOOST_CHECK_THROW( variantContainer.addVariantsFromRead( read, {snp2, snp1}, {}, "sample" ),
-                       echidna::utils::echidna_exception );
+                       wecall::utils::wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( testShouldAddReadsToSingleVariant )
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE( testShouldAddReadsToSingleVariant )
 
     const auto referenceSequence = std::make_shared< ReferenceSequence >( Region( "1", 0, 10 ), "AAAAAAAAAA" );
     const Region varRegion = Region( "1", 1, 2 );
-    const echidna::utils::BasePairSequence alt = "T";
+    const wecall::utils::BasePairSequence alt = "T";
 
     auto snp1 = std::make_shared< Variant >( referenceSequence, varRegion, alt );
     auto snp2 = std::make_shared< Variant >( referenceSequence, varRegion, alt );
@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE( testShouldAddReadsToSingleVariant )
     BOOST_CHECK_EQUAL( actualVar->sequence(), alt );
 
     auto actualReads = actualVar->getReads();
-    auto expectedReads = std::vector< echidna::io::readPtr_t >{read1, read2};
+    auto expectedReads = std::vector< wecall::io::readPtr_t >{read1, read2};
     BOOST_CHECK_EQUAL_COLLECTIONS( expectedReads.begin(), expectedReads.end(), actualReads.begin(), actualReads.end() );
 }
 
@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE( testVariantContainerGetsCorrectSupport )
 {
     const auto referenceSequence = std::make_shared< ReferenceSequence >( Region( "1", 0, 10 ), "AAAAAAAAAA" );
     std::vector< std::string > samples = {"Sample1, Sample2"};
-    echidna::variant::VariantContainer variantContainer( 0, 0 );
+    wecall::variant::VariantContainer variantContainer( 0, 0 );
     auto snp1 = std::make_shared< Variant >( referenceSequence, Region( "1", 1, 2 ), "T" );
     auto snp2 = std::make_shared< Variant >( referenceSequence, Region( "1", 1, 2 ), "T" );
     variantContainer.addVariantsFromRead( make_read(), {snp1}, {}, samples.front() );
@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_CASE( testVariantContainerGetsCorrectSupport )
     const auto variants = variantContainer.getVariants();
 
     BOOST_CHECK_EQUAL( variants.size(), 1 );
-    const std::vector< echidna::variant::varPtr_t > vecVariants( variants.begin(), variants.end() );
+    const std::vector< wecall::variant::varPtr_t > vecVariants( variants.begin(), variants.end() );
     BOOST_CHECK( checkVariantInVector( vecVariants,
                                        std::make_shared< Variant >( referenceSequence, Region( "1", 1, 2 ), "T" ) ) );
 
@@ -110,9 +110,9 @@ BOOST_AUTO_TEST_CASE( testVariantContainerGetsCorrectSupport )
     auto differentVariant = std::make_shared< Variant >( referenceSequence, Region( "2", 1, 2 ), "T" );
     BOOST_CHECK_THROW( variantContainer.totalReadsSupportingVariant( differentVariant ), std::out_of_range );
 
-    std::shared_ptr< echidna::io::ReadDataset > readDataset =
-        std::make_shared< echidna::io::ReadDataset >( samples, echidna::caller::Region( "1", 0, 10 ) );
-    auto read = std::make_shared< echidna::io::Read >( std::string( 10, 'T' ), std::string( 10, 'Q' ), "test",
+    std::shared_ptr< wecall::io::ReadDataset > readDataset =
+        std::make_shared< wecall::io::ReadDataset >( samples, wecall::caller::Region( "1", 0, 10 ) );
+    auto read = std::make_shared< wecall::io::Read >( std::string( 10, 'T' ), std::string( 10, 'Q' ), "test",
                                                        Cigar( "10M" ), 0, 0, 0, 0, 0, 0, 0, referenceSequence );
     readDataset->insertRead( samples.front(), read );
     readDataset->insertRead( samples.front(), read );
@@ -126,7 +126,7 @@ BOOST_AUTO_TEST_CASE( testVariantContainerGetsCorrectSupport )
 BOOST_AUTO_TEST_CASE( testAddingCandidateVariantDoesntAddToSupport )
 {
     const auto referenceSequence = std::make_shared< ReferenceSequence >( Region( "1", 0, 10 ), "AAAAAAAAAA" );
-    echidna::variant::VariantContainer variantContainer( 0, 0 );
+    wecall::variant::VariantContainer variantContainer( 0, 0 );
     auto snp = std::make_shared< Variant >( referenceSequence, Region( "1", 1, 2 ), "T" );
     snp->disableFiltering();
 
@@ -135,7 +135,7 @@ BOOST_AUTO_TEST_CASE( testAddingCandidateVariantDoesntAddToSupport )
     const auto variants = variantContainer.getVariants();
 
     BOOST_CHECK_EQUAL( variants.size(), 1 );
-    const std::vector< echidna::variant::varPtr_t > vecVariants( variants.begin(), variants.end() );
+    const std::vector< wecall::variant::varPtr_t > vecVariants( variants.begin(), variants.end() );
     BOOST_CHECK( checkVariantInVector( vecVariants,
                                        std::make_shared< Variant >( referenceSequence, Region( "1", 1, 2 ), "T" ) ) );
 

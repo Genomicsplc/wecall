@@ -14,7 +14,7 @@
 
 #include "utils/exceptions.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {
@@ -35,7 +35,7 @@ namespace variant
         for ( const auto & var : variants )
         {
             indentIntoRead += var->start() - currentRefPosition;
-            ECHIDNA_ASSERT( var->start() >= currentRefPosition, "Non sequential variants added." );
+            WECALL_ASSERT( var->start() >= currentRefPosition, "Non sequential variants added." );
             auto endIndentIntoRead = indentIntoRead + var->sequenceLength();
 
             if ( indentIntoRead == endIndentIntoRead )

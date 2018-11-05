@@ -9,7 +9,7 @@
 #include "variant/variantGenerationData.hpp"
 #include "variant/type/variant.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {
@@ -242,6 +242,6 @@ namespace alignment
     };
 
 }  // namespace alignment
-}  // namespace echidna
+}  // namespace wecall
 
 #endif  // CIGAR_ITEMS_HPP

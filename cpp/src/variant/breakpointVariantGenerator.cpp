@@ -3,7 +3,7 @@
 #include "variant/breakpointVariantGenerator.hpp"
 #include "variant/haplotypeGenerator.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {
@@ -119,11 +119,11 @@ namespace variant
         const auto seqGraph = this->processData( referenceRegions, reads );
         const auto chainsForVariants = seqGraph.getPathsBetweenRefNodes( m_minChainSupport );
 
-        ECHIDNA_LOG( DEBUG, "Assembling over " << referenceRegions );
-        ECHIDNA_LOG( DEBUG, "Created sequence graph size: " << seqGraph.kmerSize() * seqGraph.size()
+        WECALL_LOG( DEBUG, "Assembling over " << referenceRegions );
+        WECALL_LOG( DEBUG, "Created sequence graph size: " << seqGraph.kmerSize() * seqGraph.size()
                                                             << " (kmer-size * nNodes)" );
-        ECHIDNA_LOG( DEBUG, "Found nChains: " << chainsForVariants.size() );
-        ECHIDNA_LOG( SUPER_DEBUG, "Constructed seq graph:\n" << seqGraph.toString() );
+        WECALL_LOG( DEBUG, "Found nChains: " << chainsForVariants.size() );
+        WECALL_LOG( SUPER_DEBUG, "Constructed seq graph:\n" << seqGraph.toString() );
 
         variantSet_t variants;
         for ( const auto & chain : chainsForVariants )
@@ -288,7 +288,7 @@ namespace variant
                 }
                 else
                 {
-                    ECHIDNA_LOG( WARNING, "Skipping assembly on " << breakpointReadRegions
+                    WECALL_LOG( WARNING, "Skipping assembly on " << breakpointReadRegions
                                                                   << " due to too many reads" );
                 }
             }

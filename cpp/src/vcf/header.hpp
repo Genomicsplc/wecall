@@ -12,7 +12,7 @@
 #include <string>
 #include <iostream>
 
-namespace echidna
+namespace wecall
 {
 namespace vcf
 {

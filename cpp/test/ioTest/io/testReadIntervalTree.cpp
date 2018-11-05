@@ -5,21 +5,21 @@
 #include "io/readIntervalTree.hpp"
 #include "io/readRange.hpp"
 
-using Read = echidna::io::Read;
-using Cigar = echidna::alignment::Cigar;
-using Interval = echidna::utils::Interval;
-using echidna::utils::BasePairSequence;
-using echidna::io::RegionsReads;
-using echidna::caller::SetRegions;
-using echidna::caller::Region;
+using Read = wecall::io::Read;
+using Cigar = wecall::alignment::Cigar;
+using Interval = wecall::utils::Interval;
+using wecall::utils::BasePairSequence;
+using wecall::io::RegionsReads;
+using wecall::caller::SetRegions;
+using wecall::caller::Region;
 
 BOOST_AUTO_TEST_CASE( shouldFilterReadsWithLowMappingQuality )
 {
-    echidna::io::readIntervalTree_t readContainer( 0, 100 );
+    wecall::io::readIntervalTree_t readContainer( 0, 100 );
 
     std::string qname = "test";
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
 
     uint8_t mappingQuality = 10;
     readContainer.insert( std::make_shared< Read >( std::string( 2, 'A' ), std::string( 2, 'Q' ), qname, Cigar( "2M" ),
@@ -46,10 +46,10 @@ BOOST_AUTO_TEST_CASE( shouldFilterReadsWithLowMappingQuality )
 
 BOOST_AUTO_TEST_CASE( shouldGetCorrectSubrangesOneReadWithMatches )
 {
-    echidna::io::readIntervalTree_t readContainer( 0, 100 );
+    wecall::io::readIntervalTree_t readContainer( 0, 100 );
     std::string qname = "test";
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
 
     readContainer.insert( std::make_shared< Read >( std::string( 2, 'A' ), std::string( 2, 'Q' ), qname, Cigar( "2M" ),
                                                     0, 1, 0, 0, 0, 0, 0, refSequence ) );
@@ -78,8 +78,8 @@ BOOST_AUTO_TEST_CASE( shouldGetCorrectSubrangesOneReadWithMatches )
 BOOST_AUTO_TEST_CASE( shouldGetCorrectSubrangesOneReadWithPureInsertion )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
-    echidna::io::readIntervalTree_t readContainer( 0, 100 );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
+    wecall::io::readIntervalTree_t readContainer( 0, 100 );
     readContainer.insert( std::make_shared< Read >( std::string( 0, 'A' ), std::string( 0, 'Q' ), "0", Cigar( "0I" ), 0,
                                                     1, 0, 0, 0, 0, 0, refSequence ) );
 
@@ -105,8 +105,8 @@ BOOST_AUTO_TEST_CASE( shouldGetCorrectSubrangesOneReadWithPureInsertion )
 BOOST_AUTO_TEST_CASE( shouldGetCorrectSubrangesOneReadWithInsertionAtStart )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
-    echidna::io::readIntervalTree_t readContainer( 0, 100 );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
+    wecall::io::readIntervalTree_t readContainer( 0, 100 );
     readContainer.insert( std::make_shared< Read >( std::string( 8, 'A' ), std::string( 8, 'Q' ), "0", Cigar( "7I1M" ),
                                                     0, 1, 0, 0, 0, 0, 0, refSequence ) );
 
@@ -132,8 +132,8 @@ BOOST_AUTO_TEST_CASE( shouldGetCorrectSubrangesOneReadWithInsertionAtStart )
 BOOST_AUTO_TEST_CASE( testRegionSetReadsIteration )
 {
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
-    echidna::io::readIntervalTree_t readContainer( 0, 100 );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 10 ), std::string( 10, 'A' ) );
+    wecall::io::readIntervalTree_t readContainer( 0, 100 );
     const int64_t startPos = 1;
     readContainer.insert( std::make_shared< Read >( BasePairSequence( 8, 'A' ), std::string( 8, 'Q' ), "0",
                                                     Cigar( "8M" ), 0, startPos, 0, 0, 0, 0, 0, refSequence ) );
@@ -152,11 +152,11 @@ BOOST_AUTO_TEST_CASE( testRegionSetReadsIteration )
 
 BOOST_AUTO_TEST_CASE( testShouldOnlyRetrieveReadsThatOverlapARegion )
 {
-    echidna::io::readIntervalTree_t readContainer( 0, 100 );
+    wecall::io::readIntervalTree_t readContainer( 0, 100 );
     const int64_t startPos1 = 1;
     const std::size_t length = 8;
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 20 ), std::string( 20, 'A' ) );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 20 ), std::string( 20, 'A' ) );
     readContainer.insert( std::make_shared< Read >( BasePairSequence( length, 'A' ), std::string( length, 'Q' ), "0",
                                                     Cigar( std::to_string( length ) + "M" ), 0, startPos1, 0, 0, 0, 0,
                                                     0, refSequence ) );
@@ -178,11 +178,11 @@ BOOST_AUTO_TEST_CASE( testShouldOnlyRetrieveReadsThatOverlapARegion )
 
 BOOST_AUTO_TEST_CASE( testGetSubRegionReadsShouldThrowIfSubRegionIsNotInContained )
 {
-    echidna::io::readIntervalTree_t readContainer( 0, 100 );
+    wecall::io::readIntervalTree_t readContainer( 0, 100 );
     const int64_t startPos1 = 1;
     const std::size_t length = 8;
     auto refSequence =
-        std::make_shared< echidna::utils::ReferenceSequence >( Region( "1", 0, 20 ), std::string( 20, 'A' ) );
+        std::make_shared< wecall::utils::ReferenceSequence >( Region( "1", 0, 20 ), std::string( 20, 'A' ) );
     readContainer.insert( std::make_shared< Read >( BasePairSequence( length, 'A' ), std::string( length, 'Q' ), "0",
                                                     Cigar( std::to_string( length ) + "M" ), 0, startPos1, 0, 0, 0, 0,
                                                     0, refSequence ) );
@@ -202,5 +202,5 @@ BOOST_AUTO_TEST_CASE( testGetSubRegionReadsShouldThrowIfSubRegionIsNotInContaine
 
     RegionsReads regionSetReads( setRegions, readRange, 0 );
 
-    BOOST_CHECK_THROW( regionSetReads.getSubRegionReads( setRegions2 ), echidna::utils::echidna_exception );
+    BOOST_CHECK_THROW( regionSetReads.getSubRegionReads( setRegions2 ), wecall::utils::wecall_exception );
 }

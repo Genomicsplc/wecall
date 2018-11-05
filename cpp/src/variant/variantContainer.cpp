@@ -4,7 +4,7 @@
 #include "io/readDataSet.hpp"
 #include "variant/variantGenerator.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {

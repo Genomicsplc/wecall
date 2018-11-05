@@ -7,7 +7,7 @@
 #include "io/readRange.hpp"
 #include "caller/region.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace corrector
 {
@@ -30,7 +30,7 @@ namespace corrector
     }
 
     void recalibrateDephasingErrors( const io::perSampleRegionsReads_t & allReadsInRegion,
-                                     const echidna::io::FastaFile & fa,
+                                     const wecall::io::FastaFile & fa,
                                      const caller::Region & region,
                                      const ErrorCorrectionParameters & errorCorrectionParameters )
     {
@@ -92,7 +92,7 @@ namespace corrector
     }
 
     void recalibrateReads( const io::perSampleRegionsReads_t & allReadsInRegion,
-                           const echidna::io::FastaFile & fa,
+                           const wecall::io::FastaFile & fa,
                            const caller::Region & region,
                            const ErrorCorrectionParameters & errorCorrectionParameters )
     {

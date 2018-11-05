@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include <algorithm>
 
-namespace echidna
+namespace wecall
 {
 using variant::genotypePtr_t;
 using variant::varPtr_t;
@@ -27,7 +27,7 @@ namespace io
     {
         if ( not( m_file.is_open() ) )
         {
-            throw utils::echidna_exception( "Could not open VCF file for writing" );
+            throw utils::wecall_exception( "Could not open VCF file for writing" );
         }
     }
 
@@ -47,7 +47,7 @@ namespace io
         utils::ScopedTimerTrigger scopedTimerTrigger( m_timer );
         if ( m_headerWritten )
         {
-            throw utils::echidna_exception( "Tried to write VCF header twice" );
+            throw utils::wecall_exception( "Tried to write VCF header twice" );
         }
 
         // TODO - This should be tied in with the list in Annotation.cpp/hpp
@@ -91,7 +91,7 @@ namespace io
         utils::ScopedTimerTrigger scopedTimerTrigger( m_timer );
         if ( not m_headerWritten )
         {
-            throw utils::echidna_exception( "Tried to write VCF record before header" );
+            throw utils::wecall_exception( "Tried to write VCF record before header" );
         }
 
         for ( callIt_t it = calls.cbegin(); it != calls.cend(); ++it )
@@ -103,7 +103,7 @@ namespace io
 
             if ( it->isRefCall() )
             {
-                // Echidna specific VCF notation for a reference call
+                // weCall specific VCF notation for a reference call
                 ref = refFile.getSequence( caller::Region( m_contig, pos, pos + 1 ) ).sequence().str();
                 alt = constants::vcfRefAltValue;
             }
@@ -114,7 +114,7 @@ namespace io
                     std::ostringstream message;
                     message << "contigs don't match (expected: '" << m_contig << "'; got '" << it->var->contig()
                             << "') for variant at " << it->var->toString();
-                    throw utils::echidna_exception( message.str().c_str() );
+                    throw utils::wecall_exception( message.str().c_str() );
                 }
                 const auto refAndAlts = compileRefsAndAlts( it->var, refFile );
                 ref = refAndAlts.first.sequence().str();
@@ -129,7 +129,7 @@ namespace io
             }
             else
             {
-                ECHIDNA_LOG( DEBUG, "Not outputting due to non-canonical bases:\t" << m_contig << "\t" << pos + 1
+                WECALL_LOG( DEBUG, "Not outputting due to non-canonical bases:\t" << m_contig << "\t" << pos + 1
                                                                                    << "\t" << ref << "\t" << alt );
             }
         }

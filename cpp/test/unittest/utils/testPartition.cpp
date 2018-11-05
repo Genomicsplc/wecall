@@ -13,7 +13,7 @@ BOOST_AUTO_TEST_CASE( partitionShouldPartitionEmptyList )
 {
     std::vector< int > input = {};
     output_t expectedOutput = {};
-    output_t output = echidna::utils::functional::partition( input, []( int a, int b )
+    output_t output = wecall::utils::functional::partition( input, []( int a, int b )
                                                              {
                                                                  return a == b;
                                                              } );
@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_CASE( partitionShouldPartitionListWithOneElement )
 {
     std::vector< int > input = {1};
     output_t expectedOutput = {{1}};
-    output_t output = echidna::utils::functional::partition( input, []( int a, int b )
+    output_t output = wecall::utils::functional::partition( input, []( int a, int b )
                                                              {
                                                                  return a == b;
                                                              } );
@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE( partitionShouldPreserveIntraListOrder )
 {
     std::vector< int > input = {1, 2};
     output_t expectedOutput = {{1}, {2}};
-    output_t output = echidna::utils::functional::partition( input, []( int a, int b )
+    output_t output = wecall::utils::functional::partition( input, []( int a, int b )
                                                              {
                                                                  return a == b;
                                                              } );
@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE( partitionShouldPreserveOuterListOrder )
 {
     std::vector< int > input = {1, 1};
     output_t expectedOutput = {{1, 1}};
-    output_t output = echidna::utils::functional::partition( input, []( int a, int b )
+    output_t output = wecall::utils::functional::partition( input, []( int a, int b )
                                                              {
                                                                  return a == b;
                                                              } );

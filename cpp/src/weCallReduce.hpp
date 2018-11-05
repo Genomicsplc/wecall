@@ -17,7 +17,7 @@
 #include "version/version.hpp"
 #include "weCallBase.hpp"
 
-namespace echidna
+namespace wecall
 {
 class weCallReduce : public weCallBase
 {

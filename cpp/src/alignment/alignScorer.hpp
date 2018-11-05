@@ -2,7 +2,7 @@
 #ifndef ALIGN_SCORER_HPP
 #define ALIGN_SCORER_HPP
 
-namespace echidna
+namespace wecall
 {
 /// All alignment algorithms and associated classes live in
 /// this namespace

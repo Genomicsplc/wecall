@@ -17,7 +17,7 @@
 #include <utils/sequence.hpp>
 #include <samtools/bam.h>
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {
@@ -73,7 +73,7 @@ namespace io
         m_sequenceStr = sequenceStr;
         if ( sequenceStr.size() == 0 || q[0] == 0xff )
         {
-            throw utils::echidna_exception( "Invalid bamRecord in Read constructor" );
+            throw utils::wecall_exception( "Invalid bamRecord in Read constructor" );
         }
     }
 
@@ -197,10 +197,10 @@ namespace io
                                   qname ),
                 refSequence )
     {
-        ECHIDNA_ASSERT( seq.size() == m_qualities.size(), "Read constructed with inconsistent quality string " +
+        WECALL_ASSERT( seq.size() == m_qualities.size(), "Read constructed with inconsistent quality string " +
                                                               std::to_string( m_sequence.size() ) + " != " +
                                                               std::to_string( m_qualities.size() ) );
-        ECHIDNA_ASSERT( seq.size() == int64_to_sizet( cigar.lengthInSeq() ),
+        WECALL_ASSERT( seq.size() == int64_to_sizet( cigar.lengthInSeq() ),
                         "Read constructed with inconsistent cigar " + std::to_string( m_sequence.size() ) + " != " +
                             std::to_string( cigar.lengthInSeq() ) + " " + cigar.toString() );
     }

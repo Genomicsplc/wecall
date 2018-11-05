@@ -15,12 +15,12 @@ int main( const int argc, char * argv[] )
             newArgv[i] = argv[i + 1];
         }
 
-        const auto rt = echidna::weCallReduce().processJob( argc - 1, newArgv );
+        const auto rt = wecall::weCallReduce().processJob( argc - 1, newArgv );
         delete[] newArgv;
         return rt;
     }
     else
     {
-        return echidna::weCallMapAndReduce().processJob( argc, argv );
+        return wecall::weCallMapAndReduce().processJob( argc, argv );
     }
 }

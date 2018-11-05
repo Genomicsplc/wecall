@@ -12,14 +12,14 @@
 #include "utils/interval.hpp"
 #include "common.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {
 
     void Region::combine( const Region & other )
     {
-        ECHIDNA_ASSERT( ( m_contig == other.m_contig ),
+        WECALL_ASSERT( ( m_contig == other.m_contig ),
                         "Can not combine regions " + this->toString() + " & " + other.toString() );
         m_interval.combine( other.m_interval );
     }
@@ -46,7 +46,7 @@ namespace caller
 
     Region Region::getIntersect( const Region & other ) const
     {
-        ECHIDNA_ASSERT( this->contig() == other.contig(), "Can't intersect regions from different contigs" );
+        WECALL_ASSERT( this->contig() == other.contig(), "Can't intersect regions from different contigs" );
 
         const auto newInterval = this->interval().getIntersect( other.interval() );
         return Region( this->contig(), newInterval.start(), newInterval.end() );

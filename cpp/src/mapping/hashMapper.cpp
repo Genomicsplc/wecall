@@ -11,7 +11,7 @@
 #include <map>
 #include <cassert>
 
-namespace echidna
+namespace wecall
 {
 namespace mapping
 {
@@ -19,12 +19,12 @@ namespace mapping
     HashFunction::HashFunction( const utils::BasePairSequence & sequence, unsigned int kmerSize )
         : m_bitShift( kmerSize * 2 - 3 )
     {
-        ECHIDNA_ASSERT( kmerSize > 1, "Cannot operate with kmers of size 1" );
-        ECHIDNA_ASSERT( sequence.size() >= kmerSize, "Sequence is too short for hashing. Seq = " + sequence.str() );
+        WECALL_ASSERT( kmerSize > 1, "Cannot operate with kmers of size 1" );
+        WECALL_ASSERT( sequence.size() >= kmerSize, "Sequence is too short for hashing. Seq = " + sequence.str() );
 
         const auto maxSeqLen = 0x1u << 2 * kmerSize;
         assert( maxSeqLen == std::pow( 4, kmerSize ) );
-        ECHIDNA_ASSERT( sequence.size() < maxSeqLen, "Sequence is too long for hashing. Length = " +
+        WECALL_ASSERT( sequence.size() < maxSeqLen, "Sequence is too long for hashing. Length = " +
                                                          std::to_string( sequence.size() ) + " and max allowed = " +
                                                          std::to_string( maxSeqLen ) );
 
@@ -61,9 +61,9 @@ namespace mapping
     }
 
     std::vector< std::size_t > KmerMatches::countKmerMatches(
-        const echidna::utils::BasePairSequence & readSequence ) const
+        const wecall::utils::BasePairSequence & readSequence ) const
     {
-        ECHIDNA_ASSERT( readSequence.size() <= m_paddedHaplotypeSequenceLength,
+        WECALL_ASSERT( readSequence.size() <= m_paddedHaplotypeSequenceLength,
                         "Require padded Haplotype sequence to be longer than any chosen read-sequence" );
 
         const int readSeqLen = static_cast< int >( readSequence.size() );

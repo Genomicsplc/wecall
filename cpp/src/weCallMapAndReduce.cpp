@@ -1,7 +1,7 @@
 // All content Copyright (C) 2018 Genomics plc
 #include "weCallMapAndReduce.hpp"
 
-namespace echidna
+namespace wecall
 {
 using namespace boost::program_options;
 using namespace io;
@@ -44,7 +44,7 @@ int weCallMapAndReduce::processJob( int argc, char * argv[] )
             std::ifstream configIn( configFileName );
             if ( not configIn.is_open() )
             {
-                throw utils::echidna_exception( "Could not open configuration file: " + configFileName );
+                throw utils::wecall_exception( "Could not open configuration file: " + configFileName );
             }
 
             // Options from the config file are added to those from the command line (no override)
@@ -74,7 +74,7 @@ int weCallMapAndReduce::processJob( int argc, char * argv[] )
 
         if ( systemParams.m_numberOfJobs == 0 )
         {
-            ECHIDNA_LOG( INFO, "Will run in serial mode" );
+            WECALL_LOG( INFO, "Will run in serial mode" );
 
             caller::Job job( applicationParams, dataParams, systemParams, privateSystemParams, filterParams,
                              privateCallingParams, callingParams, privateOutputParams );
@@ -89,7 +89,7 @@ int weCallMapAndReduce::processJob( int argc, char * argv[] )
             std::shared_ptr< boost::asio::io_service > ioService( new boost::asio::io_service );
             std::shared_ptr< boost::asio::io_service::work > work( new boost::asio::io_service::work( *ioService ) );
 
-            ECHIDNA_LOG( INFO, "Will run " << systemParams.m_numberOfJobs << " jobs simultaneously, where possible" );
+            WECALL_LOG( INFO, "Will run " << systemParams.m_numberOfJobs << " jobs simultaneously, where possible" );
             boost::thread_group threadPool;
             for ( std::size_t i = 0; i < systemParams.m_numberOfJobs; ++i )
             {
@@ -102,33 +102,33 @@ int weCallMapAndReduce::processJob( int argc, char * argv[] )
             {
                 const auto jobProcessor = [&]( std::size_t jobIndex ) -> void
                 {
-                    ECHIDNA_LOG( INFO, "Started job " << jobIndex );
+                    WECALL_LOG( INFO, "Started job " << jobIndex );
 
                     caller::Job job( applicationParams, chunkedDataParams[jobIndex], systemParams, privateSystemParams,
                                      filterParams, privateCallingParams, callingParams, privateOutputParams );
 
                     job.process();
 
-                    ECHIDNA_LOG( INFO, "Finished job " << jobIndex );
+                    WECALL_LOG( INFO, "Finished job " << jobIndex );
                 };
 
                 ioService->post( boost::lambda::bind( jobProcessor, i ) );
 
-                ECHIDNA_LOG( INFO, "Posted job " << i );
+                WECALL_LOG( INFO, "Posted job " << i );
             }
 
             work.reset();
 
-            ECHIDNA_LOG( INFO, "Waiting for all jobs to finish" );
+            WECALL_LOG( INFO, "Waiting for all jobs to finish" );
 
             threadPool.join_all();
 
-            ECHIDNA_LOG( INFO, "Joined all threads" );
+            WECALL_LOG( INFO, "Joined all threads" );
 
             caller::JobReduce( reduceParams ).process();
         }
 
-        ECHIDNA_LOG( DEBUG, m_programName + " completed" );
+        WECALL_LOG( DEBUG, m_programName + " completed" );
     }
     catch ( std::exception & e )
     {

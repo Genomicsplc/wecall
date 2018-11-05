@@ -1,7 +1,7 @@
 # All content Copyright (C) 2018 Genomics plc
 from unittest import TestCase
 from wecall.bamutils.sequence import Sequence
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 from wecall.genomics.reference_chromosome import ReferenceChromosome
 from wecall.genomics.variant import Variant
 
@@ -11,7 +11,7 @@ class TestGetVariantsFromSequence(TestCase):
     def test_should_raise_when_whitespace_in_seq(self):
         ref = ReferenceChromosome("AAAA")
         self.assertRaisesRegex(
-            EchidnaException,
+            weCallException,
             "Illegal character in sequence .*",
             Sequence,
             ref,
@@ -21,7 +21,7 @@ class TestGetVariantsFromSequence(TestCase):
     def test_should_raise_when_illegal_char_in_seq(self):
         ref = ReferenceChromosome("AAAA")
         self.assertRaisesRegex(
-            EchidnaException,
+            weCallException,
             "Illegal character in sequence \'..*F\'",
             Sequence,
             ref,
@@ -30,7 +30,7 @@ class TestGetVariantsFromSequence(TestCase):
 
     def test_should_raise_if_ref_and_seq_have_different_length(self):
         ref = ReferenceChromosome("AAA")
-        self.assertRaises(EchidnaException, Sequence, ref, "..")
+        self.assertRaises(weCallException, Sequence, ref, "..")
 
     def test_finds_snp(self):
         ref = ReferenceChromosome("AAAAAAAAAAAAA")
@@ -165,7 +165,7 @@ class TestGetVariantsFromSequence(TestCase):
     def test_raise_at_dot_overlapping_asterix(self):
         ref = ReferenceChromosome("TA*AAAAAAAT")
         self.assertRaisesRegex(
-            EchidnaException,
+            weCallException,
             "Invalid sequence at ref position 1.",
             Sequence,
             ref,

@@ -1,10 +1,10 @@
 # All content Copyright (C) 2018 Genomics plc
 """
-Basic exception classes to be used throughout the Echidna code.
+Basic exception classes to be used throughout the weCall code.
 """
 
 
-class EchidnaException(Exception):
+class weCallException(Exception):
     """
     Base class for all exceptions. Everything we throw
     should derive from this.
@@ -18,7 +18,7 @@ class EchidnaException(Exception):
         return repr(self.value)
 
 
-class EchidnaRuntimeException(EchidnaException):
+class weCallRuntimeException(weCallException):
 
     def __init__(self, return_code, result):
         self.return_code = return_code

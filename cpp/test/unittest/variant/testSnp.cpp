@@ -5,10 +5,10 @@
 #include <boost/test/unit_test.hpp>
 #include <string>
 
-using echidna::caller::Region;
-using echidna::utils::ReferenceSequence;
-using echidna::variant::Variant;
-using echidna::variant::varPtr_t;
+using wecall::caller::Region;
+using wecall::utils::ReferenceSequence;
+using wecall::variant::Variant;
+using wecall::variant::varPtr_t;
 
 //-------------------------------------------------------------------------------------------------
 
@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE( testSNP )
 
     auto expectedPrior = 1e-3 / 3.0;
 
-    echidna::variant::setDefaultPriors( {theSnp} );
+    wecall::variant::setDefaultPriors( {theSnp} );
     BOOST_CHECK_CLOSE( theSnp->prior(), expectedPrior, 1e-5 );
 }
 

@@ -6,14 +6,14 @@
 #include "caller/candidateVariantBank.hpp"
 #include "unittest/vcf/VCFTestUtils.hpp"
 
-using namespace echidna::variant;
-using namespace echidna::caller;
-using echidna::caller::Region;
-using echidna::utils::ReferenceSequence;
+using namespace wecall::variant;
+using namespace wecall::caller;
+using wecall::caller::Region;
+using wecall::utils::ReferenceSequence;
 
 BOOST_AUTO_TEST_CASE( shouldComputePriorFromAlleleFrequenceString )
 {
-    echidna::vcf::Info info;
+    wecall::vcf::Info info;
 
     info.emplace_back( std::make_pair< std::string, std::vector< std::string > >(
         std::string( "AF" ), {std::string( "0.4" ), std::string( "0.5" )} ) );

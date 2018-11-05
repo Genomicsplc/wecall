@@ -9,7 +9,7 @@
 
 #include "reader.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace vcf
 {
@@ -46,7 +46,7 @@ namespace vcf
             }
             else
             {
-                ECHIDNA_LOG( DEBUG, "Invalid info field " << field );
+                WECALL_LOG( DEBUG, "Invalid info field " << field );
             }
         }
 

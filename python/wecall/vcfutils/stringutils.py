@@ -1,5 +1,5 @@
 # All content Copyright (C) 2018 Genomics plc
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 
 
 def to_vcf_str(primitive_type):
@@ -17,6 +17,6 @@ def from_vcf_str(vcf_str, desired_type):
     try:
         return desired_type(vcf_str) if vcf_str != "." else None
     except ValueError:
-        raise EchidnaException(
+        raise weCallException(
             "Cannot cast {} to {!r}".format(
                 vcf_str, desired_type))

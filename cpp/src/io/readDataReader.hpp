@@ -10,7 +10,7 @@
 #include "utils/logging.hpp"
 #include "caller/region.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

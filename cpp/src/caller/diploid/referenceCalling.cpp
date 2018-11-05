@@ -5,7 +5,7 @@
 #include "io/readSummaries.hpp"
 #include "stats/models.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {
@@ -21,7 +21,7 @@ namespace caller
         {
             // First get coverage data for each sample
 
-            ECHIDNA_ASSERT( refInterval.size() > 0, "Can not call reference on empty reference interval." );
+            WECALL_ASSERT( refInterval.size() > 0, "Can not call reference on empty reference interval." );
 
             const auto nSamples = reads.size();
             const auto readCoverageChunks = io::readsummaries::summariseReadCoverageAndSplitInChunks(

@@ -3,14 +3,14 @@
 #include "alignment/cigarItems.hpp"
 #include "caller/region.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace corrector
 {
     //-----------------------------------------------------------------------------------------
 
     KmerDistribution::KmerDistribution( const std::string & chromosomeLabel,
-                                        const echidna::io::FastaFile & fa,
+                                        const wecall::io::FastaFile & fa,
                                         const int readsStart,
                                         const int readsEnd )
         : m_firstReadStart( readsStart ), m_lastReadEnd( readsEnd )
@@ -186,4 +186,4 @@ namespace corrector
 
     //-----------------------------------------------------------------------------------------
 }
-}  // namespace echidna
+}  // namespace wecall

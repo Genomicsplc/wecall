@@ -4,7 +4,7 @@ from wecall.bamutils.raw_string_sequence import RawStringSequences
 from wecall.bamutils.sequence import Sequence
 from wecall.bamutils.sequence_position import SequencePosition
 from wecall.bamutils.sequence_quality import SequenceQuality
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 from wecall.genomics.reference_chromosome import ReferenceChromosome
 
 
@@ -31,17 +31,17 @@ def sequence_builder(
             i is None for i in [
                 n_fwd,
                 n_rev]):
-        raise EchidnaException(
+        raise weCallException(
             "Invalid combination of forward and reverse reads: n_fwd = {}, n_rev = {} ".format(
                 n_fwd, n_rev))
 
     if len(seq_string) != reference.length_with_deletions():
-        raise EchidnaException(
+        raise weCallException(
             "Sequence has to be of the same length as reference. seq_length {}, ref_length {}".format(
                 len(seq_string), reference.length_with_deletions()))
 
     if len(quality_string) != reference.length_with_deletions():
-        raise EchidnaException(
+        raise weCallException(
             "Quality string has to be of the same length as reference.")
 
     ref_pos = reference.pos_from

@@ -6,7 +6,7 @@
 
 #include <ctime>
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {

@@ -8,12 +8,12 @@
 #define BOOST_TEST_DYN_LINK
 #include <boost/test/unit_test.hpp>
 
-using echidna::variant::Variant;
-using echidna::variant::VariantFilter;
-using echidna::variant::VariantContainer;
-using echidna::utils::ReferenceSequence;
-using echidna::utils::BasePairSequence;
-using echidna::caller::Region;
+using wecall::variant::Variant;
+using wecall::variant::VariantFilter;
+using wecall::variant::VariantContainer;
+using wecall::utils::ReferenceSequence;
+using wecall::utils::BasePairSequence;
+using wecall::caller::Region;
 
 std::shared_ptr< Variant > unfilterable_variant( const std::string & chrom,
                                                  const int64_t start,

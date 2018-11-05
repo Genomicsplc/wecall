@@ -9,7 +9,7 @@
 #include "mapping/hashMapper.hpp"
 #include "io/read.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {

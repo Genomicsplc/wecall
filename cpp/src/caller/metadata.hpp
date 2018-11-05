@@ -3,7 +3,7 @@
 #define METADATA_HPP
 #include "common.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {

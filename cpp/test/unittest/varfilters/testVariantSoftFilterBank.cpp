@@ -8,8 +8,8 @@
 #include "utils/exceptions.hpp"
 #include "vcf/filterDescription.hpp"
 
-using VariantSoftFilterBank = echidna::varfilters::VariantSoftFilterBank;
-using echidna_exception = echidna::utils::echidna_exception;
+using VariantSoftFilterBank = wecall::varfilters::VariantSoftFilterBank;
+using wecall_exception = wecall::utils::wecall_exception;
 
 BOOST_AUTO_TEST_CASE( shouldConstructValidSoftFilterBank )
 {
@@ -20,7 +20,7 @@ BOOST_AUTO_TEST_CASE( shouldConstructValidSoftFilterBank )
 BOOST_AUTO_TEST_CASE( shouldRejectInvalidSoftFilter )
 {
     std::vector< std::string > filters( {"ABBA"} );
-    BOOST_CHECK_THROW( VariantSoftFilterBank vsfb( filters, 0.01, 0.01, 0, 0, 0.0, 0.0, 0, 0 ), echidna_exception );
+    BOOST_CHECK_THROW( VariantSoftFilterBank vsfb( filters, 0.01, 0.01, 0, 0, 0.0, 0.0, 0, 0 ), wecall_exception );
 }
 
 BOOST_AUTO_TEST_CASE( shouldReturnFilterDescsInADeterministicOrder )

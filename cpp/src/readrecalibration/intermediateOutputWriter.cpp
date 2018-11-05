@@ -8,7 +8,7 @@
 #include "io/bamFile.hpp"
 #include "utils/exceptions.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace corrector
 {
@@ -25,7 +25,7 @@ namespace corrector
                 auto sampleNames = inputBam.getSampleNames();
                 if ( sampleNames.size() != 1 )
                 {
-                    throw utils::echidna_exception( "Only one sample per bam file is currently supported." );
+                    throw utils::wecall_exception( "Only one sample per bam file is currently supported." );
                 }
                 auto outputFilename = this->sampleFilename( sampleNames.front() );
 
@@ -77,7 +77,7 @@ namespace corrector
 
                 for ( const auto & read : sampleNameReadRange.second )
                 {
-                    // ECHIDNA_LOG(SUPER_DEBUG, "Outputting read with quality: " << read->getQualities());
+                    // WECALL_LOG(SUPER_DEBUG, "Outputting read with quality: " << read->getQualities());
 
                     outputSam << read.getQName() << "\t";
                     outputSam << read.getFlag() << "\t";
@@ -105,4 +105,4 @@ namespace corrector
     }
 
 }  // namespace corrector
-}  // namespace echidna
+}  // namespace wecall

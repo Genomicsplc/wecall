@@ -1,7 +1,7 @@
 // All content Copyright (C) 2018 Genomics plc
 #pragma once
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {
@@ -25,4 +25,4 @@ namespace utils
 
     }  // namespace functional
 }  // namespace utils
-}  // namespace echidna
+}  // namespace wecall

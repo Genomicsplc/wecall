@@ -5,7 +5,7 @@
 
 #include "utils/NeedlemanWunsch.hpp"
 
-using echidna::utils::NWPenalties;
+using wecall::utils::NWPenalties;
 
 BOOST_AUTO_TEST_CASE( shouldMakeSameObjectWithBothInitialisers )
 {

@@ -17,7 +17,7 @@
 #include "vcf/reader.hpp"
 #include "vcf/filterDescription.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {
@@ -32,38 +32,38 @@ namespace io
 
     void TabixVCFFile::readHeader( std::string filename )
     {
-        ECHIDNA_LOG( DEBUG, "Reading vcf file header" );
+        WECALL_LOG( DEBUG, "Reading vcf file header" );
 
         const auto headerLines = m_tabixFile.header();
 
         if ( headerLines.empty() )
         {
-            throw utils::echidna_exception( "Malformed VCF: missing header." );
+            throw utils::wecall_exception( "Malformed VCF: missing header." );
         }
         else if ( not boost::starts_with( headerLines.back(), "#CHROM" ) )
         {
-            throw utils::echidna_exception( "Malformed VCF: did not find #CHROM at start of final header line." );
+            throw utils::wecall_exception( "Malformed VCF: did not find #CHROM at start of final header line." );
         }
 
         for ( const auto & line : headerLines )
         {
             if ( boost::starts_with( line, "##FILTER" ) )
             {
-                ECHIDNA_LOG( DEBUG, "Found filter " << line );
+                WECALL_LOG( DEBUG, "Found filter " << line );
                 auto filterDesc = parseFilterHeaderLine( line );
                 if ( containsFilterId( m_filterDescs, filterDesc.id ) )
                 {
-                    throw utils::echidna_exception( "The header contains repeated filter " + filterDesc.id + "." );
+                    throw utils::wecall_exception( "The header contains repeated filter " + filterDesc.id + "." );
                 }
                 m_filterDescs.insert( filterDesc );
             }
             else if ( boost::starts_with( line, "##INFO" ) )
             {
-                ECHIDNA_LOG( DEBUG, "VCF 'INFO' fields are not yet parsed. Skipping: " << line );
+                WECALL_LOG( DEBUG, "VCF 'INFO' fields are not yet parsed. Skipping: " << line );
             }
             else if ( boost::starts_with( line, "##FORMAT" ) )
             {
-                ECHIDNA_LOG( DEBUG, "VCF 'FORMAT' fields are not yet parsed. Skipping: " << line );
+                WECALL_LOG( DEBUG, "VCF 'FORMAT' fields are not yet parsed. Skipping: " << line );
             }
             else if ( boost::starts_with( line, "##" ) )
             {
@@ -92,7 +92,7 @@ namespace io
 
             if ( cols.size() < 8 )
             {
-                throw utils::echidna_exception( "Record line should have at least 7 columns: " + line );
+                throw utils::wecall_exception( "Record line should have at least 7 columns: " + line );
             }
 
             const std::string chrom = cols.at( 0 );
@@ -117,7 +117,7 @@ namespace io
             {
                 if ( not containsFilterId( m_filterDescs, filterId ) and filterId != "PASS" )
                 {
-                    ECHIDNA_LOG( DEBUG, "Filter ID \"" + filterId + "\" was not supplied in the header." );
+                    WECALL_LOG( DEBUG, "Filter ID \"" + filterId + "\" was not supplied in the header." );
                 }
             }
 
@@ -151,7 +151,7 @@ namespace io
         }
         else
         {
-            throw utils::echidna_exception( "Failed to match meta information header line: " + line );
+            throw utils::wecall_exception( "Failed to match meta information header line: " + line );
         }
     }
 
@@ -168,7 +168,7 @@ namespace io
         }
         else
         {
-            throw utils::echidna_exception( "Failed to match filter header line: " + line );
+            throw utils::wecall_exception( "Failed to match filter header line: " + line );
         }
     }
 }

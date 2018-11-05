@@ -1,6 +1,6 @@
 // All content Copyright (C) 2018 Genomics plc
-#ifndef ECHIDNA_VARIANT_QUALITY_CALCULATOR_HPP
-#define ECHIDNA_VARIANT_QUALITY_CALCULATOR_HPP
+#ifndef WECALL_VARIANT_QUALITY_CALCULATOR_HPP
+#define WECALL_VARIANT_QUALITY_CALCULATOR_HPP
 
 #include <boost/numeric/ublas/matrix.hpp>
 #include <vector>
@@ -8,7 +8,7 @@
 #include "io/readRange.hpp"
 #include "variant/genotype.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {

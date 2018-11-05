@@ -1,46 +1,46 @@
 # All content Copyright (C) 2018 Genomics plc
 import unittest
 from wecall.bamutils.sequence_builder import sequence_builder
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 from wecall.genomics.reference_chromosome import ReferenceChromosome
 
 
 class TestSequenceBuilder(unittest.TestCase):
 
     def test_should_raise_for_invalid_char_in_seq(self):
-        with self.assertRaisesRegex(EchidnaException, "Illegal character in sequence .*'"):
+        with self.assertRaisesRegex(weCallException, "Illegal character in sequence .*'"):
             sequence_builder(ReferenceChromosome("TAAAA"), "..&..")
 
     def test_should_raise_for_lower_case_char_in_fwd_seq(self):
-        with self.assertRaisesRegex(EchidnaException, "Illegal character in sequence .*"):
+        with self.assertRaisesRegex(weCallException, "Illegal character in sequence .*"):
             sequence_builder(ReferenceChromosome("TAAAA"), "..c..")
 
     def test_should_raise_for_dot_in_reverse_seq(self):
-        with self.assertRaisesRegex(EchidnaException, "Illegal character in sequence .*"):
+        with self.assertRaisesRegex(weCallException, "Illegal character in sequence .*"):
             sequence_builder(ReferenceChromosome("TAAAA"), ",,c.,")
 
     def test_should_raise_when_quality_string_too_short(self):
-        with self.assertRaisesRegex(EchidnaException, "Quality string has to be of the same length as reference."):
+        with self.assertRaisesRegex(weCallException, "Quality string has to be of the same length as reference."):
             sequence_builder(ReferenceChromosome("TAAAA"), ".....", "22  ")
 
     def test_should_raise_when_quality_string_too_short_due_to_insertions(self):
-        with self.assertRaisesRegex(EchidnaException, "Quality string has to be of the same length as reference."):
+        with self.assertRaisesRegex(weCallException, "Quality string has to be of the same length as reference."):
             sequence_builder(ReferenceChromosome("TA**A"), "..TT.", "1234")
 
     def test_should_raise_when_quality_string_too_short_multisequence(self):
-        with self.assertRaisesRegex(EchidnaException, "Quality string has to be of the same length as reference."):
+        with self.assertRaisesRegex(weCallException, "Quality string has to be of the same length as reference."):
             sequence_builder(
                 ReferenceChromosome("TAAAA*A"),
                 "...  ..",
                 "12   4")
 
     def test_should_raise_when_quality_assigned_to_gap(self):
-        with self.assertRaisesRegex(EchidnaException, "Cannot assign base quality inside a gap."):
+        with self.assertRaisesRegex(weCallException, "Cannot assign base quality inside a gap."):
             sequence_builder(ReferenceChromosome(
                 "TAAAA*A"), "...  ..", "12  34 ")
 
     def test_should_raise_when_quality_string_too_long_due_to_insertions(self):
-        with self.assertRaisesRegex(EchidnaException, "Quality string has to be of the same length as reference."):
+        with self.assertRaisesRegex(weCallException, "Quality string has to be of the same length as reference."):
             sequence_builder(ReferenceChromosome("TA**A"), "..TT.", "123")
 
     def test_should_build_correct_sequence_without_any_whitespace(self):
@@ -181,7 +181,7 @@ class TestQualityBuilding(unittest.TestCase):
             self.default_qual)
 
     def test_should_raise_when_assigning_qual_to_deletion(self):
-        with self.assertRaisesRegex(EchidnaException, "Cannot assign base quality to a deleted base."):
+        with self.assertRaisesRegex(weCallException, "Cannot assign base quality to a deleted base."):
             sequence_builder(ReferenceChromosome("AAAA"), ".*..", " 1  ")
 
 

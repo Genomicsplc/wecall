@@ -11,7 +11,7 @@
 #include "utils/logging.hpp"
 #include "caller/params.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {
@@ -21,21 +21,21 @@ namespace caller
         : m_reduceParams( reduceParams ),
           m_timer( std::make_shared< utils::Timer >( "IO", utils::fileMetaData( reduceParams.outputDataSink() ) ) )
     {
-        ECHIDNA_ERROR( fs::is_directory( m_reduceParams.inputDir() ),
+        WECALL_ERROR( fs::is_directory( m_reduceParams.inputDir() ),
                        m_reduceParams.inputDir() + " is not a directory" );
 
         for ( fs::directory_iterator directory_iterator( m_reduceParams.inputDir() );
               directory_iterator != fs::directory_iterator(); ++directory_iterator )
         {
             fs::path filePath = directory_iterator->path();
-            ECHIDNA_ERROR( ( fs::is_regular_file( filePath ) ), filePath.string() + " is not a file" );
-            ECHIDNA_ERROR( ( filePath.filename().extension() == fs::path( ".vcf" ) ),
+            WECALL_ERROR( ( fs::is_regular_file( filePath ) ), filePath.string() + " is not a file" );
+            WECALL_ERROR( ( filePath.filename().extension() == fs::path( ".vcf" ) ),
                            "file " + filePath.string() + " is not a VCF" );
 
             m_inputVCFFilePaths.emplace_back( filePath );
         }
 
-        ECHIDNA_ERROR( ( not m_inputVCFFilePaths.empty() ), "directory " + m_reduceParams.inputDir() + " is empty" );
+        WECALL_ERROR( ( not m_inputVCFFilePaths.empty() ), "directory " + m_reduceParams.inputDir() + " is empty" );
 
         std::sort( m_inputVCFFilePaths.begin(), m_inputVCFFilePaths.end() );
     }
@@ -50,7 +50,7 @@ namespace caller
 
         cleanUp();
 
-        ECHIDNA_LOG( INFO, "Reduce finished" );
+        WECALL_LOG( INFO, "Reduce finished" );
     }
 
     void JobReduce::cleanUp() const { boost::filesystem::remove_all( m_reduceParams.inputDir() ); }
@@ -95,7 +95,7 @@ namespace caller
     {
         for ( const auto & file : m_inputVCFFilePaths )
         {
-            ECHIDNA_LOG( INFO, "Processing " << file );
+            WECALL_LOG( INFO, "Processing " << file );
 
             std::ifstream in( file.string(), std::ios_base::in );
 
@@ -113,16 +113,16 @@ namespace caller
                 temp.clear();
             }
 
-            ECHIDNA_ERROR( isNextLineARecord, "file " + file.string() + " is not a valid VCF" );
+            WECALL_ERROR( isNextLineARecord, "file " + file.string() + " is not a valid VCF" );
 
             std::istreambuf_iterator< char > beginSource( in );
             std::istreambuf_iterator< char > endSource;
             std::ostreambuf_iterator< char > beginDest( out );
             std::copy( beginSource, endSource, beginDest );
 
-            ECHIDNA_ASSERT( in.good(), "Input data stream in error state" );
+            WECALL_ASSERT( in.good(), "Input data stream in error state" );
             in.peek();
-            ECHIDNA_ASSERT( in.eof(), "Input data stream not depleted" );
+            WECALL_ASSERT( in.eof(), "Input data stream not depleted" );
 
             in.close();
         }

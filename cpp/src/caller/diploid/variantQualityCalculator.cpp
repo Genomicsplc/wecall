@@ -4,7 +4,7 @@
 
 #include <numeric>
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {
@@ -111,11 +111,11 @@ namespace caller
 
             if ( false )
             {
-                ECHIDNA_LOG( SUPER_DEBUG, "sumLogProbNoVariant " << sumLogProbNoVariant );
-                ECHIDNA_LOG( SUPER_DEBUG, "sumLogTotalEvents " << sumLogTotalEvents );
-                ECHIDNA_LOG( SUPER_DEBUG, "Prior is " << prior << " for var " << variant->toString() );
-                ECHIDNA_LOG( SUPER_DEBUG, "Ratio is " << weightedRatio << " for var " << variant->toString() );
-                ECHIDNA_LOG( SUPER_DEBUG, "Posterior is " << posterior << " for var " << variant->toString() );
+                WECALL_LOG( SUPER_DEBUG, "sumLogProbNoVariant " << sumLogProbNoVariant );
+                WECALL_LOG( SUPER_DEBUG, "sumLogTotalEvents " << sumLogTotalEvents );
+                WECALL_LOG( SUPER_DEBUG, "Prior is " << prior << " for var " << variant->toString() );
+                WECALL_LOG( SUPER_DEBUG, "Ratio is " << weightedRatio << " for var " << variant->toString() );
+                WECALL_LOG( SUPER_DEBUG, "Posterior is " << posterior << " for var " << variant->toString() );
             }
 
             return posterior;

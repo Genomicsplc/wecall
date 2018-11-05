@@ -1,7 +1,7 @@
 # All content Copyright (C) 2018 Genomics plc
 from collections import OrderedDict
 
-from wecall.common.exceptions import EchidnaException
+from wecall.common.exceptions import weCallException
 from wecall.vcfutils.genotype_call import GenotypeCall, merge_genotype_calls
 from wecall.vcfutils.stringutils import to_vcf_str
 
@@ -60,16 +60,16 @@ class SampleData(object):
 
     def add_sample_data(self, sample_name, key_name, sample_data_value):
         if key_name not in self.__key_to_sample_values:
-            raise EchidnaException(
+            raise weCallException(
                 "Missing key {} when adding sample data.".format(key_name))
 
         if sample_name not in self.__sample_names:
-            raise EchidnaException(
+            raise weCallException(
                 "Missing sample name {} supplied when adding sample data.".format(sample_name))
 
         if key_name == GENOTYPE_KEY and not isinstance(
                 sample_data_value, GenotypeCall):
-            raise EchidnaException("Genotype field must be a GenotypeCall.")
+            raise weCallException("Genotype field must be a GenotypeCall.")
 
         self.__key_to_sample_values[key_name][self.__sample_names.index(
             sample_name)] = sample_data_value
@@ -87,7 +87,7 @@ class SampleData(object):
         for key in READ_DEPTH_KEYS:
             if self.has_genotype_key(key):
                 return self.get_field(sample_name, key)
-        raise EchidnaException(
+        raise weCallException(
             "Expected one of {} as the depth key.".format(READ_DEPTH_KEYS))
 
     def has_variant_support_key(self):
@@ -99,7 +99,7 @@ class SampleData(object):
             if self.has_genotype_key(key):
                 return VARIANT_SUPPORT_MAP[key](
                     self.get_field(sample_name, key))
-        raise EchidnaException(
+        raise weCallException(
             "Expected one of {} as the variant support key.".format(
                 list(
                     VARIANT_SUPPORT_MAP.keys())))
@@ -138,7 +138,7 @@ class SampleData(object):
                 values = self.get_field(sample_name, key)
                 return convert_likelihoods(
                     values, LIKELIHOOD_SCALING_FACTOR[key])
-        raise EchidnaException(
+        raise weCallException(
             "Expected one of {} as the likelihood key.".format(
                 list(
                     LIKELIHOOD_SCALING_FACTOR.keys())))
@@ -160,7 +160,7 @@ class SampleData(object):
                     likelihood_values, LIKELIHOOD_SCALING_FACTOR[key])
                 self.add_sample_data(sample_name, key, converted_values)
                 return
-        raise EchidnaException(
+        raise weCallException(
             "Expected one of {} as the likelihood key.".format(
                 list(
                     LIKELIHOOD_SCALING_FACTOR.keys())))

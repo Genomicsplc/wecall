@@ -8,7 +8,7 @@
 #include "utils/timer.hpp"
 #include "caller/params.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {

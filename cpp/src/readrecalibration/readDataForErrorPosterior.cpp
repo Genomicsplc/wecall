@@ -2,11 +2,11 @@
 #include "readrecalibration/readDataForErrorPosterior.hpp"
 #include "alignment/cigarItems.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace corrector
 {
-    ReadDataForErrorPosterior::ReadDataForErrorPosterior( echidna::io::readPtr_t readPtr ) : m_readPtr( readPtr )
+    ReadDataForErrorPosterior::ReadDataForErrorPosterior( wecall::io::readPtr_t readPtr ) : m_readPtr( readPtr )
     {
         m_isForward = not m_readPtr->isReverse();
 
@@ -40,13 +40,13 @@ namespace corrector
 
             if ( kmerDistribution.start() <= refPos && refPos < kmerDistribution.end() )
             {
-                // ECHIDNA_LOG(SUPER_DEBUG,
+                // WECALL_LOG(SUPER_DEBUG,
                 //            "Emission distribution for read=" << m_readPtr->getQName() << " start position=" <<
                 //            m_readPtr->getStartPos());
                 siteReadData.calculateEmissionProbability( kmerDistribution.getSiteKmerDistribution( refPos ),
                                                            errorCorrectionParameters );
 
-                // ECHIDNA_LOG(SUPER_DEBUG,
+                // WECALL_LOG(SUPER_DEBUG,
                 //            "Emission transition for read=" << m_readPtr->getQName() << " start position=" <<
                 //            m_readPtr->getStartPos());
                 siteReadData.calculateTransitionProbability( errorCorrectionParameters );
@@ -130,7 +130,7 @@ namespace corrector
 
     void ReadDataForErrorPosterior::recalibrateRead()
     {
-        // ECHIDNA_LOG(SUPER_DEBUG, "Before recalib qualities: " << m_readPtr->getQualities());
+        // WECALL_LOG(SUPER_DEBUG, "Before recalib qualities: " << m_readPtr->getQualities());
         if ( m_readData.size() == 0 )
         {
             return;
@@ -158,9 +158,9 @@ namespace corrector
         int readIndex =
             m_isForward ? m_readData[kickIndex].indexIntoRead() : m_readData[kickIndex].indexIntoRead() + kmerSize - 1;
 
-        // ECHIDNA_LOG(SUPER_DEBUG, "Kick index: " << kickIndex);
-        // ECHIDNA_LOG(SUPER_DEBUG, "Read index: " << readIndex);
-        // ECHIDNA_LOG(SUPER_DEBUG, "Read data size: " << m_readData.size());
+        // WECALL_LOG(SUPER_DEBUG, "Kick index: " << kickIndex);
+        // WECALL_LOG(SUPER_DEBUG, "Read index: " << readIndex);
+        // WECALL_LOG(SUPER_DEBUG, "Read data size: " << m_readData.size());
         do
         {
             // TODO(Edward, Hedvika) Is this safe from potential overflow?
@@ -168,7 +168,7 @@ namespace corrector
             readIndex += direction;
         } while ( 0 <= readIndex && readIndex < m_readPtr->getLength() );
 
-        // ECHIDNA_LOG(SUPER_DEBUG, "After recalib qualities: " << m_readPtr->getQualities());
+        // WECALL_LOG(SUPER_DEBUG, "After recalib qualities: " << m_readPtr->getQualities());
     }
 }
 }

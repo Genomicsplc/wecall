@@ -21,7 +21,7 @@ class TestUtilityFunctionsInRecordModule(unittest.TestCase):
         quality = "50"
         self.assertEqual(variant_quality_from_vcf(quality), 50.0)
         self.assertEqual(variant_quality_from_vcf("."), None)
-        self.assertRaises(wecall.common.exceptions.EchidnaException, variant_quality_from_vcf, "String")
+        self.assertRaises(wecall.common.exceptions.weCallException, variant_quality_from_vcf, "String")
 
     def test_variant_ids_from_vcf(self):
         self.assertEqual(variant_ids_from_vcf("A,B"), {"A", "B"})
@@ -70,7 +70,7 @@ class TestUtilityFunctionsInRecordModule(unittest.TestCase):
 class RecordTest(unittest.TestCase):
     def setUp(self):
         self.data_dir = os.path.join(os.path.dirname(__file__), "example_data")
-        self.work_dir = os.path.join(os.environ["ECHIDNA_TEST_RESULTS"], *self.id().split("."))
+        self.work_dir = os.path.join(os.environ["WECALL_TEST_RESULTS"], *self.id().split("."))
         try:
             os.makedirs(self.work_dir)
         except OSError:
@@ -332,7 +332,7 @@ class TestTrimmedVCFRefAlt(unittest.TestCase):
         self.assertEqual(trimmed_vcf_ref_alt("A", "A"), (0, "A", "A"))
 
     def test_fails_with_long_refcall(self):
-        self.assertRaises(wecall.common.exceptions.EchidnaException, trimmed_vcf_ref_alt, "ACDE", "ACDE")
+        self.assertRaises(wecall.common.exceptions.weCallException, trimmed_vcf_ref_alt, "ACDE", "ACDE")
 
     def test_with_SNP(self):
         self.assertEqual(trimmed_vcf_ref_alt("ABCDE", "ABQDE"), (2, "C", "Q"))
@@ -362,17 +362,17 @@ class TestTrimmedVCFRefAlt(unittest.TestCase):
         self.assertEqual(trimmed_vcf_ref_alt("AT", "ATAT"), (0, "A", "ATA"))
 
     def test_fails_with_monomorphic_variant(self):
-        self.assertRaises(wecall.common.exceptions.EchidnaException, trimmed_vcf_ref_alt, "AT", ".")
-        self.assertRaises(wecall.common.exceptions.EchidnaException, trimmed_vcf_ref_alt, ".", "AT")
+        self.assertRaises(wecall.common.exceptions.weCallException, trimmed_vcf_ref_alt, "AT", ".")
+        self.assertRaises(wecall.common.exceptions.weCallException, trimmed_vcf_ref_alt, ".", "AT")
 
     def test_fails_with_empty_ref(self):
-        self.assertRaises(wecall.common.exceptions.EchidnaException, trimmed_vcf_ref_alt, "", "A")
+        self.assertRaises(wecall.common.exceptions.weCallException, trimmed_vcf_ref_alt, "", "A")
 
     def test_fails_with_empty_alt(self):
-        self.assertRaises(wecall.common.exceptions.EchidnaException, trimmed_vcf_ref_alt, "A", "")
+        self.assertRaises(wecall.common.exceptions.weCallException, trimmed_vcf_ref_alt, "A", "")
 
     def test_fails_with_empty_ref_and_alt(self):
-        self.assertRaises(wecall.common.exceptions.EchidnaException, trimmed_vcf_ref_alt, "", "")
+        self.assertRaises(wecall.common.exceptions.weCallException, trimmed_vcf_ref_alt, "", "")
 
 
 class TestInfoFieldFormatting(unittest.TestCase):

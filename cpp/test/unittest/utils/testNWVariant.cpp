@@ -5,10 +5,10 @@
 
 #include "utils/NeedlemanWunsch.hpp"
 
-using namespace echidna::variant;
-using namespace echidna::caller;
-using echidna::utils::NWVariant;
-using echidna::utils::ReferenceSequence;
+using namespace wecall::variant;
+using namespace wecall::caller;
+using wecall::utils::NWVariant;
+using wecall::utils::ReferenceSequence;
 
 BOOST_AUTO_TEST_CASE( shouldProduceCorrectVariantForSNPAtStart )
 {

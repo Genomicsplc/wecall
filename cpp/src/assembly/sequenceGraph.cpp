@@ -12,7 +12,7 @@
 #include <stack>
 #include <boost/algorithm/string/join.hpp>
 
-namespace echidna
+namespace wecall
 {
 namespace assembly
 {
@@ -330,13 +330,13 @@ namespace assembly
                                          const utils::QualitySequence & qualitySequence,
                                          const bool disallowRepeats )
     {
-        ECHIDNA_ASSERT( readSequence, "KmerSequence created from temporary object" );
+        WECALL_ASSERT( readSequence, "KmerSequence created from temporary object" );
         const std::size_t length = readSequence->size();
         assert( qualitySequence.size() == length );
 
         std::set< Node * > currentNodes;
 
-        ECHIDNA_ASSERT( length > m_kmerSize, "Require sequence length to be longer than kmerSize" );
+        WECALL_ASSERT( length > m_kmerSize, "Require sequence length to be longer than kmerSize" );
         bool hasRepeat = false;
 
         for ( std::size_t index = 0; index < length - m_kmerSize; ++index )
@@ -388,8 +388,8 @@ namespace assembly
 
         bool repeatNode = false;
 
-        ECHIDNA_ASSERT( referenceSequence->region().contains( region ), "" );
-        ECHIDNA_ASSERT( length > m_kmerSize, "Require sequence length to be longer than kmerSize" );
+        WECALL_ASSERT( referenceSequence->region().contains( region ), "" );
+        WECALL_ASSERT( length > m_kmerSize, "Require sequence length to be longer than kmerSize" );
 
         const std::size_t indentFromStart = int64_to_sizet( region.start() - referenceSequence->start() );
 

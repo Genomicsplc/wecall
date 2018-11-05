@@ -1,7 +1,7 @@
 // All content Copyright (C) 2018 Genomics plc
 #include "utils/sequence.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace utils
 {
@@ -20,14 +20,14 @@ namespace utils
     BasePairSequence BasePairSequence::substr( int64_t pos, int64_t length ) const
     {
         if ( pos < 0 )
-            throw echidna::utils::echidna_exception( "BasePairSequence: pos less than 0" );
+            throw wecall::utils::wecall_exception( "BasePairSequence: pos less than 0" );
         return BasePairSequence( m_sequence.substr( pos, length ) );
     }
 
     BasePairSequence BasePairSequence::substr( int64_t pos ) const
     {
         if ( pos < 0 )
-            throw echidna::utils::echidna_exception( "BasePairSequence: pos less than 0" );
+            throw wecall::utils::wecall_exception( "BasePairSequence: pos less than 0" );
         return BasePairSequence( m_sequence.substr( pos ) );
     }
 

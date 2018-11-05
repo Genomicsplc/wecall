@@ -13,10 +13,10 @@ weCall is fast to run and very easy to use in a single processing step.
 1. Ensure you have cmake, ncurses, boost (>=1.54) and zlib installed.
 2. Clone weCall repository. Withing the repository type ```make install```. This will add ```weCall``` and the unit test tools (```unittest```, ```iotest```)
 to ```/usr/bin/local```. The installation directory can be set by modifying the ```PREFIX``` variable in the Makefile.
-3. The user documentation can be created with ```make doc```. The user documentation will be generated in the folder ```build/doc/weCall-userguide.pdf``` of the repository.
+3. The user documentation can be created with ```make doc```. The user documentation will be generated in the folder ```target/build/doc/weCall-userguide.pdf``` of the repository.
 4. weCall may be run directly from the command line. A quick summary of the parameters accepted by weCall can be obtained by invoking the help facility:
  ```weCall -h```.
-For detailed information on how to use weCall, please refer to the user guide (```build/weCall-userguide.pdf```).
+For detailed information on how to use weCall, please refer to the user guide (```target/build/weCall-userguide.pdf```).
 
 ## Running weCall
 
@@ -36,7 +36,7 @@ weCall --inputs sample1.bam,sample2.bam --refFile reference.fa --regions 20:0-10
 A quick summary of the parameters accepted by weCall may be obtained by invoking the help facility:
  ```weCall -h```.
 
-For detailed information on how to use weCall, please refer to the user guide in ```build/weCall-userguide.pdf```. 
+For detailed information on how to use weCall, please refer to the user guide in ```target/build/weCall-userguide.pdf```. 
 If it is not availble, it can be created by running ```make```.
 
 ## Testing Framework

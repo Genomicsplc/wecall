@@ -15,7 +15,7 @@
 #include "utils/matrix.hpp"
 #include "caller/metadata.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {

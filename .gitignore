@@ -1,9 +1,10 @@
+target
+build
+
 scripts/version.pyc
 .coverage
 /build/dist/
 /projects/*/dist/
-
-
 
 # binary/compiled files
 /bin/
@@ -13,7 +14,6 @@ performance_testing/vcs
 tags
 /source-package/
 /dependencies/
-/build/
 /env-wecall
 
 # logging

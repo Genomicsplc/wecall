@@ -10,7 +10,7 @@
 #include "variant/haplotype.hpp"
 #include "caller/callSet.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace variant
 {

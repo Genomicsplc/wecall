@@ -12,14 +12,14 @@
 ///
 /// @section Description
 /// Utility functions related to some of the probabilistic models used
-/// in Echidna
+/// in weCall
 #include <vector>
 #include <algorithm>
 #include <numeric>
 
 #include "common.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace stats
 {

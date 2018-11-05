@@ -11,7 +11,7 @@
 #include <vector>
 #include <vcf/field.hpp>
 
-namespace echidna
+namespace wecall
 {
 namespace caller
 {
@@ -112,7 +112,7 @@ namespace caller
             }
 
             // Oops! Cannot find annotation!
-            throw utils::echidna_exception( "Cannot find annotation ID: " + def.id );
+            throw utils::wecall_exception( "Cannot find annotation ID: " + def.id );
         }
 
         const std::vector< AnnotationPtr_t > & getAnnotations() const { return m_annotations; }

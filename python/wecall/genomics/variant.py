@@ -7,7 +7,7 @@ from wecall.utils.interval import ChromInterval
 
 """
 The variant module defines the standardised, internal representation of variant data which
-is used throughout the echidna code.
+is used throughout the wecall code.
 """
 
 
@@ -96,7 +96,7 @@ def variant_type(ref, alt):
 class Variant(object):
     """
     Standard internal variant representation. To be used everywhere in the
-    echidna code when we are storing and passing around variant data.
+    wecall code when we are storing and passing around variant data.
     """
 
     __slots__ = ('chrom', 'pos_from', 'ref', 'alt')

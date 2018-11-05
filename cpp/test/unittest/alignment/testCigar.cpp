@@ -8,10 +8,10 @@
 #include <iostream>
 #include <vector>
 
-using echidna::alignment::Cigar;
-using echidna::alignment::CigarItem;
-using echidna::alignment::cigarFlags;
-using echidna::alignment::CigarItemBuilder;
+using wecall::alignment::Cigar;
+using wecall::alignment::CigarItem;
+using wecall::alignment::cigarFlags;
+using wecall::alignment::CigarItemBuilder;
 
 BOOST_AUTO_TEST_CASE( shouldRollFrom0To6 )
 {
@@ -28,43 +28,43 @@ BOOST_AUTO_TEST_CASE( shouldRollFrom0To6 )
 BOOST_AUTO_TEST_CASE( shouldRollMatch )
 {
     auto cigar = CigarItemBuilder::roll( cigarFlags::MATCH, 2 );
-    BOOST_CHECK( dynamic_cast< echidna::alignment::CigarMatch * >( cigar.get() ) != nullptr );
+    BOOST_CHECK( dynamic_cast< wecall::alignment::CigarMatch * >( cigar.get() ) != nullptr );
 }
 
 BOOST_AUTO_TEST_CASE( shouldRollDeletion )
 {
     auto cigar = CigarItemBuilder::roll( cigarFlags::DELETION, 2 );
-    BOOST_CHECK( dynamic_cast< echidna::alignment::CigarDeletion * >( cigar.get() ) != nullptr );
+    BOOST_CHECK( dynamic_cast< wecall::alignment::CigarDeletion * >( cigar.get() ) != nullptr );
 }
 
 BOOST_AUTO_TEST_CASE( shouldRollInsertion )
 {
     auto cigar = CigarItemBuilder::roll( cigarFlags::INSERTION, 2 );
-    BOOST_CHECK( dynamic_cast< echidna::alignment::CigarInsertion * >( cigar.get() ) != nullptr );
+    BOOST_CHECK( dynamic_cast< wecall::alignment::CigarInsertion * >( cigar.get() ) != nullptr );
 }
 
 BOOST_AUTO_TEST_CASE( shouldRollSkip )
 {
     auto cigar = CigarItemBuilder::roll( cigarFlags::SKIP, 2 );
-    BOOST_CHECK( dynamic_cast< echidna::alignment::CigarSkip * >( cigar.get() ) != nullptr );
+    BOOST_CHECK( dynamic_cast< wecall::alignment::CigarSkip * >( cigar.get() ) != nullptr );
 }
 
 BOOST_AUTO_TEST_CASE( shouldRollHardClip )
 {
     auto cigar = CigarItemBuilder::roll( cigarFlags::HARD_CLIP, 2 );
-    BOOST_CHECK( dynamic_cast< echidna::alignment::CigarHardClip * >( cigar.get() ) != nullptr );
+    BOOST_CHECK( dynamic_cast< wecall::alignment::CigarHardClip * >( cigar.get() ) != nullptr );
 }
 
 BOOST_AUTO_TEST_CASE( shouldRollSoftClip )
 {
     auto cigar = CigarItemBuilder::roll( cigarFlags::SOFT_CLIP, 2 );
-    BOOST_CHECK( dynamic_cast< echidna::alignment::CigarSoftClip * >( cigar.get() ) != nullptr );
+    BOOST_CHECK( dynamic_cast< wecall::alignment::CigarSoftClip * >( cigar.get() ) != nullptr );
 }
 
 BOOST_AUTO_TEST_CASE( shouldRollPadding )
 {
     auto cigar = CigarItemBuilder::roll( cigarFlags::PADDING, 2 );
-    BOOST_CHECK( dynamic_cast< echidna::alignment::CigarPadding * >( cigar.get() ) != nullptr );
+    BOOST_CHECK( dynamic_cast< wecall::alignment::CigarPadding * >( cigar.get() ) != nullptr );
 }
 
 BOOST_AUTO_TEST_CASE( shouldComputeLengthsOneMatchItem )
@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_CASE( shouldComputeLengthWithoutSoftCippling )
 
 BOOST_AUTO_TEST_CASE( shouldGetTheCorrectRelativePositions )
 {
-    using echidna::alignment::emptyPos;
+    using wecall::alignment::emptyPos;
     Cigar cigar( "2M1I3D1M" );
     auto actualPositions = cigar.getRefPositions( 0 );
     std::vector< int64_t > expectedPositions{0, 1, emptyPos, 5};
@@ -107,48 +107,48 @@ BOOST_AUTO_TEST_CASE( testShouldOutputCorrectCigarString )
 BOOST_AUTO_TEST_CASE( shouldGetEmptyIntervalIfInputIsEmptyAndCigarMatch )
 {
     Cigar cigar( "5M" );
-    echidna::utils::Interval inputInterval( 1L, 1L );
-    echidna::utils::Interval expectedResult( 1L, 1L );
+    wecall::utils::Interval inputInterval( 1L, 1L );
+    wecall::utils::Interval expectedResult( 1L, 1L );
     BOOST_CHECK_EQUAL( expectedResult, cigar.getInverseInterval( inputInterval ) );
 }
 
 BOOST_AUTO_TEST_CASE( shouldGetMatchingIntervalIfInputIsNonEmptyAndCigarMatch )
 {
     Cigar cigar( "5M" );
-    echidna::utils::Interval inputInterval( 1L, 4L );
-    echidna::utils::Interval expectedResult( 1L, 4L );
+    wecall::utils::Interval inputInterval( 1L, 4L );
+    wecall::utils::Interval expectedResult( 1L, 4L );
     BOOST_CHECK_EQUAL( expectedResult, cigar.getInverseInterval( inputInterval ) );
 }
 
 BOOST_AUTO_TEST_CASE( shouldGetIntervalCorrespondingToInsertion )
 {
     Cigar cigar( "1M2I3M" );
-    echidna::utils::Interval inputInterval( 1L, 1L );
-    echidna::utils::Interval expectedResult( 1L, 3L );
+    wecall::utils::Interval inputInterval( 1L, 1L );
+    wecall::utils::Interval expectedResult( 1L, 3L );
     BOOST_CHECK_EQUAL( expectedResult, cigar.getInverseInterval( inputInterval ) );
 }
 
 BOOST_AUTO_TEST_CASE( shouldGetIntervalCorrespondingToDeletion )
 {
     Cigar cigar( "1M2D3M" );
-    echidna::utils::Interval inputInterval( 1L, 3L );
-    echidna::utils::Interval expectedResult( 1L, 1L );
+    wecall::utils::Interval inputInterval( 1L, 3L );
+    wecall::utils::Interval expectedResult( 1L, 1L );
     BOOST_CHECK_EQUAL( expectedResult, cigar.getInverseInterval( inputInterval ) );
 }
 
 BOOST_AUTO_TEST_CASE( shouldGetIntervalCorrespondingToMatchAfterInsertion )
 {
     Cigar cigar( "1M2I3M" );
-    echidna::utils::Interval inputInterval( 2L, 3L );
-    echidna::utils::Interval expectedResult( 4L, 5L );
+    wecall::utils::Interval inputInterval( 2L, 3L );
+    wecall::utils::Interval expectedResult( 4L, 5L );
     BOOST_CHECK_EQUAL( expectedResult, cigar.getInverseInterval( inputInterval ) );
 }
 
 BOOST_AUTO_TEST_CASE( shouldGetIntervalCorrespondingToMatchAfterDeletion )
 {
     Cigar cigar( "1M2D3M" );
-    echidna::utils::Interval inputInterval( 4L, 5L );
-    echidna::utils::Interval expectedResult( 2L, 3L );
+    wecall::utils::Interval inputInterval( 4L, 5L );
+    wecall::utils::Interval expectedResult( 2L, 3L );
     BOOST_CHECK_EQUAL( expectedResult, cigar.getInverseInterval( inputInterval ) );
 }
 

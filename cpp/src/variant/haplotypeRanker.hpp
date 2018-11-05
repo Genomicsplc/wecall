@@ -9,7 +9,7 @@
 
 #include "variant/haplotype.hpp"
 
-namespace echidna
+namespace wecall
 {
 namespace io
 {

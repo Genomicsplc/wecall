@@ -5,12 +5,12 @@
 #include <boost/test/unit_test.hpp>
 #include <string>
 
-using echidna::utils::ReferenceSequence;
-using echidna::caller::Region;
+using wecall::utils::ReferenceSequence;
+using wecall::caller::Region;
 
 BOOST_AUTO_TEST_CASE( mnp )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     std::string contig = "1";
     const std::string removed( "ABCD" );
@@ -29,13 +29,13 @@ BOOST_AUTO_TEST_CASE( mnp )
     auto nDiffs = 4;
     auto expectedPrior = 5e-5 * pow( 0.1, nDiffs - 1 ) * ( 1.0 - 0.1 );
 
-    echidna::variant::setDefaultPriors( {theMNP} );
+    wecall::variant::setDefaultPriors( {theMNP} );
     BOOST_CHECK_CLOSE( theMNP->prior(), expectedPrior, 1e-5 );
 }
 
 BOOST_AUTO_TEST_CASE( testMnpLeftAlignDoesntChangePosition )
 {
-    using namespace echidna::variant;
+    using namespace wecall::variant;
 
     std::string contig = "1";
     const std::string seq = "TT";

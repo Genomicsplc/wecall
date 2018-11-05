@@ -7,7 +7,7 @@
 #include "assembly/node.hpp"
 #include "common.hpp"
 
-using echidna::assembly::Node;
+using wecall::assembly::Node;
 
 BOOST_AUTO_TEST_CASE( testIsolatedNode )
 {
